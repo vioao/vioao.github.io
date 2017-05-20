@@ -3,10 +3,10 @@
 # ---------------------------------------------------------------
 
 # Put your favicon.ico into `hexo-site/source/` directory.
-favicon: /favicon.ico
+favicon: /uploads/favicon.ico
 
 # Set default keywords (Use a comma to separate)
-keywords: "Hexo, NexT"
+keywords: "Hexo, NexT, JAVA"
 
 # Set rss to false to disable feed link.
 # Leave rss as empty to use site's feed link.
@@ -36,7 +36,7 @@ seo: true
 
 # If true, will add site-subtitle to index page, added in main hexo config.
 # subtitle: Subtitle
-index_with_subtitle: false
+index_with_subtitle: true
 
 # ---------------------------------------------------------------
 # Menu Settings
@@ -315,7 +315,7 @@ disqus:
 #hypercomments_id:
 
 # Gentie productKey
-#gentie_productKey:
+gentie_productKey: 5884d8f07d58447fb77d0bd62bd1dbe5
 
 # changyan
 changyan:
@@ -405,9 +405,9 @@ vkontakte_api:
 # Show number of visitors to each article.
 # You can visit https://leancloud.cn get AppID and AppKey.
 leancloud_visitors:
-  enable: false
-  app_id: #<app_id>
-  app_key: #<app_key>
+  enable: true
+  app_id: 270mvicddOAPJDoxSVTIkHnM-gzGzoHsz
+  app_key: j2WlHSxSTuzMmL913DcYFvgD
 
 # Show PV/UV of the website/page with busuanzi.
 # Get more information on http://ibruce.info/2015/04/04/busuanzi/
@@ -582,7 +582,11 @@ vendors:
   # https://github.com/ethantw/Han
   han:
 
+show_music_player: true
 
+reward_comment: 觉得不错就支持下吧！
+wechatpay: /uploads/wechatpay.png
+alipay: /uploads/alipay.png
 
 # Assets
 css: css
