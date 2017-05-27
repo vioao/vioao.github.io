@@ -14,7 +14,7 @@ timezone:
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
 url: http://blog.vioao.me/
 root: /
-permalink: :year/:month/:day/:title/
+permalink: :title/
 permalink_defaults:
 
 # Directory
@@ -69,8 +69,11 @@ theme: next
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repo: git@github.com:vioao/vioao.github.io.git
   branch: master
+  repo:
+    github: git@github.com:vioao/vioao.github.io.git
+    coding: git@git.coding.net:vioao/vioao.git
+
 
 # search
 search:
