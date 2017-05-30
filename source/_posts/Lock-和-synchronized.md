@@ -68,7 +68,14 @@ try {
 ---
 
 ## `ReentranLock`
-另外，我们有比较大的机会接触到 `Lock` 接口的实现类 `ReentranLock`，`ReentranLock` 支持公平性锁和**非公平性锁(默认)**,这个选择是通过构造函数传入一个 `boolean` 类型的参数决定的,其内部是通过继承了`AbstractQueuedSynchronizer`实现了一个`FairSync`和一个`NonFairSync`来实现的,这个可以在以后讲AQS的时候再深入讲解(大家也可以自行去阅读下 `java.util.concurrent` 下的各个接口和类，相信会大有收获)。`ReentranLock` 也是一个标准的互斥锁：一次最多只有一个线程能够持有相同的`ReentranLock`。`ReentranLock` 提供了和`synchronized` 相同的互斥和内存可见性。
+另外，我们有比较大的机会接触到 `Lock` 接口的实现类 `ReentranLock`，`ReentranLock` 支持公平性锁和**非公平性锁(默认)**,这个选择是通过构造函数传入一个 `boolean` 类型的参数决定的，其内部是通过继承了`AbstractQueuedSynchronizer`实现了一个`FairSync`和一个`NonFairSync`来实现的,这个可以在以后讲AQS的时候再深入讲解(大家也可以自行去阅读 `java.util.concurrent` 下的各个接口和类，相信会大有收获)。`ReentranLock` 也是一个标准的互斥锁：一次最多只有一个线程能够持有相同的`ReentranLock`。`ReentranLock` 提供了和`synchronized` 相同的互斥和内存可见性。所以通常会将 `ReentranLock` 和 `synchronized` 放在一起对比。
+可能的面试问题场景如下:
+> 面试官: 有哪几种实现同步的方式?
+> 面试者:  `synchronized` 和 `ReentranLock`
+> 面试官:  那`synchronized` 和 `ReentranLock` 有什么区别
+> 面试者:  。。。
+
+其实 `ReentranLock` 和 `synchronized` 的区别和`Lock` 和 `synchronized` 的区别是一致的，只不过`ReentranLock` **多了个公平队列的支持**！
 
 ---
 
