@@ -8,6 +8,10 @@
   <span class="author" itemprop="copyrightHolder">{{ config.author }}</span>
 </div>
 
+{% if theme.hosted_by %}
+  <p>Hosted by <a href=“https://coding.net/help/doc/pages/index.html” style=“font-weight: bold”>Coding Pages</a></p>
+{% endif %}
+
 {% if theme.copyright %}
 <div class="powered-by">
   {{ __('footer.powered', '<a class="theme-link" href="https://hexo.io">Hexo</a>') }}
@@ -20,3 +24,5 @@
   </a>
 </div>
 {% endif %}
+
+
