@@ -13,7 +13,7 @@ Java多线程编程中，保证线程安全通常会使用到`synchronized`和`L
 ## `Lock`和`synchronized`
 **`synchronized`** 是JAVA提供的强制原子性的内置锁机制。一个`synchronized`有两部分:锁对象的引用 (`synchronized` 方法的锁，就是该方法所在对象本身)，以及这个锁保护的代码块。每个Java对象都可以作为一个用于同步的锁的角色，这些内置的锁被成为**内部锁**，线程进入 `synchronized` 块之前会自动获得锁，退出、报错异常、时会释放锁。内部锁是一种互斥锁，这就是说，至多只有一个线程可以获得锁，所以被 `synchronized` 声明的方法或代码块至多只有一个线程可以进入。从而保证了线程安全。
 大致有如下用法:
-```
+```java
 //作用于方法
 public synchronized void synchronizedMethod(){
     //do something
@@ -29,7 +29,7 @@ synchronized (syncObj){
 
  **`Lock`**  接口定义了一些抽象了锁操作，与内部锁机制不同，它提供了更加灵活的， **无条件的**，**可轮训的**，**定时的**，**可中断的**锁获取操作。 `Lock` 的接口定义如下:
 
-```
+```java
 /*
     以下为Lock接口定义的大致解释，建议自行阅读JDK源码学习
 */
@@ -48,7 +48,7 @@ synchronized (syncObj){
 }
 ```
 大致用法为:
-```
+```java
 Lock lock = ...;
 ...
 lock.lock();
