@@ -9,7 +9,7 @@
 </div>
 
 {% if theme.hosted_by %}
-  <p>Hosted by <a href=“https://coding.net/help/doc/pages/index.html” style=“font-weight: bold”>Coding Pages</a></p>
+  <p>Hosted by <a href="https://coding.net/help/doc/pages/index.html" style="font-weight: bold">Coding Pages</a></p>
 {% endif %}
 
 {% if theme.copyright %}
