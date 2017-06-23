@@ -143,6 +143,7 @@ font:
 social:
   #LinkLabel: Link
   GitHub: https://github.com/vioao
+  CSDN: http://blog.csdn.net/u010862794
 
 
 # Social Links Icons
@@ -582,8 +583,6 @@ vendors:
   # https://github.com/ethantw/Han
   han:
 
-show_music_player: true
-
 reward_comment: 觉得不错就支持下吧！
 wechatpay: /uploads/wechatpay.png
 alipay: /uploads/alipay.png
@@ -597,3 +596,5 @@ images: images
 version: 5.1.1
 
 hosted_by: true
+show_music_player: false
+
