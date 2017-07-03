@@ -583,9 +583,9 @@ vendors:
   # https://github.com/ethantw/Han
   han:
 
-reward_comment: 觉得不错就支持下吧！
-wechatpay: /uploads/wechatpay.png
-alipay: /uploads/alipay.png
+#_comment: 觉得不错就支持下吧！
+#wechatpay: /uploads/wechatpay.png
+#alipay: /uploads/alipay.png
 
 # Assets
 css: css
