@@ -35,7 +35,7 @@ categories: [JAVA]
 ## Shopizer
 [Shopizer](http://www.shopizer.com/) 是JAVA语言写的开源B2C系统。主要技术栈是 `Spring Core`、`Spring MVC`、`Spring Security`、`Hibernate`、`Elasticsearch`、`JBoss Infinispan`。这些是一般JAVA程序猿比较熟悉的技术栈了。这个项目从五年前开始，现在依然还有在维护，还是有一点活跃度的。
 基本的商店系统该有的功能一般都有了，详细查看他们的官网介绍:[Shopizer 支持的功能](http://www.shopizer.com/#!/discover)。 但是！我是后悔没有好好看首页啊。 首页有一句话，引用他们的原文
-> Shopizer's team is developing for developers first(首先是面向开发人员开发的啊有木有，要是一开始把这句看进去了后面就不会)
+> Shopizer's team is developing for developers first(首先是面向开发人员开发的啊有木有，要是一开始把这句看进去了后面就不会checkout代码研究开发了)
 
 感受下项目的前端和后台:
 
