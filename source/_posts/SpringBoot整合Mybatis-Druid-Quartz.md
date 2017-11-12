@@ -13,6 +13,9 @@ categories: [工作记录]
 4. 整合Druid
 5. Spring单元测试集成H2数据库
 
+
+<!-- more -->
+
 ---
 ## 整合MyBatis
 
