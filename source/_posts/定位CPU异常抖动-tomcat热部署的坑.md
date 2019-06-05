@@ -11,7 +11,7 @@ categories: [工作记录]
 **操作系统: Linux SHB-L0064049 2.6.32-642.6.2.el6.x86_6 **
 
 运维反馈CPU抖动异常，如下。
-![CPU状态](https://img-blog.csdn.net/20180418204828440?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTA4NjI3OTQ=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+{% asset_img cpu.jpg CPU状态 %}
 
 CPU时不时的会从0%抖动到50%，定位到时tomcat的**热部署**导致的问题。最终通过显式的加上`reloadable=“false”` 的配置解决了该问题。
 

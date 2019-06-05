@@ -8,5 +8,5 @@ Disallow: /fonts/
 Disallow: /vendors/
 Disallow: /fancybox/
 
-Sitemap: http://blog.vioao.me/sitemap.xml
-Sitemap: http://blog.vioao.me/baidusitemap.xml
+Sitemap: http://blog.vioao.site/sitemap.xml
+Sitemap: http://blog.vioao.site/baidusitemap.xml

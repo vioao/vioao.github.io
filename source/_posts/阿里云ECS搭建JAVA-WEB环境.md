@@ -102,7 +102,7 @@ yum install mysql-community-server
 ```
 
 #### 启动操作MySql
-新版的Mysql安装后默认root用户的密码是随机生成的，需要去对应的日志文件中查找。这个在我之前的一篇博文中有说过: [MySql 5.7.18免安装版安装使用](http://blog.vioao.me/MySql-5-7-18%E5%85%8D%E5%AE%89%E8%A3%85%E7%89%88%E5%AE%89%E8%A3%85%E4%BD%BF%E7%94%A8/)
+新版的Mysql安装后默认root用户的密码是随机生成的，需要去对应的日志文件中查找。这个在我之前的一篇博文中有说过: [MySql 5.7.18免安装版安装使用](http://blog.vioao.site/MySql-5-7-18%E5%85%8D%E5%AE%89%E8%A3%85%E7%89%88%E5%AE%89%E8%A3%85%E4%BD%BF%E7%94%A8/)
 
 ##### 启动Mysql服务
 ```
