@@ -3,6 +3,7 @@ title: mysql 5.7 group by 1055
 date: 2017-10-21 12:15:43
 tags: mysql
 categories: 工作记录
+comments: false
 ---
 
 最近遇到的一个问题，有个项目使用的mysql升级到5.7后，发现项目中有些sql语句执行会报错。
