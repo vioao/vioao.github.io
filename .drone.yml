@@ -1,0 +1,18 @@
+kind: pipeline
+name: default
+
+steps:
+  - name: build
+    image: node
+    volumes:
+      - name: target
+        path: ./public
+    commands:
+      - npm install
+      - ./node_modules/hexo/bin/hexo clean
+      - ./node_modules/hexo/bin/hexo g
+
+volumes:
+  - name: target
+    host:
+      path: /var/www/mine
