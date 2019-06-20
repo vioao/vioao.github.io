@@ -18,6 +18,8 @@ categories: [大数据]
 5. 交通大数据、畅通出行 (城市大脑)
 ......
 
+<!-- more -->
+
 ### 大数据处理架构
 各行各业都开始了大数据之路，大量的数据处理，靠人力那是靠不住的，得依靠计算机来。那这自然是少不了程序猿的。那么程序员GG们是如何简洁高效的处理利用这些大数据的呢？
 
@@ -32,8 +34,6 @@ categories: [大数据]
 针对上述的这些特性要求，大佬们早已设计出了一些架构和处理框架，让我们一起来了解下。
 目前主流的大数据处理架构，这里就讲两个:  [**Lambda Architecture**](http://lambda-architecture.net/) 和 [**Kappa Architecture**](http://milinda.pathirage.org/kappa-architecture.com/)
 需要注意的是，Lambda 和 Kappa两大架构都不是一个具有实体的软件产品，而是一个指导大数据系统搭建的架构模型。因此，用户可以根据自己的需要，在架构模型中任意集成Hadoop，Hbase，Kafka，Storm，Spark、Flink等各类大数据组件。
-
-<!-- more -->
 
 #### Lambda 架构
 Lambda架构是Nathan Marz提出的一个大数据处理框架。该框架的做法是将大数据系统架构拆分成了三层：
