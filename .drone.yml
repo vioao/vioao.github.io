@@ -11,6 +11,9 @@ steps:
       - npm install
       - ./node_modules/hexo/bin/hexo clean
       - ./node_modules/hexo/bin/hexo g
+    when:
+      branch:
+        - blog
 
 volumes:
   - name: target
