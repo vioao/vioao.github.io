@@ -36,7 +36,7 @@ Drone 包含两个服务
 
 1. 移除旧版(如果有)
    ```bash
-   $ sudo yum remove docker \
+   yum remove docker \
                      docker-client \
                      docker-client-latest \
                      docker-common \
@@ -46,7 +46,7 @@ Drone 包含两个服务
                      docker-engine
    ```
 
-2. 安装Docker CE
+2. 安装 Docker CE
     
     1. 安装必要的包    
         ```bash
@@ -85,12 +85,12 @@ Drone 包含两个服务
 yum install -y epel-release
 ```
 
-2. 安装python-pip
+2. 安装 python-pip
 ```bash
 yum install -y python-pip
 ```
 
-3. 安装docker-compose
+3. 安装 docker-compose
 ```
 pip install docker-compose
 ```
