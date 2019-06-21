@@ -1,8 +1,8 @@
 ---
 title: 'docker初识:运行mysql实例'
 date: 2017-07-26 21:29:52
-tags: [docker,mysql]
-categories: [docker]
+tags: [Docker,MySQL]
+categories: [Docker]
 comments: false
 ---
 

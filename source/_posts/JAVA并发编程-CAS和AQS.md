@@ -1,8 +1,8 @@
 ---
 title: 'JAVA并发编程: CAS和AQS'
 date: 2017-06-06 23:35:21
-tags: [JAVA,并发编程,AQS,CAS]
-categories: [JAVA]
+tags: [Java,并发编程,AQS,CAS]
+categories: [Java]
 comments: false
 ---
 

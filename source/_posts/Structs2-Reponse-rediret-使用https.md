@@ -1,7 +1,7 @@
 ---
 title: Structs2 Reponse rediret 使用https
 date: 2016-11-20 12:47:14
-tags: [Structs]
+tags: [Struts]
 categories: [工作记录]
 comments: false
 ---

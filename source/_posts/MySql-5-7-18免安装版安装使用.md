@@ -1,7 +1,7 @@
 ---
 title: MySql 5.7.18免安装版安装使用
 date: 2017-05-26 21:32:04
-tags: mysql
+tags: MySQL
 categories: 工作记录
 comments: false
 ---

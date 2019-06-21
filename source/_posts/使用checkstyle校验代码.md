@@ -1,7 +1,7 @@
 ---
 title: 使用checkstyle校验代码
 date: 2017-12-03 13:48:38
-tags: [checkstyle,maven]
+tags: [CheckStyle,Maven]
 categories: [工作记录]
 comments: false
 ---

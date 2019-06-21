@@ -2,7 +2,7 @@
 title: Feign基础教程
 date: 2017-06-23 22:38:43
 tags: [Feign,Http Client]
-categories: [JAVA]
+categories: [Java]
 comments: false
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: mysql 5.7 group by 1055
 date: 2017-10-21 12:15:43
-tags: mysql
+tags: MySQL
 categories: 工作记录
 comments: false
 ---

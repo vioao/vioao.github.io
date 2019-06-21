@@ -2,7 +2,7 @@
 title: 阿里云ECS搭建JAVA WEB环境
 date: 2017-06-17 09:46:02
 tags: [ECS,环境搭建]
-categories: [JAVA WEB]
+categories: [Java]
 comments: false
 ---
 
