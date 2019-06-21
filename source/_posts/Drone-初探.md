@@ -239,3 +239,10 @@ Pipelines 。上图是我已经激活并配置了 vioao.github.io 项目。
     如果提交了代码，但是却没有触发对应的构建任务的话，那你可以 GitHub 的对应 repository 的 Webhooks 配置，看看其对应
     drone 的 WebHook 地址是不是能正常访问。 如果是构建过程出错，那一般是 .drone.yml 配置文件有问题了，看对应的构建日志去
     解决问题即可。
+    
+
+### 总结
+
+从上面的操作的感受来说，Drone 的代码即配置，有点像 docker-compose ，整体比较简洁，并且支持 pipeline steps 、webhook、services
+等。基本 CI/CD 的功能都是支持的，且符合云的趋势。但是感觉还是比较年轻啊，而且文档是真心有点简陋，多数时候还是需要自己去Google下。
+另外，文档不支持搜索也是有点鸡儿疼的。
