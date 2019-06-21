@@ -6,7 +6,7 @@ steps:
     image: node
     volumes:
       - name: target
-        path: /drone/src/github.com/vioao/vioao.github.io/public
+        path: /drone/src/public
     commands:
       - pwd
       - npm install
