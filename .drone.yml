@@ -6,7 +6,7 @@ steps:
     image: node
     volumes:
       - name: target
-        path: ./public
+        path: /drone/src/github.com/vioao/vioao.github.io/public
     commands:
       - npm install
       - ./node_modules/hexo/bin/hexo clean
