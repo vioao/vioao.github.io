@@ -6,13 +6,14 @@ steps:
     image: node
     volumes:
       - name: target
-        path: /drone/src/public
+        path: /drone/target/vioao.github.io
     commands:
       - npm install
-      - cd /drone/src/public && ll
       - ./node_modules/hexo/bin/hexo clean
       - ./node_modules/hexo/bin/hexo g
-      - cd /drone/src/public && ll
+      - pwd && rm -rf /drone/target/vioao.github.io/*
+      - mv /drone/src/public/* /drone/target/vioao.github.io
+      - cd /drone/target/vioao.github.io && ls -l
     when:
       branch:
         - blog
