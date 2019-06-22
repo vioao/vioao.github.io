@@ -32,11 +32,10 @@ steps:
         from_secret: github_password
 
   - name: publish coding pages
-    image: plugins/gh-pages
-    environment:
-      DRONE_REMOTE_URL: https://git.coding.net/vioao/vioao.git
-      DRONE_NETRC_MACHINE: git.coding.net
+    image: vioao/gh-pages
     settings:
+      #machine: git.coding.net
+      remote_url: https://git.coding.net/vioao/vioao.git
       pages_directory: coding_pages
       target_branch: master
       temporary_base: .coding_tmp
