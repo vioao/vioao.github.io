@@ -35,7 +35,7 @@ steps:
     image: vioao/drone-gh-pages
     settings:
       #machine: git.coding.net
-      remote_url: https://git.coding.net/vioao/vioao.git
+      remote_url: git@git.coding.net:vioao/vioao.git
       pages_directory: coding_pages
       target_branch: master
       temporary_base: .coding_tmp
