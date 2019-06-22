@@ -2,6 +2,7 @@
 title: Drone 初探
 comments: false
 date: 2019-06-21 11:14:55
+sage: true
 tags: [CI,CD,Drone,Docker]
 categories: [Docker]
 ---
