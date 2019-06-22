@@ -11,11 +11,10 @@ steps:
       - npm install
       - ./node_modules/hexo/bin/hexo clean
       - ./node_modules/hexo/bin/hexo g
-      - pwd && ls -l && rm -rf /drone/target/vioao.github.io/*
+      - rm -rf /drone/target/vioao.github.io/*
       - cp -r /drone/src/public/* /drone/target/vioao.github.io
-      - cp -r /drone/src/public/* /drone/src/github_pages
-      - cp -r /drone/src/public/* /drone/src/coding_pages
-      - cd /drone/target/vioao.github.io && ls -l
+      - mkdir github_pages && cp -r /drone/src/public/* /drone/src/github_pages
+      - mkdir coding_pages && cp -r /drone/src/public/* /drone/src/coding_pages
     when:
       branch:
         - blog
