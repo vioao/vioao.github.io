@@ -32,9 +32,8 @@ steps:
   - name: publish coding pages
     image: plugins/gh-pages
     environment:
-        DRONE_REMOTE_URL: https://git.coding.net/vioao/vioao.git
+      DRONE_REMOTE_URL: https://git.coding.net/vioao/vioao.git
     settings:
-#      remote_url: https://git.coding.net/vioao/vioao.git
       pages_directory: public
       target_branch: master
       username:
