@@ -29,16 +29,16 @@ steps:
       target_branch: master
       remote_url: https://github.com/vioao/vioao.github.io.git
 
-  - name: publish_to_coding
-    image: plugins/gh-pages
-    settings:
-      username:
-        from_secret: coding_user_name
-      password:
-        from_secret: coding_password
-      pages_directory: public
-      target_branch: master
-      remote_url: https://git.coding.net/vioao/vioao.git
+#  - name: publish_to_coding
+#    image: plugins/gh-pages
+#    settings:
+#      username:
+#        from_secret: coding_user_name
+#      password:
+#        from_secret: coding_password
+#      pages_directory: public
+#      target_branch: master
+#      remote_url: https://git.coding.net/vioao/vioao.git
 
 volumes:
   - name: target
