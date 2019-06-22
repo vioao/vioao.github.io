@@ -242,8 +242,86 @@ Pipelines 。上图是我已经激活并配置了 vioao.github.io 项目。
     解决问题即可。
     
 
+### 配置项目 CI/CD -- 改进
+
+上面的配置是部署到自己服务器的，还有一种是直接部署到 GitHub Pages 和 Coding Pages 上去的。之前我有场 Chat 
+[无需服务器构建属于自己的博客站](https://gitbook.cn/gitchat/activity/5d00a0737a4f0413709aa7d4) 就有讲同时部署到本地如何
+同时部署到 GitHub Pages 和 Coding Pages。
+
+现在我们要利用 Drone 来完成这个工作。
+其实目前已经有一个插件 [drone-gh-pages](https://github.com/drone-plugins/drone-gh-pages) 可以帮你部署到 GitHub Pages 了。
+但是这个插件无法部署到 Coding Pages 上去。这边对这个插件研究了下，发现其实它只需要暴露出两个配置就可以支持的，于是我提交
+了个 [Pull Request](https://github.com/drone-plugins/drone-gh-pages/pull/25)，不过后来发现好像有个几乎一样的 Request，
+看上去作者并不想将这个功能合并。没办法的我只能自己构建一个发布到 Docker Hub 了。大家使用我的镜像即可。调整后 Drone 流程可
+同时发布到服务器、GitHub Pages、Coding Pages。
+
+1. 调整配置
+    ```yaml
+    kind: pipeline
+    name: default
+    
+    steps:
+      - name: build
+        image: node
+        volumes:
+          - name: target
+            path: /drone/target/vioao.github.io
+        commands:
+          - npm install
+          - ./node_modules/hexo/bin/hexo clean
+          - ./node_modules/hexo/bin/hexo g
+          - rm -rf /drone/target/vioao.github.io/*
+          # 需要将构建好的文件复制到不同的目录，供后面的 step 使用
+          - cp -r /drone/src/public/* /drone/target/vioao.github.io     
+          - mkdir github_pages && cp -r /drone/src/public/* /drone/src/github_pages
+          - mkdir coding_pages && cp -r /drone/src/public/* /drone/src/coding_pages
+        when:
+          branch:
+            - blog
+    
+      - name: publish github pages
+        image: plugins/gh-pages
+        settings:
+          remote_url: https://github.com/vioao/vioao.github.io.git
+          # step 设置独立的 pages_directory 和 temporary_base，便于不同 step 的文件隔离
+          pages_directory: github_pages
+          target_branch: master
+          temporary_base: .github_tmp
+          # 用户名密码需要在 Drone 服务商设置对应的 Secrets
+          username:
+            from_secret: github_username
+          password:
+            from_secret: github_password
+    
+      - name: publish coding pages
+        # 这里使用的是我自己构建的镜像
+        image: vioao/drone-gh-pages
+        settings:
+          # coding pages 相关配置
+          machine: git.coding.net
+          remote_url: https://git.coding.net/vioao/vioao.git
+          pages_directory: coding_pages
+          target_branch: master
+          temporary_base: .coding_tmp
+          username:
+            from_secret: coding_username
+          password:
+            from_secret: coding_password
+    
+    volumes:
+      - name: target
+        host:
+          path: /var/www/mine
+    ```
+
+2. 添加 Secrets
+    
+    在对应的项目 Setting 上添加即可：
+    {% asset_img drone-secret.png 添加Secret %}
+
+
 ### 总结
 
 从上面的操作的感受来说，Drone 的代码即配置，有点像 docker-compose ，整体比较简洁，并且支持 pipeline steps 、webhook、services
-等。基本 CI/CD 的功能都是支持的，且符合云的趋势。但是感觉还是比较年轻啊，而且文档是真心有点简陋，多数时候还是需要自己去Google下。
+等。基本 CI/CD 的功能都是支持的，且符合云原生的趋势。但是感觉还是比较年轻啊，而且文档是真心有点简陋(比如中途想看 Drone 插件编写的相关文档就没找着)，多数时候还是需要自己去Google下。
 另外，文档不支持搜索也是有点鸡儿疼的。
