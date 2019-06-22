@@ -1,1 +1,2 @@
-利用hexo和next主题搭建的个人静态博客，效果访问[Vioao's Blog](http://blog.vioao.site)
+- 基于 Hexo + Next 个人静态页面博客。[Vioao's Blog](http://blog.vioao.site/) 
+- 写作规范参考 [GitChat 写作规范](https://gitbook.cn/books/5c47da3ef79c0c1f90492403/index.html)
