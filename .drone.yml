@@ -32,7 +32,7 @@ steps:
         from_secret: github_password
 
   - name: publish coding pages
-    image: vioao/gh-pages
+    image: vioao/drone-gh-pages
     settings:
       #machine: git.coding.net
       remote_url: https://git.coding.net/vioao/vioao.git
