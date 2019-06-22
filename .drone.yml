@@ -18,16 +18,16 @@ steps:
       branch:
         - blog
 
-  - name: publish github pages
-    image: plugins/gh-pages
-    settings:
-      remote_url: https://github.com/vioao/vioao.github.io.git
-      pages_directory: public
-      target_branch: master
-      username:
-        from_secret: github_username
-      password:
-        from_secret: github_password
+#  - name: publish github pages
+#    image: plugins/gh-pages
+#    settings:
+#      remote_url: https://github.com/vioao/vioao.github.io.git
+#      pages_directory: public
+#      target_branch: master
+#      username:
+#        from_secret: github_username
+#      password:
+#        from_secret: github_password
 
   - name: publish coding pages
     image: plugins/gh-pages
