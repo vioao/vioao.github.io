@@ -18,27 +18,29 @@ steps:
       branch:
         - blog
 
-  - name: publish_to_github
+  - name: publish github pages
     image: plugins/gh-pages
     settings:
+      remote_url: https://github.com/vioao/vioao.github.io.git
+      pages_directory: public
+      target_branch: master
       username:
         from_secret: github_username
       password:
         from_secret: github_password
+
+  - name: publish coding pages
+    image: plugins/gh-pages
+#    environment:
+#        DRONE_REMOTE_URL: https://git.coding.net/vioao/vioao.git
+    settings:
+      remote_url: https://git.coding.net/vioao/vioao.git
       pages_directory: public
       target_branch: master
-      remote_url: https://github.com/vioao/vioao.github.io.git
-
-#  - name: publish_to_coding
-#    image: plugins/gh-pages
-#    settings:
-#      username:
-#        from_secret: coding_user_name
-#      password:
-#        from_secret: coding_password
-#      pages_directory: public
-#      target_branch: master
-#      remote_url: https://git.coding.net/vioao/vioao.git
+      username:
+        from_secret: coding_username
+      password:
+        from_secret: coding_password
 
 volumes:
   - name: target
