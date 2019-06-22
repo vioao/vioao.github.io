@@ -30,7 +30,7 @@ Drone 包含两个服务
 - drone-agent：负责具体的任务执行
 
 所以，安装的时候最好统一安装管理咯，这边使用 docker-compose 来进行编排安装管理。
-其他的一些核心概念的学习可以参考下[GeekPipe-基于Drone的持续集成实践之基本概念篇](https://developer.finogeeks.com/topic/11/geekpipe-%E5%9F%BA%E4%BA%8Edrone%E7%9A%84%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E5%AE%9E%E8%B7%B5%E4%B9%8B%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5%E7%AF%87)
+其他的一些核心概念的学习可以参考下 [GeekPipe -基于 Drone 的持续集成实践之基本概念篇](https://developer.finogeeks.com/topic/11/geekpipe-%E5%9F%BA%E4%BA%8Edrone%E7%9A%84%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E5%AE%9E%E8%B7%B5%E4%B9%8B%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5%E7%AF%87)
 
 
 #### 安装 Docker
