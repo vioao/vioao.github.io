@@ -354,6 +354,9 @@ jiathis: true
 # Google Analytics
 google_analytics: UA-100038035-1
 
+# Google AdSense
+google_adsense:
+
 # Yandex Webmaster tools verification setting
 # See: https://webmaster.yandex.ru/
 #yandex_site_verification:
