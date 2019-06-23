@@ -180,7 +180,7 @@ pip install docker-compose
    因为我自己的服务器本身是已经有了一个 Apache 服务，所以占用了 80 和 443 端口。因此，在上面配置的时候，
    Drone 是运行在 8000 和 8443 端口的，因此这里还需要稍微做个代理配置，给 Apache 的 httpd.conf 添加如下配置：
    ```conf
-   <VirtualHost *：80
+   <VirtualHost *:80>
        ProxyPreserveHost On 
        # RequestHeader set X-Forwarded-Proto "https"       用https的话得加这个    
        ProxyPass / http://127.0.0.1:8000/
