@@ -8,8 +8,16 @@
   <span class="author" itemprop="copyrightHolder">{{ config.author }}</span>
 </div>
 
+{% if theme.cd_by %}
+  <div class="powered-by">CI/CD by
+    <a class="theme-link" href="http://drone.vioao.site" style="font-weight: bold">Vioao's Drone</a>
+  </div>
+{% endif %}
+
 {% if theme.hosted_by %}
-  <p>Hosted by <a href="https://coding.net/help/doc/pages/index.html" style="font-weight: bold">Coding Pages</a></p>
+  <div class="theme-info">Hosted by
+    <a class="theme-link" href="https://coding.net/help/doc/pages/index.html" style="font-weight: bold">Coding Pages</a>
+  </div>
 {% endif %}
 
 {% if theme.copyright %}

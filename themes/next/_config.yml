@@ -14,7 +14,7 @@ keywords: "Vioao, JAVA, Hexo"
 rss:
 
 # Specify the date when the site was setup
-since: 2015
+since: 2016
 
 # icon between year and author @Footer
 authoricon: heart
@@ -598,6 +598,7 @@ images: images
 # Theme version
 version: 5.1.1
 
+cd_by: true
 hosted_by: true
 show_music_player: false
 
