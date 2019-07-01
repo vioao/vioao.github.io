@@ -190,7 +190,7 @@ pip install docker-compose
    
 全部配置完成后，就能在浏览器访问 drone 服务，服务地址就是上面配置的 DRONE_SERVER_HOST 。GitHub 授权登录即可。
 登录后会获取对应账号的 Github 项目列表：
-{% asset_img drone-github.png Drone服务 %}
+{% asset_img drone-web.png Drone服务 %}
 点击 Activate 进入即可激活。激活后如果项目中已有 .drone.yml 配置文件的话，当你 push 代码后， Drone 会自动执行你配置的
 Pipelines 。上图是我已经激活并配置了 vioao.github.io 项目。   
    
