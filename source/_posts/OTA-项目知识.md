@@ -69,6 +69,14 @@ categories: [工作记录]
 - [ATPCO](https://www.atpco.net/about?utm_source=ATPCO_home&utm_medium=Carousel&utm_campaign=who_we_are_CTA_Home_Carousel)  
   Airline Tariff Publishing Company，对 GDS 及其相关机构提供数据及技术服务
 
+- [NDC](https://www.iata.org/whatwedo/airline-distribution/ndc/Pages/default.aspx)  
+  New Distribution Capability，由 IATA 创建的新分销能力 (NDC) 是一种基于 XML 的数据传输标准（对旅游行业持有重大承诺），
+  能够使旅游公司（从航空公司到旅游销售商）在旅行分销与营销方面不断发展。
+  
+- [CSD](https://www.iata.org/whatwedo/cargo/security/Pages/csd.aspx)   
+  The Consignment Security Declaration (CSD) provides regulators with an audit trail of how, when and by whom cargo has 
+been secured along the supply chain. 
+
 ----
 ### 核心流程
 
