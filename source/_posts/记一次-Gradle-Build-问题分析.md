@@ -41,7 +41,7 @@ error: cannot access DoNotMock
         ```bash
         $ ./gradlew dependencies -q --configuration compile | grep error_prone_annotations --color -C 10
        compile - Dependencies for source set 'main' (deprecated, use 'implementation' instead).
-       +--- net.skyscanner.mshell:mshell-java-dropwizard-core:10.0.0
+       +--- net.xxxx.mshell:mshell-java-dropwizard-core:10.0.0
        |    +--- io.dropwizard:dropwizard-core:1.3.13
        |    |    +--- io.dropwizard:dropwizard-util:1.3.13
        |    |    |    +--- com.fasterxml.jackson.core:jackson-annotations:2.9.0 -> 2.9.9
@@ -67,16 +67,16 @@ error: cannot access DoNotMock
        |    |    |    |    \--- org.apache.commons:commons-lang3:3.4 -> 3.8.1
        |    |    |    +--- com.google.protobuf:protobuf-java:3.6.0 -> 3.8.0
        |    |    |    \--- net.jodah:failsafe:2.0.1
-       |    |    +--- net.skyscanner.experimentation:java-mr-hyde-client:0.5.1 (*)
+       |    |    +--- net.xxxx.experimentation:java-mr-hyde-client:0.5.1 (*)
        |    |    +--- io.dropwizard:dropwizard-logging:1.3.13 (*)
        |    |    +--- io.dropwizard:dropwizard-configuration:1.3.13 (*)
        |    |    +--- io.dropwizard:dropwizard-metrics:1.3.13 (*)
        |    |    +--- io.dropwizard.metrics:metrics-healthchecks:4.0.2 -> 4.0.5 (*)
        |    |    +--- org.slf4j:jcl-over-slf4j:1.7.25 -> 1.7.26 (*)
        |    |    \--- com.google.errorprone:error_prone_annotations:2.0.12 -> 2.3.2  # here use error_prone_annotations 2.3.2
-       |    +--- net.skyscanner.mshell:mshell-java-secrets:10.0.0 (*)
-       |    +--- net.skyscanner.mshell:mshell-java-metrics:10.0.0 (*)
-       |    +--- net.skyscanner.mshell:mshell-java-async-client:10.0.0
+       |    +--- net.xxxx.mshell:mshell-java-secrets:10.0.0 (*)
+       |    +--- net.xxxx.mshell:mshell-java-metrics:10.0.0 (*)
+       |    +--- net.xxxx.mshell:mshell-java-async-client:10.0.0
        |    |    +--- org.asynchttpclient:async-http-client:2.4.9
        |    |    |    +--- org.asynchttpclient:async-http-client-netty-utils:2.4.9
        |    |    |    |    +--- io.netty:netty-buffer:4.1.25.Final
