@@ -47,4 +47,4 @@ steps:
 volumes:
   - name: target
     host:
-      path: /var/www/mine
+      path: /var/www/vioao.github.io
