@@ -20,7 +20,7 @@ steps:
         - blog
 
   - name: publish github pages
-    image: plugins/gh-pages
+    image: vioao/drone-gh-pages
     settings:
       remote_url: https://github.com/vioao/vioao.github.io.git
       pages_directory: github_pages

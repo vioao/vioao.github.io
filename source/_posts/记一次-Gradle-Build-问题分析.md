@@ -138,7 +138,7 @@ error: cannot access DoNotMock
 2. 在依赖中移除 `error_prone_annotations:2.3.2`
     ```gradle
     compile ("io.dropwizard.modules:dropwizard-protobuf:${dropwizardProtobufVersion}") {
-        exclude group: 'com.google.errorprone', model: 'error_prone_annotations'
+        exclude group: 'com.google.errorprone', module: 'error_prone_annotations'
     }
     ```
 3. 升级所有依赖 `error_prone_annotations` 的包，升级到新版不使用  `DoNotMock`；该方案影响较大。需要先全局查找使用了 `DoNotMock` 的包。然后分析其使用依赖，再判断是否能升级。
