@@ -1,5 +1,5 @@
 ---
-title: RocketMQ 回忆录
+title: RocketMQ 概览
 comments: false
 date: 2019-11-18 11:38:51
 tags: [RocketMQ,JAVA,中间件]
