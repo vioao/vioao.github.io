@@ -14,7 +14,6 @@ steps:
       - rm -rf /drone/target/vioao.github.io/*
       - cp -r /drone/src/public/* /drone/target/vioao.github.io
       - mkdir github_pages && cp -r /drone/src/public/* /drone/src/github_pages
-      - mkdir coding_pages && cp -r /drone/src/public/* /drone/src/coding_pages
     when:
       branch:
         - blog
