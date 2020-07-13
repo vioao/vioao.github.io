@@ -14,12 +14,6 @@
   </div>
 {% endif %}
 
-{% if theme.hosted_by %}
-  <div class="theme-info">Hosted by
-    <a class="theme-link" href="https://coding.net/help/doc/pages/index.html" style="font-weight: bold">Coding Pages</a>
-  </div>
-{% endif %}
-
 {% if theme.copyright %}
 <div class="powered-by">
   {{ __('footer.powered', '<a class="theme-link" href="https://hexo.io">Hexo</a>') }}

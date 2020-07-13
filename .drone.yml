@@ -31,19 +31,6 @@ steps:
       password:
         from_secret: github_password
 
-  - name: publish coding pages
-    image: vioao/drone-gh-pages
-    settings:
-      machine: git.coding.net
-      remote_url: https://git.coding.net/vioao/vioao.git
-      pages_directory: coding_pages
-      target_branch: master
-      temporary_base: .coding_tmp
-      username:
-        from_secret: coding_username
-      password:
-        from_secret: coding_password
-
 volumes:
   - name: target
     host:

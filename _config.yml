@@ -72,8 +72,6 @@ deploy:
   branch: master
   repo:
     github: git@github.com:vioao/vioao.github.io.git
-    coding: git@git.coding.net:vioao/vioao.git
-
 
 # search
 search:
