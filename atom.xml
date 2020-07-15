@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.vioao.site/"/>
-  <updated>2020-07-13T03:39:19.942Z</updated>
+  <updated>2020-07-15T02:06:50.822Z</updated>
   <id>http://blog.vioao.site/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="http://blog.vioao.site/posts/%E5%8E%8B%E6%B5%8B%E5%AF%B9%E6%AF%94-Spring-WebFlux-VS-Spring-MVC/"/>
     <id>http://blog.vioao.site/posts/压测对比-Spring-WebFlux-VS-Spring-MVC/</id>
     <published>2020-07-10T10:05:20.000Z</published>
-    <updated>2020-07-13T03:39:19.942Z</updated>
+    <updated>2020-07-15T02:06:50.822Z</updated>
     
     <summary type="html">
     
@@ -34,7 +34,7 @@ on Reactive Stack: Spring WebFlux.&lt;/p&gt;
 Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运行在诸如 Netty, Undertow,
 以及 Servlet 3.1+ 容器上的。Spring WebFlux 可以让你使用更少的线程去处理并发请求，同时能够让你使用更少的硬件资源来拓展
 你的应用。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;springboot2.png&quot; alt=&quot;WebFlux&quot;&gt;&lt;/p&gt;
+&lt;img src=&quot;/posts/压测对比-Spring-WebFlux-VS-Spring-MVC/springboot2.png&quot; title=&quot;WebFlux&quot;&gt;
     
     </summary>
     
