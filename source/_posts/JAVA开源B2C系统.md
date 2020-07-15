@@ -40,9 +40,9 @@ comments: false
 
 感受下项目的前端和后台:
 
-![shopizer前端](shopizer_front_end.png)
+{% asset_img shopizer_front_end.png shopizer前端 %}
 
-![shopizer后台](shopizer_background.png)
+{% asset_img shopizer_background.png shopizer后台 %}
 
 下面简要说下Shopizer的优缺点
 ### 优点
@@ -90,7 +90,7 @@ mayocat-shop主要技术栈:
 - Jetty
 - Mustache / Handlebars
 
-![mayocat-shop技术栈](mayocat_tec.png)
+{% asset_img mayocat_tec.png mayocat-shop技术栈 %}
 
 ### 优点
 1. 前后分离(分工明确,部署灵活)

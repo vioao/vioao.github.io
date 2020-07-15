@@ -20,7 +20,7 @@ Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运
 以及 Servlet 3.1+ 容器上的。Spring WebFlux 可以让你使用更少的线程去处理并发请求，同时能够让你使用更少的硬件资源来拓展
 你的应用。
 
-![WebFlux](springboot2.png)
+{% asset_img springboot2.png WebFlux %}
 
 <!-- more -->
 
@@ -29,7 +29,7 @@ WebFlux 并不是 Spring MVC 替代，它主要应用还是在异步非阻塞编
 或者你的应用目前本身已经足够应付当前情况，是不需要去切换成 WebFlux 的。官方在这个选择上也有给出
 几条注意点：
 
-![MVC & WebFlux](spring-mvc-and-webflux-venn.png)
+{% asset_img spring-mvc-and-webflux-venn.png MVC & WebFlux %}
 
 1. WebFlux 目前还不支持 MySQL
 2. WebFlux 默认情况下使用 Netty 作为服务器
@@ -49,7 +49,7 @@ WebFlux 并不是 Spring MVC 替代，它主要应用还是在异步非阻塞编
 
 所有服务都是跑在本地 docker 环境，限制使用相同的 cpu 和内存(1g)资源。同时添加对应的 JMX 监控。
 
-![MVC & WebFlux](flux-vs-mvc.png)
+{% asset_img flux-vs-mvc.png MVC & WebFlux %}
 
 #### 服务提供的接口
 - web: 提供一个可自定义延迟的简单接口
@@ -83,21 +83,21 @@ WebFlux 并不是 Spring MVC 替代，它主要应用还是在异步非阻塞编
 ##### 延迟 10ms
 - 吞吐量
   
-  ![吞吐量和相应时间对比](mvc-vs-flux-1000threads.png)
+  {% asset_img mvc-vs-flux-1000threads.png 吞吐量和相应时间对比 %}
 
 - 资源使用情况
   - mvc
    
-    ![mvc](mvc-monitor.png)
+    {% asset_img mvc-monitor.png mvc %}
     
   - flux
     
-    ![flux](flux-monitor.png)
+    {% asset_img flux-monitor.png flux %}
 
 ##### 延迟 20ms
 - 吞吐量
   
-  ![吞吐量和相应时间对比](mvc-vs-flux-1000threads-20ms.png)
+  {% asset_img mvc-vs-flux-1000threads-20ms.png 吞吐量和相应时间对比 %}
 
   
 从压测结果来看，如果是 IO 密集型的应用，使用 WebFlux 和使用 MVC 对于吞吐量的影响不大，但是
