@@ -107,7 +107,7 @@
 <meta property="og:image" content="http://blog.vioao.site/posts/压测对比-Spring-WebFlux-VS-Spring-MVC/mvc-monitor.png">
 <meta property="og:image" content="http://blog.vioao.site/posts/压测对比-Spring-WebFlux-VS-Spring-MVC/flux-monitor.png">
 <meta property="og:image" content="http://blog.vioao.site/posts/压测对比-Spring-WebFlux-VS-Spring-MVC/mvc-vs-flux-1000threads-20ms.png">
-<meta property="og:updated_time" content="2020-07-15T02:06:50.822Z">
+<meta property="og:updated_time" content="2020-07-15T02:13:32.700Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="压测对比: Spring WebFlux VS. Spring MVC">
 <meta name="twitter:description" content="前言最近工作有个小项目，其场景主要是封装内部的接口请求，然后做个转换之后，就请求外部请求，之后再 将外部响应转换成内部的统一格式，其实有点类似一个简单网关的应用，虽然也有一些业务逻辑在里面， 但是主要场景还是请求的转发处理，是一个 IO 密集型的应用，而且外部请求的延迟相对比较大而且不可控。 我想，这不正合适 Spring 5 出来的那个新特性的一个应用场景么。于是决定探究下 Spring Web">
@@ -449,7 +449,8 @@ Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运
 <h3 id="Spring-MVC-or-WebFlux"><a href="#Spring-MVC-or-WebFlux" class="headerlink" title="Spring MVC or WebFlux?"></a>Spring MVC or WebFlux?</h3><p>WebFlux 并不是 Spring MVC 替代，它主要应用还是在异步非阻塞编程模型上。如果你的项目并不是该模型
 或者你的应用目前本身已经足够应付当前情况，是不需要去切换成 WebFlux 的。官方在这个选择上也有给出
 几条注意点：</p>
-<p><img src="spring-mvc-and-webflux-venn.png" alt="MVC &amp; WebFlux"></p>
+<img src="/posts/压测对比-Spring-WebFlux-VS-Spring-MVC/spring-mvc-and-webflux-venn.png" title="MVC & WebFlux">
+
 <ol>
 <li>WebFlux 目前还不支持 MySQL</li>
 <li>WebFlux 默认情况下使用 Netty 作为服务器</li>
@@ -465,7 +466,8 @@ Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运
 <li>模拟需要构建的新应用(使用 Spring WebFlux): flux</li>
 </ul>
 <p>所有服务都是跑在本地 docker 环境，限制使用相同的 cpu 和内存(1g)资源。同时添加对应的 JMX 监控。</p>
-<p><img src="flux-vs-mvc.png" alt="MVC &amp; WebFlux"></p>
+<img src="/posts/压测对比-Spring-WebFlux-VS-Spring-MVC/flux-vs-mvc.png" title="MVC & WebFlux">
+
 <h4 id="服务提供的接口"><a href="#服务提供的接口" class="headerlink" title="服务提供的接口"></a>服务提供的接口</h4><ul>
 <li><p>web: 提供一个可自定义延迟的简单接口</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@GetMapping</span>(value = <span class="string">"/hello/&#123;times&#125;"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> Mono&lt;String&gt; <span class="title">hello</span><span class="params">(@PathVariable <span class="keyword">int</span> times)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> Mono.delay(Duration.ofMillis(times)).thenReturn(<span class="string">"Hello"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -483,22 +485,25 @@ Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运
 其相应的吞吐量和资源使用情况对比如下。</p>
 <h5 id="延迟-10ms"><a href="#延迟-10ms" class="headerlink" title="延迟 10ms"></a>延迟 10ms</h5><ul>
 <li><p>吞吐量</p>
-<p><img src="mvc-vs-flux-1000threads.png" alt="吞吐量和相应时间对比"></p>
+<img src="/posts/压测对比-Spring-WebFlux-VS-Spring-MVC/mvc-vs-flux-1000threads.png" title="吞吐量和相应时间对比">
 </li>
 <li><p>资源使用情况</p>
 <ul>
 <li><p>mvc</p>
-<p><img src="mvc-monitor.png" alt="mvc"></p>
+<img src="/posts/压测对比-Spring-WebFlux-VS-Spring-MVC/mvc-monitor.png" title="mvc">
 </li>
 <li><p>flux</p>
-<p><img src="flux-monitor.png" alt="flux"></p>
+<img src="/posts/压测对比-Spring-WebFlux-VS-Spring-MVC/flux-monitor.png" title="flux">
+
 </li>
 </ul>
 </li>
 </ul>
 <h5 id="延迟-20ms"><a href="#延迟-20ms" class="headerlink" title="延迟 20ms"></a>延迟 20ms</h5><ul>
 <li><p>吞吐量</p>
-<p><img src="mvc-vs-flux-1000threads-20ms.png" alt="吞吐量和相应时间对比"></p>
+<img src="/posts/压测对比-Spring-WebFlux-VS-Spring-MVC/mvc-vs-flux-1000threads-20ms.png" title="吞吐量和相应时间对比">
+
+
 </li>
 </ul>
 <p>从压测结果来看，如果是 IO 密集型的应用，使用 WebFlux 和使用 MVC 对于吞吐量的影响不大，但是

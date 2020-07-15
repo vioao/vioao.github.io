@@ -101,8 +101,8 @@
 <meta property="og:description" content="前言如今开发一定规模的web系统时一般会在项目中加入缓存模块块来缓存数据以减轻数据库的压力。从而提高系统的访问速度。最近的面试过程中也有不少是缓存相关的问题，那么下面就来聊下期间被问到的一个缓存更新策略的问题。 我们以Redis作为缓存作为例子。那么问题来了，当缓存的数据需要更新时该如何做才能确保在保证一致性(没有脏数据)的情况下还能有不错的并发量。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://blog.vioao.site/posts/聊聊缓存/redis.jpg">
-<meta property="og:image" content="http://blog.vioao.site/posts/聊聊缓存/cache%E6%9E%B6%E6%9E%84.png">
-<meta property="og:updated_time" content="2019-06-21T02:22:57.194Z">
+<meta property="og:image" content="http://blog.vioao.site/posts/聊聊缓存/cache架构.png">
+<meta property="og:updated_time" content="2020-07-15T02:13:32.601Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="聊聊缓存">
 <meta name="twitter:description" content="前言如今开发一定规模的web系统时一般会在项目中加入缓存模块块来缓存数据以减轻数据库的压力。从而提高系统的访问速度。最近的面试过程中也有不少是缓存相关的问题，那么下面就来聊下期间被问到的一个缓存更新策略的问题。 我们以Redis作为缓存作为例子。那么问题来了，当缓存的数据需要更新时该如何做才能确保在保证一致性(没有脏数据)的情况下还能有不错的并发量。">
@@ -424,7 +424,8 @@
 <a id="more"></a>
 
 <h2 id="面试过程"><a href="#面试过程" class="headerlink" title="面试过程"></a>面试过程</h2><p>通常我们项目中和缓存交道的架构图大体如下：</p>
-<p><img src="cache%E6%9E%B6%E6%9E%84.png" alt="cache架构图"></p>
+<img src="/posts/聊聊缓存/cache架构.png" title="cache架构图">
+
 <p>面试过程中，由于我说自己使用过redis来缓存系统中的一些经常读取但是比较少修改的数据，比如说游戏配置，活动礼包配置，玩家所玩过的游戏这些。
 于是面试官遍提出了如下的问题:</p>
 <blockquote>
