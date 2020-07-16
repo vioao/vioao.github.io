@@ -8,7 +8,7 @@ subtitle: Record a little bit
 description: 记录JAVA相关工作和阅读生活点滴
 author: Vioao
 language: zh-Hans
-timezone:
+timezone: Asia/Shanghai
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'

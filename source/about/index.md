@@ -12,3 +12,18 @@ comments: false
 众生皆苦，求而不得。  
 Anyway，前进吧。
 <p align="right"> Vioao </p>
+
+<div class="links-of-author motion-element" style="display: inline-block; opacity: 1; margin-top: 0">
+{% if theme.social %}
+  {% for name, link in theme.social %}
+    <span class="links-of-author-item">
+      <a href="{{ link }}" target="_blank" title="{{ name }}">
+        {% if theme.social_icons.enable %}
+          <i class="fa fa-fw fa-{{ theme.social_icons[name] | default('globe') | lower }}"></i>
+        {% endif %}
+        {{ name }}
+      </a>
+    </span>
+  {% endfor %}
+{% endif %}
+</div>

@@ -78,7 +78,7 @@ menu_icons:
 # ---------------------------------------------------------------
 
 # Schemes
-scheme: Muse
+scheme: Mist
 #scheme: Mist
 #scheme: Pisces
 
@@ -191,7 +191,7 @@ sidebar:
   #  - always  expand for all pages automatically
   #  - hide    expand only when click on the sidebar toggle icon.
   #  - remove  Totally remove sidebar including sidebar toggle.
-  display: post
+  display: remove
   #display: always
   #display: hide
   #display: remove
@@ -201,10 +201,10 @@ sidebar:
   offset_float: 0
 
   # Back to top in sidebar
-  b2t: true
+  b2t: false
 
   # Scroll percent label in b2t button
-  scrollpercent: true
+  scrollpercent: false
 
 
 # Blog rolls
@@ -599,6 +599,5 @@ images: images
 version: 5.1.1
 
 cd_by: true
-hosted_by: true
 show_music_player: false
-
+social_in_footer: true
