@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.vioao.site/"/>
-  <updated>2020-07-15T02:13:32.700Z</updated>
+  <updated>2020-07-16T07:07:47.052Z</updated>
   <id>http://blog.vioao.site/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="http://blog.vioao.site/posts/%E5%8E%8B%E6%B5%8B%E5%AF%B9%E6%AF%94-Spring-WebFlux-VS-Spring-MVC/"/>
     <id>http://blog.vioao.site/posts/压测对比-Spring-WebFlux-VS-Spring-MVC/</id>
     <published>2020-07-10T10:05:20.000Z</published>
-    <updated>2020-07-15T02:13:32.700Z</updated>
+    <updated>2020-07-16T07:07:47.052Z</updated>
     
     <summary type="html">
     
@@ -38,9 +38,7 @@ Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运
     
     </summary>
     
-      <category term="Java" scheme="http://blog.vioao.site/categories/Java/"/>
-    
-      <category term="工作记录" scheme="http://blog.vioao.site/categories/Java/%E5%B7%A5%E4%BD%9C%E8%AE%B0%E5%BD%95/"/>
+      <category term="工作记录" scheme="http://blog.vioao.site/categories/%E5%B7%A5%E4%BD%9C%E8%AE%B0%E5%BD%95/"/>
     
     
       <category term="Reactor" scheme="http://blog.vioao.site/tags/Reactor/"/>
