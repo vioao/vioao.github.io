@@ -3,7 +3,7 @@ name: default
 
 steps:
   - name: build
-    image: node
+    image: node:10
     volumes:
       - name: target
         path: /drone/target/vioao.github.io
@@ -12,6 +12,7 @@ steps:
       - ./node_modules/hexo/bin/hexo clean && ls
       - ./node_modules/hexo/bin/hexo g && ls
       - cat /drone/src/public/README.MD
+      - cat ./themes/next/source/README.MD
       - rm -rf /drone/target/vioao.github.io/* && cp -r ./public/* /drone/target/vioao.github.io/
       - pwd && ls
       - ls /drone/src/public
