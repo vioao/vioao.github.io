@@ -1,0 +1,1152 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="ECS,环境搭建,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Vioao's Blog" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/uploads/favicon.ico?v=5.1.1">
+
+
+
+
+
+
+<meta name="description" content="购买配置阿里云服务器ECS阿里云服务器ECS  云服务器（Elastic Compute Service，简称 ECS）是一种简单高效、处理能力可弹性伸缩的计算服务，帮助您快速构建更稳定、安全的应用，提升运维效率，降低 IT 成本，使您更专注于核心业务创新。  选购服务器从产品主页直接进入到选购页面就可以了。选择自己需要的服务器就好。主要有如下可选项:  计费方式 地域(服务器所在地域,考虑翻墙的">
+<meta name="keywords" content="ECS,环境搭建">
+<meta property="og:type" content="article">
+<meta property="og:title" content="阿里云ECS搭建JAVA WEB环境">
+<meta property="og:url" content="http://blog.vioao.site/posts/阿里云ECS搭建JAVA-WEB环境/index.html">
+<meta property="og:site_name" content="Vioao&#39;s Blog">
+<meta property="og:description" content="购买配置阿里云服务器ECS阿里云服务器ECS  云服务器（Elastic Compute Service，简称 ECS）是一种简单高效、处理能力可弹性伸缩的计算服务，帮助您快速构建更稳定、安全的应用，提升运维效率，降低 IT 成本，使您更专注于核心业务创新。  选购服务器从产品主页直接进入到选购页面就可以了。选择自己需要的服务器就好。主要有如下可选项:  计费方式 地域(服务器所在地域,考虑翻墙的">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-07-22T02:39:47.669Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="阿里云ECS搭建JAVA WEB环境">
+<meta name="twitter:description" content="购买配置阿里云服务器ECS阿里云服务器ECS  云服务器（Elastic Compute Service，简称 ECS）是一种简单高效、处理能力可弹性伸缩的计算服务，帮助您快速构建更稳定、安全的应用，提升运维效率，降低 IT 成本，使您更专注于核心业务创新。  选购服务器从产品主页直接进入到选购页面就可以了。选择自己需要的服务器就好。主要有如下可选项:  计费方式 地域(服务器所在地域,考虑翻墙的">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"remove","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.vioao.site/posts/阿里云ECS搭建JAVA-WEB环境/">
+
+
+
+
+
+
+
+  <title>阿里云ECS搭建JAVA WEB环境 | Vioao's Blog</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-100038035-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?e10442447b2587d6a6580d90a763ecc6";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Vioao's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">Record a little bit</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://blog.vioao.site/posts/阿里云ECS搭建JAVA-WEB环境/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Vioao">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Vioao's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">阿里云ECS搭建JAVA WEB环境</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-17T01:46:02+00:00">
+                2017-06-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="购买配置阿里云服务器ECS"><a href="#购买配置阿里云服务器ECS" class="headerlink" title="购买配置阿里云服务器ECS"></a>购买配置阿里云服务器ECS</h2><p><a href="https://www.aliyun.com/product/ecs/" target="_blank" rel="noopener">阿里云服务器ECS</a></p>
+<blockquote>
+<p>云服务器（Elastic Compute Service，简称 ECS）是一种简单高效、处理能力可弹性伸缩的计算服务，帮助您快速构建更稳定、安全的应用，提升运维效率，降低 IT 成本，使您更专注于核心业务创新。</p>
+</blockquote>
+<h3 id="选购服务器"><a href="#选购服务器" class="headerlink" title="选购服务器"></a>选购服务器</h3><p>从产品主页直接进入到选购页面就可以了。选择自己需要的服务器就好。主要有如下可选项:</p>
+<ul>
+<li>计费方式</li>
+<li>地域(服务器所在地域,考虑翻墙的请选择境外的)</li>
+<li>网络(这个比较坑，有经典网络和专有网络两种，默认的是专有网络，经典网络和专有网络部互通。 如果自己只是弄一个服务器玩玩的话选经典网络就好)</li>
+<li>实例(服务器的硬件配置)</li>
+<li>带宽</li>
+<li>镜像(服务器的操作系统)</li>
+<li>存储(默认已经有40G硬盘,不够可可以额外购买)</li>
+<li>安全设置(主要设置SSH远程连接时的用户密码)</li>
+</ul>
+<a id="more"></a>
+
+<h3 id="服务器网络设置"><a href="#服务器网络设置" class="headerlink" title="服务器网络设置"></a>服务器网络设置</h3><p>购买成功后进入控制台可以看到自己服务器的基本信息和可操作项,主要有以下两点需要注意:</p>
+<ol>
+<li>分配的公网IP和私网IP (随后需要使用公网IP远程SSH到服务器)</li>
+<li>右侧的功能选项(管理 远程连接等)</li>
+</ol>
+<p>当我们直接使用公网IP访问我们服务器的时候发现是无法连通的。通过<code>telnet ip port</code>的时候会提示无法连接</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">D:\<span class="title">Users</span>\<span class="title">Vioao</span>\<span class="title">Desktop</span>&gt;<span class="title">telnet</span> 39.108.129.25 80</span></span><br><span class="line"><span class="function">正在连接39.108.129.25...无法打开到主机的连接。 在端口 80: 连接失败</span></span><br></pre></td></tr></table></figure>
+
+<p>这是由于阿里云ECS的安全策略的导致的，默认的安全策略只开放了TCP的22端口和3389端口(用于给Linux/Windows 系统的远程连接)以及全部ICMP。
+不过一般我们可能会需要能通过公网IP访问服务器的web应用服务，这时候就需要开启TCP 的80端口或443端口了(这边还打开了8080端口)。官方提供了对应的配置文档:
+<a href="https://help.aliyun.com/document_detail/25475.html?spm=5176.2020520101.121.1.fKFdDZ#allowHttp" target="_blank" rel="noopener">允许公网通过 HTTP、HTTPS 等服务访问实例</a></p>
+<hr>
+<h2 id="搭建JAVA-WEB环境"><a href="#搭建JAVA-WEB环境" class="headerlink" title="搭建JAVA WEB环境"></a>搭建JAVA WEB环境</h2><p>这边是想将一个开源的电商系统 <a href="http://www.shopizer.com/" target="_blank" rel="noopener">Shopizer</a> 部署到服务器上，所需需要搭建配置一个JAVA WEB环境。</p>
+<blockquote>
+<p><strong>Shopizer</strong> 是一个基于Web的销售管理和电子商务内容管理系统（CMS）。主要功能包括：购物车，库存管理，付款和运输，订单管理，在线发票和订单跟踪。</p>
+</blockquote>
+<p>我的系统的CentOs 7, 64 Bit, 需要的环境依赖有:</p>
+<ul>
+<li>JDK</li>
+<li>MySql</li>
+<li>Tomcat</li>
+<li>ElasticSearch</li>
+</ul>
+<h3 id="安装JDK"><a href="#安装JDK" class="headerlink" title="安装JDK"></a>安装JDK</h3><p>使用yum直接安装openjdk 简单方便</p>
+<h4 id="yum-list-yum-search-查找需要安装的软件"><a href="#yum-list-yum-search-查找需要安装的软件" class="headerlink" title="yum list/yum search 查找需要安装的软件"></a>yum list/yum search 查找需要安装的软件</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[root@iZwz9en2rvi1v3yo0vkhouZ ~]# yum list java*</span><br><span class="line">Loaded plugins: fastestmirror</span><br><span class="line">Loading mirror speeds from cached hostfile</span><br><span class="line">Installed Packages</span><br><span class="line">java-1.8.0-openjdk.x86_64                    1:1.8.0.131-3.b12.el7_3    @updates</span><br><span class="line">java-1.8.0-openjdk-headless.x86_64           1:1.8.0.131-3.b12.el7_3    @updates</span><br><span class="line">javamail.noarch                              1.4.6-8.el7                @base</span><br><span class="line">javapackages-tools.noarch                    3.4.1-11.el7               @base</span><br><span class="line">Available Packages</span><br><span class="line">java-1.6.0-openjdk.x86_64                    1:1.6.0.41-1.13.13.1.el7_3 updates</span><br><span class="line">java-1.6.0-openjdk-demo.x86_64               1:1.6.0.41-1.13.13.1.el7_3 updates</span><br><span class="line">java-1.6.0-openjdk-devel.x86_64              1:1.6.0.41-1.13.13.1.el7_3 updates</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<h4 id="yum-install-jdk"><a href="#yum-install-jdk" class="headerlink" title="yum install jdk"></a>yum install jdk</h4><p>这里选择的是64位的JDK8，执行如下命令即可：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install java-1.8.0-openjdk.x86_64</span><br></pre></td></tr></table></figure>
+
+<h4 id="查看jdk是否安装成功"><a href="#查看jdk是否安装成功" class="headerlink" title="查看jdk是否安装成功"></a>查看jdk是否安装成功</h4><p>安装后执行java命令看看是否安装成功</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@iZwz9en2rvi1v3yo0vkhouZ ~]# java -version</span><br><span class="line">openjdk version &quot;1.8.0_131&quot;</span><br><span class="line">OpenJDK Runtime Environment (build 1.8.0_131-b12)</span><br><span class="line">OpenJDK 64-Bit Server VM (build 25.131-b12, mixed mode)</span><br></pre></td></tr></table></figure>
+
+<h4 id="查看安装目录"><a href="#查看安装目录" class="headerlink" title="查看安装目录"></a>查看安装目录</h4><p>安装后可以通过whereis命令查找对应的安装目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@iZwz9en2rvi1v3yo0vkhouZ ~]# whereis java</span><br><span class="line">java: /usr/bin/java /usr/lib/java /etc/java /usr/share/java /usr/share/man/man1/java.1.gz</span><br></pre></td></tr></table></figure>
+
+<h3 id="安装启动MySql"><a href="#安装启动MySql" class="headerlink" title="安装启动MySql"></a>安装启动MySql</h3><p>本来打算按照安装jdk的步骤来安装MySql，结果发现查找不到mysql服务的安装包。于是只能去官网下载安装包自己安装了。步骤如下:</p>
+<h4 id="下载安装Mysql"><a href="#下载安装Mysql" class="headerlink" title="下载安装Mysql"></a>下载安装Mysql</h4><p>官网下载mysql的rpm安装包:<a href="https://dev.mysql.com/downloads/repo/yum/" target="_blank" rel="noopener">下载页面</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wget https://dev.mysql.com/get/mysql57-community-release-el7-11.noarch.rpm</span><br><span class="line">rpm -ivh mysql-community-release-el7-5.noarch.rpm</span><br><span class="line">yum install mysql-community-server</span><br></pre></td></tr></table></figure>
+
+<h4 id="启动操作MySql"><a href="#启动操作MySql" class="headerlink" title="启动操作MySql"></a>启动操作MySql</h4><p>新版的Mysql安装后默认root用户的密码是随机生成的，需要去对应的日志文件中查找。这个在我之前的一篇博文中有说过: <a href="http://blog.vioao.site/MySql-5-7-18%E5%85%8D%E5%AE%89%E8%A3%85%E7%89%88%E5%AE%89%E8%A3%85%E4%BD%BF%E7%94%A8/">MySql 5.7.18免安装版安装使用</a></p>
+<h5 id="启动Mysql服务"><a href="#启动Mysql服务" class="headerlink" title="启动Mysql服务"></a>启动Mysql服务</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@iZwz9en2rvi1v3yo0vkhouZ ~]# systemctl start mysqld.service</span><br></pre></td></tr></table></figure>
+
+<h5 id="获取初始密码"><a href="#获取初始密码" class="headerlink" title="获取初始密码"></a>获取初始密码</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@iZwz9en2rvi1v3yo0vkhouZ ~]# cat /var/log/mysqld.log | grep &quot;temporary password&quot;</span><br><span class="line">2017-06-13T09:23:32.288905Z 1 [Note] A temporary password is generated for root@localhost: 5-?fTL&amp;+.khz</span><br></pre></td></tr></table></figure>
+
+<h5 id="登陆并修改初始密码"><a href="#登陆并修改初始密码" class="headerlink" title="登陆并修改初始密码"></a>登陆并修改初始密码</h5><p>获取初始密码后就可以使用root/{初始密码}登陆了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@test ～]# mysql -p</span><br><span class="line">Enter password:</span><br><span class="line">Welcome to the MySQL monitor.</span><br><span class="line">...</span><br><span class="line">mysql&gt; show databases;</span><br><span class="line">ERROR 1820 (HY000): You must reset your password using ALTER USER statement before executing this statement.</span><br></pre></td></tr></table></figure>
+
+<p>初始使用会让你修改初始密码，否则不会让你操作，而且对新密码的复杂度也是有要求的，需要有(字母 数字 字符),那么修改密码就好了,命令如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; alter user &apos;root&apos;@&apos;localhost&apos; identified by &apos;&#123;yourpassword&#125;&apos;;</span><br><span class="line">mysql&gt; flush privileges;</span><br></pre></td></tr></table></figure>
+
+<p>OK,接下来就可以愉快的操作mysql了。</p>
+<h3 id="安装启动Tomcat"><a href="#安装启动Tomcat" class="headerlink" title="安装启动Tomcat"></a>安装启动Tomcat</h3><p>起初是按照安装JDK的方式安装Tomcat的。后来启动发现这个版本比较旧，对3.0的支持不是太好，启动项目会报错，于是就自己上官网下载最新的压缩包解压缩部署了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">wget http://apache.fayea.com/tomcat/tomcat-8/v8.5.15/bin/apache-tomcat-8.5.15.zip</span><br><span class="line">yum install unzip</span><br><span class="line">unzip apache-tomcat-8.5.15.zip</span><br><span class="line">cd apache-tomcat-8.5.15/bin</span><br><span class="line">./startup</span><br></pre></td></tr></table></figure>
+
+<h4 id="Bad-Luck"><a href="#Bad-Luck" class="headerlink" title="Bad Luck"></a>Bad Luck</h4><p><code>./startip</code>启动tomcat后无法成功访问对应的程序，但是 <code>telnet ip 8080</code> 端口可以成功。一开始以为是自己的应用有问题导致的，于是想关闭tomcat后查找下问题，结果却提示无法关闭,报如下错误:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">Using CATALINA_BASE:   /opt/program/apache-tomcat-8.5.15</span><br><span class="line">Using CATALINA_HOME:   /opt/program/apache-tomcat-8.5.15</span><br><span class="line">Using CATALINA_TMPDIR: /opt/program/apache-tomcat-8.5.15/temp</span><br><span class="line">Using JRE_HOME:        /usr</span><br><span class="line">Using CLASSPATH:       /opt/program/apache-tomcat-8.5.15/bin/bootstrap.jar:/opt/program/apache-tomcat-8.5.15/bin/tomcat-juli.jar</span><br><span class="line">Jun 13, 2017 2:28:55 PM org.apache.catalina.startup.Catalina stopServer</span><br><span class="line">SEVERE: Could not contact [localhost:[8005]]. Tomcat may not be running.</span><br><span class="line">Jun 13, 2017 2:28:55 PM org.apache.catalina.startup.Catalina stopServer</span><br><span class="line">SEVERE: Catalina.stop:</span><br><span class="line">java.net.ConnectException: Connection refused (Connection refused)</span><br><span class="line">        at java.net.PlainSocketImpl.socketConnect(Native Method)</span><br><span class="line">        at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:350)</span><br><span class="line">        at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:206)</span><br><span class="line">        at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:188)</span><br><span class="line">        at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)</span><br><span class="line">        at java.net.Socket.connect(Socket.java:589)</span><br><span class="line">        at java.net.Socket.connect(Socket.java:538)</span><br><span class="line">        at java.net.Socket.&lt;init&gt;(Socket.java:434)</span><br><span class="line">        at java.net.Socket.&lt;init&gt;(Socket.java:211)</span><br><span class="line">        at org.apache.catalina.startup.Catalina.stopServer(Catalina.java:477)</span><br><span class="line">        at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)</span><br><span class="line">        at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)</span><br><span class="line">        at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)</span><br><span class="line">        at java.lang.reflect.Method.invoke(Method.java:498)</span><br><span class="line">        at org.apache.catalina.startup.Bootstrap.stopServer(Bootstrap.java:408)</span><br><span class="line">        at org.apache.catalina.startup.Bootstrap.main(Bootstrap.java:497)</span><br></pre></td></tr></table></figure>
+
+<p>无奈只好使用 <code>ps aux | grep tomcat</code> 查找对应的pid后使用 <code>kill -9 pid</code> 强制将tomcat结束。
+然后，进入到tomcat的logs目录追踪日志， <code>tail -f catalina.2017-06-13.log</code> ，重启tomcat。之后就发现一个蛋疼的问题了，tomcat启动日志一直卡在</p>
+<blockquote>
+<p>Deploying web application directory [/opt/program/apache-tomcat-8.5.15/webapps/manager…</p>
+</blockquote>
+<p>之后百度到了解决方法: <a href="http://www.cnblogs.com/vinozly/p/5011138.html" target="_blank" rel="noopener">Tomcat启动时卡在“INFO: Deploying web application directory ”</a>]
+按照博文中的操作才成功启动了Tomcat</p>
+<h3 id="安装启动ElasticSearch"><a href="#安装启动ElasticSearch" class="headerlink" title="安装启动ElasticSearch"></a>安装启动ElasticSearch</h3><h4 id="下载解压ElasticSearch"><a href="#下载解压ElasticSearch" class="headerlink" title="下载解压ElasticSearch"></a>下载解压ElasticSearch</h4><p>由于 <strong>Shopizer</strong> 使用的依然是2.x版本的ElasticSearch，所以这边就安装2.4.4版本的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget https://download.elastic.co/elasticsearch/release/org/elasticsearch/distribution/zip/elasticsearch/2.4.4/elasticsearch-2.4.4.zip</span><br><span class="line">unzip -ivh elasticsearch-2.4.4.zip</span><br></pre></td></tr></table></figure>
+
+<h4 id="启动ElasticSearch"><a href="#启动ElasticSearch" class="headerlink" title="启动ElasticSearch"></a>启动ElasticSearch</h4><p>启动过程不太顺利,总共遇到了两个问题</p>
+<ul>
+<li><p>不能使用root用户启动</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@iZwz9en2rvi1v3yo0vkhouZ program]# cd elasticsearch-2.4.4/bin/</span><br><span class="line">[root@iZwz9en2rvi1v3yo0vkhouZ bin]# ./elasticsearch</span><br><span class="line">OpenJDK 64-Bit Server VM warning: If the number of processors is expected to increase from one, then you should configure the number of parallel GC threads appropriately using -XX:ParallelGCThreads=N</span><br><span class="line">Exception in thread &quot;main&quot; java.lang.RuntimeException: don&apos;t run elasticsearch as root.</span><br><span class="line">        at org.elasticsearch.bootstrap.Bootstrap.initializeNatives(Bootstrap.java:94)</span><br><span class="line">        at org.elasticsearch.bootstrap.Bootstrap.setup(Bootstrap.java:160)</span><br><span class="line">        at org.elasticsearch.bootstrap.Bootstrap.init(Bootstrap.java:286)</span><br><span class="line">        at org.elasticsearch.bootstrap.Elasticsearch.main(Elasticsearch.java:45)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>系统内存不够(Mysql占用了比较多的内存空间,系统剩余内存不够elasticsearch的默认配置大小)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@iZwz9en2rvi1v3yo0vkhouZ bin]# ./elasticsearch</span><br><span class="line">OpenJDK 64-Bit Server VM warning: INFO: os::commit_memory(0x0000000085330000, 2060255232, 0) failed; error=&apos;Cannot allocate memory&apos; (errno=12)</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p><a href="https://www.elastic.co/guide/en/elasticsearch/reference/2.4/setup-configuration.html" target="_blank" rel="noopener">elasticsearch文档</a>说明节选:</p>
+<blockquote>
+<p>Within the scripts, Elasticsearch comes with built in JAVA_OPTS passed to the JVM started. The most important setting for that is the -Xmx to control the maximum allowed memory for the process, and -Xms to control the minimum allocated memory for the process (in general, the more memory allocated to the process, the better).
+Most times it is better to leave the default JAVA_OPTS as they are, and use the ES_JAVA_OPTS environment variable in order to set / change JVM settings or arguments.
+The ES_HEAP_SIZE environment variable allows to set the heap memory that will be allocated to elasticsearch java process. It will allocate the same value to both min and max values, though those can be set explicitly (not recommended) by setting ES_MIN_MEM (defaults to 256m), and ES_MAX_MEM (defaults to 1g).</p>
+</blockquote>
+<p>解决方案:
+配置允许使用root用户启动，并调小elasticsearch可以使用的内存大小:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./elasticsearch -Des.insecure.allow.root=true -Xmx256m -Xms256m</span><br></pre></td></tr></table></figure>
+
+<p>注: 生产环境中最好不要使用root用户启动elasticsearch，官方文档中不推荐这么做，会有安全问题；还是就是最好将elasticsearch单独部署，不然需要针对当前系统的内存使用情况来配置调整elasticsearch可使用的内存。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ECS/" rel="tag"># ECS</a>
+          
+            <a href="/tags/环境搭建/" rel="tag"># 环境搭建</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/HashMap源码解析/" rel="next" title="HashMap源码解析">
+                <i class="fa fa-chevron-left"></i> HashMap源码解析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/Feign基础教程/" rel="prev" title="Feign基础教程">
+                Feign基础教程 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript">
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+        </div>
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="powered-by">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Vioao</span>
+</div>
+
+
+  <div class="powered-by">CI/CD by
+    <a class="theme-link" href="http://drone.vioao.site" style="font-weight: bold">Vioao's Drone</a>
+  </div>
+
+
+
+  <div class="links-of-author motion-element" style="display: inline-block; opacity: 1; margin-top: 0">
+    
+      
+        <span class="links-of-author-item">
+          <a href="https://github.com/vioao" target="_blank" title="GitHub">
+            
+              <i class="fa fa-fw fa-github"></i>
+            
+            GitHub
+          </a>
+        </span>
+      
+        <span class="links-of-author-item">
+          <a href="http://blog.csdn.net/u010862794" target="_blank" title="CSDN">
+            
+              <i class="fa fa-fw fa-globe"></i>
+            
+            CSDN
+          </a>
+        </span>
+      
+    
+  </div>
+
+
+
+
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+    
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "5884d8f07d58447fb77d0bd62bd1dbe5",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (search_path.endsWith("json")) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

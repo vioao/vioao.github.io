@@ -1,0 +1,701 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Vioao&#39;s Blog</title>
+  
+  <subtitle>Record a little bit</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://blog.vioao.site/"/>
+  <updated>2020-07-22T02:39:47.659Z</updated>
+  <id>http://blog.vioao.site/</id>
+  
+  <author>
+    <name>Vioao</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>压测对比: Spring WebFlux VS. Spring MVC</title>
+    <link href="http://blog.vioao.site/posts/%E5%8E%8B%E6%B5%8B%E5%AF%B9%E6%AF%94-Spring-WebFlux-VS-Spring-MVC/"/>
+    <id>http://blog.vioao.site/posts/压测对比-Spring-WebFlux-VS-Spring-MVC/</id>
+    <published>2020-07-10T10:05:20.000Z</published>
+    <updated>2020-07-22T02:39:47.659Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;最近工作有个小项目，其场景主要是封装内部的接口请求，然后做个转换之后，就请求外部请求，之后再
+将外部响应转换成内部的统一格式，其实有点类似一个简单网关的应用，虽然也有一些业务逻辑在里面，
+但是主要场景还是请求的转发处理，是一个 IO 密集型的应用，而且外部请求的延迟相对比较大而且不可控。
+我想，这不正合适 Spring 5 出来的那个新特性的一个应用场景么。于是决定探究下 Spring Web 
+on Reactive Stack: Spring WebFlux.&lt;/p&gt;
+&lt;h3 id=&quot;Spring-WebFlux&quot;&gt;&lt;a href=&quot;#Spring-WebFlux&quot; class=&quot;headerlink&quot; title=&quot;Spring WebFlux&quot;&gt;&lt;/a&gt;Spring WebFlux&lt;/h3&gt;&lt;p&gt;Spring WebFlux 作为一个响应式(reactive-stack) web 框架补充，在 5.0 的版本开始加入到
+Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运行在诸如 Netty, Undertow,
+以及 Servlet 3.1+ 容器上的。Spring WebFlux 可以让你使用更少的线程去处理并发请求，同时能够让你使用更少的硬件资源来拓展
+你的应用。&lt;/p&gt;
+&lt;img src=&quot;/posts/压测对比-Spring-WebFlux-VS-Spring-MVC/springboot2.png&quot; title=&quot;WebFlux&quot;&gt;
+    
+    </summary>
+    
+      <category term="工作记录" scheme="http://blog.vioao.site/categories/%E5%B7%A5%E4%BD%9C%E8%AE%B0%E5%BD%95/"/>
+    
+    
+      <category term="Reactor" scheme="http://blog.vioao.site/tags/Reactor/"/>
+    
+      <category term="SpringBoot" scheme="http://blog.vioao.site/tags/SpringBoot/"/>
+    
+      <category term="WebFlux" scheme="http://blog.vioao.site/tags/WebFlux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Kafka 概览</title>
+    <link href="http://blog.vioao.site/posts/Kafka-%E6%A6%82%E8%A7%88/"/>
+    <id>http://blog.vioao.site/posts/Kafka-概览/</id>
+    <published>2019-12-19T02:27:39.000Z</published>
+    <updated>2020-07-22T02:39:47.653Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h3&gt;&lt;p&gt;&lt;a href=&quot;http://kafka.apachecn.org/intro.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Apache Kakfa&lt;/a&gt; 是一个分布式流处理平台，既可以当做普通的消息中间件用于消息发布订阅，也可以存储并处理流式数据，其分布式设计使得其有较好的容错性，水平拓展性等。
+通常可以用于当做消息订阅发布用于业务系统中，或者用于大数据方向，接受存储大量的流式数据并和对应的大数据处理框架结合使用，eg. Kafka + Samza&lt;/p&gt;
+&lt;p&gt;从物理部署层面来讲，其主要有如下几个模块：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;ZooKeeper
+ 用于元数据保存以及事件通知&lt;/li&gt;
+&lt;li&gt;Broker
+ Kafka 的核心部分，用 scala 实现，负责处理客户端请求，持久化消息数据等&lt;/li&gt;
+&lt;li&gt;Client（Consumer &amp;amp; Producer）
+ 客户端，Java 实现。生产者消费者实现&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;下面分别从这几个模块来讲解 Kafka 相关的实现[&lt;strong&gt;基于 Kafka 2.4&lt;/strong&gt;]。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="大数据" scheme="http://blog.vioao.site/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/"/>
+    
+    
+      <category term="RocketMQ" scheme="http://blog.vioao.site/tags/RocketMQ/"/>
+    
+      <category term="JAVA" scheme="http://blog.vioao.site/tags/JAVA/"/>
+    
+      <category term="中间件" scheme="http://blog.vioao.site/tags/%E4%B8%AD%E9%97%B4%E4%BB%B6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>RocketMQ 概览</title>
+    <link href="http://blog.vioao.site/posts/RocketMQ-%E6%A6%82%E8%A7%88/"/>
+    <id>http://blog.vioao.site/posts/RocketMQ-概览/</id>
+    <published>2019-11-18T03:38:51.000Z</published>
+    <updated>2020-07-22T02:39:47.654Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h3&gt;&lt;p&gt;Apache RocketMQ 是阿里开源的一款高性能、高吞吐量的分布式消息中间件。相比于 Kafka，其拥有更好的实时性和消息可靠性。更适用于和 Money 相关的系统。它支持如下特性：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;订阅/发布模式的消息&lt;blockquote&gt;
+&lt;p&gt;支持消费组模式的消费，即一个消费组集群内只有一个实例会收到那一条消息。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;延时消息&lt;blockquote&gt;
+&lt;p&gt;只支持特定 Level 的延时设置，默认有 “1s 5s 10s 30s 1m 2m 3m 4m 5m 6m 7m 8m 9m 10m 20m 30m 1h 2h” 18个 Level。先扔到对应的延时队列，后台线程根据延时再将其挪到实际的 Topic 中。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;顺序消息&lt;blockquote&gt;
+&lt;p&gt;只保证在单个 Broker 的单个 Queue 内是有序的，全局不保证有序。和 Kafka 一样.。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;消息持久化&lt;blockquote&gt;
+&lt;p&gt;[主从同步 + 同步刷盘] 模式保证了持久数据的安全性。4.5 版本后加入 &lt;a href=&quot;https://github.com/openmessaging/openmessaging-storage-dledger/blob/master/docs/cn/introduction_dledger.md#dledger-%E7%9A%84%E5%AE%9E%E7%8E%B0&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Dleger&lt;/a&gt; 更是支持了 主从自动切换。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;消息过滤&lt;blockquote&gt;
+&lt;p&gt;RocketMQ的消费者可以根据Tag进行消息过滤，也支持自定义属性过滤。消息过滤目前是在Broker端实现，减少了r无用消息的网络传输。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;消息回溯&lt;blockquote&gt;
+&lt;p&gt;已消费过的消息，可以根据时间或 key 等维度来重新消费。在处理系统环境异常时很有用。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;事务消息&lt;blockquote&gt;
+&lt;p&gt;先发送到一个特殊的系统 Topic 中，然后利用 2PC + 事务回查机制，判断将消息转到真正的 Topic 还是抛弃。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;死信队列&lt;blockquote&gt;
+&lt;p&gt;消费失败并重试一定次数还是失败的的消息会先放到死信队列，需要手动进行重发&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;消息重试&lt;blockquote&gt;
+&lt;p&gt;每个消费组有一个 “%RETRY%+consumerGroup” 的重试队列。重试的消息会按照延迟的时间先放到 “SCHEDULE_TOPIC_XXXX” 队列中，然后才会被保存至 “%RETRY%+consumerGroup” 的重试队列中。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;At-Least-Once&lt;blockquote&gt;
+&lt;p&gt;消息消费有 ACK 机制，消费结束才返回对应的 ACK 相应。和 Kafka 不太一样，Kafka 追求消息的大量快速处理，默认都是异步，整合成一批来消费生产的。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+    
+    </summary>
+    
+      <category term="大数据" scheme="http://blog.vioao.site/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/"/>
+    
+    
+      <category term="RocketMQ" scheme="http://blog.vioao.site/tags/RocketMQ/"/>
+    
+      <category term="JAVA" scheme="http://blog.vioao.site/tags/JAVA/"/>
+    
+      <category term="中间件" scheme="http://blog.vioao.site/tags/%E4%B8%AD%E9%97%B4%E4%BB%B6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>从 VPS 到科学上网一气呵成</title>
+    <link href="http://blog.vioao.site/posts/%E4%BB%8E-VPS-%E5%88%B0%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91%E4%B8%80%E6%B0%94%E5%91%B5%E6%88%90/"/>
+    <id>http://blog.vioao.site/posts/从-VPS-到科学上网一气呵成/</id>
+    <published>2019-08-27T02:47:13.000Z</published>
+    <updated>2020-07-22T02:39:47.655Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;起因&quot;&gt;&lt;a href=&quot;#起因&quot; class=&quot;headerlink&quot; title=&quot;起因&quot;&gt;&lt;/a&gt;起因&lt;/h3&gt;&lt;p&gt;最近自己的香港阿里云服务器到期了，也不打算续期了，是在太贵。最低配一年一千多，其实我也没啥事要做，再续期的话就不划算了，遍放弃了。但是，科学上网的需求还是有的啊。于是便想要买个 VPS 自己整个跳转用用，对于这个 VPS 我只有两个要求：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;便宜，一定要便宜！！！！毕竟自己需求较小，花多了钱觉得不划算&lt;/li&gt;
+&lt;li&gt;流量要不限量。（虽然我也不咋用，但是我就是想要不限量）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&quot;VPS-购置&quot;&gt;&lt;a href=&quot;#VPS-购置&quot; class=&quot;headerlink&quot; title=&quot;VPS 购置&quot;&gt;&lt;/a&gt;VPS 购置&lt;/h3&gt;&lt;h4 id=&quot;挑选-VPS&quot;&gt;&lt;a href=&quot;#挑选-VPS&quot; class=&quot;headerlink&quot; title=&quot;挑选 VPS&quot;&gt;&lt;/a&gt;挑选 VPS&lt;/h4&gt;&lt;p&gt;首先我是按照自己的要求 google 了一番合适的 VPS 的，有下面几个链接比较有用：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.10besty.com/best-vps-hosting-services/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;2019 年最好的国外 VPS 推荐&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.vpser.net/ten-dollars-vps&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;10美元以下国内VPS/美国VPS推荐&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.laozuo.org/myvps&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;老左常用国内/国外便宜VPS主机商家推荐整理&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;当然，按照我的要求，我选择了 &lt;a href=&quot;https://my.frantech.ca/aff.php?aff=3157&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;&lt;strong&gt;BuyVM&lt;/strong&gt;&lt;/a&gt; 家最便宜的一个 VPS。配置收费如下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$2 USD/Month，年付更优惠：$18.68 USD/Year ，支持支付宝付款&lt;/li&gt;
+&lt;li&gt;流量不限&lt;/li&gt;
+&lt;li&gt;512M 内存&lt;/li&gt;
+&lt;li&gt;10G 存储&lt;/li&gt;
+&lt;li&gt;KVM 架构&lt;/li&gt;
+&lt;li&gt;1 核 CPU&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这个配置用来部署一些小工具和用来科学上网是足够了。(这个，有个比较坑的地方就是，他的网速貌似不是很稳定，下载速度有时候有 1M/s，有时候只有 50k/s 这样子。。。。)&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="VPS" scheme="http://blog.vioao.site/categories/VPS/"/>
+    
+    
+      <category term="VPS" scheme="http://blog.vioao.site/tags/VPS/"/>
+    
+      <category term="SSR" scheme="http://blog.vioao.site/tags/SSR/"/>
+    
+      <category term="V2Ray" scheme="http://blog.vioao.site/tags/V2Ray/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>记一次 Gradle Build 问题分析</title>
+    <link href="http://blog.vioao.site/posts/%E8%AE%B0%E4%B8%80%E6%AC%A1-Gradle-Build-%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/"/>
+    <id>http://blog.vioao.site/posts/记一次-Gradle-Build-问题分析/</id>
+    <published>2019-08-24T02:48:26.000Z</published>
+    <updated>2020-07-22T02:39:47.666Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;问题出现&quot;&gt;&lt;a href=&quot;#问题出现&quot; class=&quot;headerlink&quot; title=&quot;问题出现&quot;&gt;&lt;/a&gt;问题出现&lt;/h3&gt;&lt;p&gt;一次项目更新后，发现项目无法正常 build 了，出现如下报错：&lt;/p&gt;
+&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;error: cannot access DoNotMock&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  class file &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; com.google.errorprone.annotations.DoNotMock not found&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+
+&lt;h3 id=&quot;问题定位&quot;&gt;&lt;a href=&quot;#问题定位&quot; class=&quot;headerlink&quot; title=&quot;问题定位&quot;&gt;&lt;/a&gt;问题定位&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Review 代码更新，寻找可疑点&lt;/p&gt;
+&lt;p&gt; 这一步 review 没有发现什么特殊的改动，只是更改了几个 proto 文件的定义。但是回退代码后却又能正常 build，所以说明构建失败的确是此次更新引入的问题。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+    
+    </summary>
+    
+      <category term="工作记录" scheme="http://blog.vioao.site/categories/%E5%B7%A5%E4%BD%9C%E8%AE%B0%E5%BD%95/"/>
+    
+    
+      <category term="Java" scheme="http://blog.vioao.site/tags/Java/"/>
+    
+      <category term="Gradle" scheme="http://blog.vioao.site/tags/Gradle/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>OTA 项目知识</title>
+    <link href="http://blog.vioao.site/posts/OTA-%E9%A1%B9%E7%9B%AE%E7%9F%A5%E8%AF%86/"/>
+    <id>http://blog.vioao.site/posts/OTA-项目知识/</id>
+    <published>2019-07-10T01:54:30.000Z</published>
+    <updated>2020-07-22T02:39:47.653Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;名词解释&quot;&gt;&lt;a href=&quot;#名词解释&quot; class=&quot;headerlink&quot; title=&quot;名词解释&quot;&gt;&lt;/a&gt;名词解释&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://baike.baidu.com/item/%E5%9C%A8%E7%BA%BF%E6%97%85%E6%B8%B8/4657971?fromtitle=OTA&amp;fromid=13871690&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;OTA&lt;/a&gt;&lt;br&gt;Online Travel Agency：在线旅游（OTA，全称为Online Travel Agency），是旅游电子商务行业的专业词语。
+指“旅游消费者通过网络向旅游服务提供商预定旅游产品或服务，并通过网上支付或者线下付费，即各旅游主体可以通过网络进行产品营销或产品销售”。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://zh.wikipedia.org/wiki/%E4%BD%8E%E6%88%90%E6%9C%AC%E8%88%AA%E7%A9%BA%E5%85%AC%E5%8F%B8&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;LCC&lt;/a&gt;&lt;br&gt; Low-cost carrier：低成本航空公司(廉航)&lt;br&gt; &lt;a href=&quot;https://en.wikipedia.org/wiki/List_of_low-cost_airlines&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;List of LCC&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://baike.baidu.com/item/PNR&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;PNR&lt;/a&gt;&lt;br&gt; Passenger Name Record：旅客订座记录，它反映了旅客的航程，航班座位占用的数量，及旅客信息。适用民航订座系统&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://baike.baidu.com/item/GDS/16824?fr=aladdin&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;GDS&lt;/a&gt;&lt;br&gt; Global Distribution System: 全球分销系统，是应用于民用航空运输及整个旅游业的大型计算机信息服务系统。
+ 通过GDS，遍及全球的旅游销售机构可以及时地从航空公司、旅馆、租车公司、旅游公司获取大量的与旅游相关的信息，从而为顾客提供快捷、便利、可靠的服务。
+ 目前主要的 GDS。1A-Amadeus、1B-Sabre/Abacus、1E-TravelSky(中航信)、1G-伽利略。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="工作记录" scheme="http://blog.vioao.site/categories/%E5%B7%A5%E4%BD%9C%E8%AE%B0%E5%BD%95/"/>
+    
+    
+      <category term="OTA" scheme="http://blog.vioao.site/tags/OTA/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Drone 初探</title>
+    <link href="http://blog.vioao.site/posts/Drone-%E5%88%9D%E6%8E%A2/"/>
+    <id>http://blog.vioao.site/posts/Drone-初探/</id>
+    <published>2019-06-21T03:14:55.000Z</published>
+    <updated>2020-07-22T02:39:47.641Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h3&gt;&lt;p&gt;Drone 是一个基于 Docker 的 CI/CD 工具，其所有编译、测试的流程都在 Docker 容器中进行。
+其主要核心应该就是 configuration as a code + docker 了。每个项目下都需要定义一个 yml 配置文件，默认为 .drone.yml ，
+在该配置文件中可自定义 Pipelines ，配置中的每一个 Pipeline 步骤都是在一个独立的 Docker 容器中自动执行的。
+并且 Drone 现在已默认无缝集成了多种代码管理平台，目前有如下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;GitHub&lt;/li&gt;
+&lt;li&gt;Bitbucket&lt;/li&gt;
+&lt;li&gt;GitLab&lt;/li&gt;
+&lt;li&gt;Gitea&lt;/li&gt;
+&lt;li&gt;Gogs&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;后面我会以集成 Github 为例来说明下我利用 Drone 自动将自己的 Github Pages 项目打包部署到自己服务器上的例子。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Docker" scheme="http://blog.vioao.site/categories/Docker/"/>
+    
+    
+      <category term="Docker" scheme="http://blog.vioao.site/tags/Docker/"/>
+    
+      <category term="CI" scheme="http://blog.vioao.site/tags/CI/"/>
+    
+      <category term="CD" scheme="http://blog.vioao.site/tags/CD/"/>
+    
+      <category term="Drone" scheme="http://blog.vioao.site/tags/Drone/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Flink 入门教程</title>
+    <link href="http://blog.vioao.site/posts/Flink-%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/"/>
+    <id>http://blog.vioao.site/posts/Flink-入门教程/</id>
+    <published>2019-06-08T02:18:40.000Z</published>
+    <updated>2020-07-22T02:39:47.643Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;大数据处理的应用场景&quot;&gt;&lt;a href=&quot;#大数据处理的应用场景&quot; class=&quot;headerlink&quot; title=&quot;大数据处理的应用场景&quot;&gt;&lt;/a&gt;大数据处理的应用场景&lt;/h3&gt;&lt;p&gt;大数据是近些年才出现的吗，人们是近些年才发现大数据的利用价值的吗？其实不然，早在几十年前，数学分析就已经涉猎金融行业了，人们依托于金融和数学知识来建立数学模型，利用金融市场所产的数据来预测金融市场产品收益同风险波动的关系。
+到如今，互联网也发展了好些年了，越来越多的数据产生(用户浏览数据、搜索记录、出行记录、消费记录；农作物的成长观察记录；病人的医疗记录等)，各行业也开始慢慢的重视起这些数据记录，希望通过对这些数据的分析处理从而得到相应的利益和研究价值。&lt;/p&gt;
+&lt;p&gt;简单举几个例子，大数据处理可适用在在如下一些场景:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;医疗大数据、看病更高效(病例病理分析、基因数据分析)&lt;/li&gt;
+&lt;li&gt;电商大数据、精准营销法宝(杀熟、哈哈哈哈或)&lt;/li&gt;
+&lt;li&gt;零售大数据、最懂消费者(用户画像，精准推送)&lt;/li&gt;
+&lt;li&gt;金融大数据、理财利器 (大数据选股)&lt;/li&gt;
+&lt;li&gt;交通大数据、畅通出行 (城市大脑)
+……&lt;/li&gt;
+&lt;/ol&gt;
+    
+    </summary>
+    
+      <category term="大数据" scheme="http://blog.vioao.site/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/"/>
+    
+    
+      <category term="Flink" scheme="http://blog.vioao.site/tags/Flink/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>项目复盘思考</title>
+    <link href="http://blog.vioao.site/posts/%E9%A1%B9%E7%9B%AE%E5%A4%8D%E7%9B%98%E6%80%9D%E8%80%83/"/>
+    <id>http://blog.vioao.site/posts/项目复盘思考/</id>
+    <published>2019-06-06T02:47:02.000Z</published>
+    <updated>2020-07-22T02:39:47.669Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;对自己所参与过的事物做个复盘是个好习惯，能让自己对事物有个更深的了解。比如说，读了一本书，那么这个时候你需要回去思考:这本书讲了些啥，对你有何影响；又或者，你参与了一个活动，你完了后，你也可以对其进行复盘，思考下这个活动的意义，这个活动是让你增加见识了还是让你放松心情了等；再或者，你参与了一个项目，这个时候还是可以复盘，考虑项目的进展中的难点等。其实复盘，就是对自己经历过的事物进行思考总结。是一个很好的自我矫正升华的方式。&lt;/p&gt;
+&lt;p&gt;下面我以一个程序员参与的项目的复盘来简要说明下，复盘过程中可能思考的问题和方向。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="工作记录" scheme="http://blog.vioao.site/categories/%E5%B7%A5%E4%BD%9C%E8%AE%B0%E5%BD%95/"/>
+    
+    
+      <category term="项目经验" scheme="http://blog.vioao.site/tags/%E9%A1%B9%E7%9B%AE%E7%BB%8F%E9%AA%8C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>中国灾害预警爬取解析</title>
+    <link href="http://blog.vioao.site/posts/%E4%B8%AD%E5%9B%BD%E7%81%BE%E5%AE%B3%E9%A2%84%E8%AD%A6%E7%88%AC%E5%8F%96%E8%A7%A3%E6%9E%90/"/>
+    <id>http://blog.vioao.site/posts/中国灾害预警爬取解析/</id>
+    <published>2019-01-28T02:21:14.000Z</published>
+    <updated>2020-07-22T02:39:47.655Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;有获取灾害信息提醒的需求，但是发现并没有开发的API 。已有的API都需要付钱。
+天气预报API，可以看知乎的这边文章。&lt;a href=&quot;https://www.zhihu.com/question/20575288&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;网上的天气 API 哪一个更加可靠？&lt;/a&gt; 
+里面的普通的天气预报部分免费，但是灾害预警的API都是需要收费的。于是自己去摸索了。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="工作记录" scheme="http://blog.vioao.site/categories/%E5%B7%A5%E4%BD%9C%E8%AE%B0%E5%BD%95/"/>
+    
+    
+      <category term="灾害信息" scheme="http://blog.vioao.site/tags/%E7%81%BE%E5%AE%B3%E4%BF%A1%E6%81%AF/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>定位CPU异常抖动---tomcat热部署的坑 </title>
+    <link href="http://blog.vioao.site/posts/%E5%AE%9A%E4%BD%8DCPU%E5%BC%82%E5%B8%B8%E6%8A%96%E5%8A%A8-tomcat%E7%83%AD%E9%83%A8%E7%BD%B2%E7%9A%84%E5%9D%91/"/>
+    <id>http://blog.vioao.site/posts/定位CPU异常抖动-tomcat热部署的坑/</id>
+    <published>2018-04-29T06:34:30.000Z</published>
+    <updated>2020-07-22T02:39:47.662Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;问题及其罪魁祸首&quot;&gt;&lt;a href=&quot;#问题及其罪魁祸首&quot; class=&quot;headerlink&quot; title=&quot;问题及其罪魁祸首&quot;&gt;&lt;/a&gt;问题及其罪魁祸首&lt;/h1&gt;&lt;p&gt;&lt;strong&gt;WEB服务器: apache-tomcat-8.0.33&lt;/strong&gt;
+&lt;strong&gt;JDK: jdk1.8.0_66&lt;/strong&gt;
+*&lt;em&gt;操作系统: Linux SHB-L0064049 2.6.32-642.6.2.el6.x86_6 *&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;运维反馈CPU抖动异常，如下。&lt;/p&gt;
+&lt;img src=&quot;/posts/定位CPU异常抖动-tomcat热部署的坑/cpu.jpg&quot; title=&quot;CPU状态&quot;&gt;
+
+&lt;p&gt;CPU时不时的会从0%抖动到50%，定位到时tomcat的&lt;strong&gt;热部署&lt;/strong&gt;导致的问题。最终通过显式的加上&lt;code&gt;reloadable=“false”&lt;/code&gt; 的配置解决了该问题。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;注：&lt;/strong&gt; 这里有一个坑，tomcat 的热部署默认是关闭的,具体请看[(文档)[&lt;a href=&quot;http://tomcat.apache.org/tomcat-8.0-doc/config/context.html]]&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;http://tomcat.apache.org/tomcat-8.0-doc/config/context.html]]&lt;/a&gt; 中的&lt;code&gt;reloadable&lt;/code&gt;说明， 然而我的服务器并没有显示配置&lt;code&gt;reloadable&lt;/code&gt; 为true，tomcat却还是执行了对应的热部署相关的行为！&lt;/p&gt;
+&lt;p&gt;下面说说定位流程。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="工作记录" scheme="http://blog.vioao.site/categories/%E5%B7%A5%E4%BD%9C%E8%AE%B0%E5%BD%95/"/>
+    
+    
+      <category term="Java" scheme="http://blog.vioao.site/tags/Java/"/>
+    
+      <category term="Tomcat" scheme="http://blog.vioao.site/tags/Tomcat/"/>
+    
+      <category term="热部署" scheme="http://blog.vioao.site/tags/%E7%83%AD%E9%83%A8%E7%BD%B2/"/>
+    
+      <category term="CPU" scheme="http://blog.vioao.site/tags/CPU/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>请求响应慢问题排查</title>
+    <link href="http://blog.vioao.site/posts/%E8%AF%B7%E6%B1%82%E5%93%8D%E5%BA%94%E6%85%A2%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/"/>
+    <id>http://blog.vioao.site/posts/请求响应慢问题排查/</id>
+    <published>2018-04-22T03:56:25.000Z</published>
+    <updated>2020-07-22T02:39:47.666Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;问题描述&quot;&gt;&lt;a href=&quot;#问题描述&quot; class=&quot;headerlink&quot; title=&quot;问题描述&quot;&gt;&lt;/a&gt;问题描述&lt;/h1&gt;&lt;p&gt;简要说明下，系统是一个微信第第三方平台，用于托管微信公众号和小程序的。
+在一个普普通通的晚上，19点开始有公众号管理员向我们反馈，托管在我们平台的公众号一直提示  “&lt;strong&gt;该公众号提供的服务出现异常，请稍后再试&lt;/strong&gt;“。&lt;/p&gt;
+&lt;h1 id=&quot;问题排查&quot;&gt;&lt;a href=&quot;#问题排查&quot; class=&quot;headerlink&quot; title=&quot;问题排查&quot;&gt;&lt;/a&gt;问题排查&lt;/h1&gt;&lt;h2 id=&quot;验证问题&quot;&gt;&lt;a href=&quot;#验证问题&quot; class=&quot;headerlink&quot; title=&quot;验证问题&quot;&gt;&lt;/a&gt;验证问题&lt;/h2&gt;&lt;p&gt;自己去对应的公众号验证，发送消息，确确实实提示”&lt;strong&gt;该公众号提供的服务出现异常，请稍后再试&lt;/strong&gt;“，影响到了公众号的正常服务。并且每次都是这个返回，说明服务其实是普遍性的异常了(这点其实挺重要，不过当时没引起注意)。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="工作记录" scheme="http://blog.vioao.site/categories/%E5%B7%A5%E4%BD%9C%E8%AE%B0%E5%BD%95/"/>
+    
+    
+      <category term="Java" scheme="http://blog.vioao.site/tags/Java/"/>
+    
+      <category term="Tomcat" scheme="http://blog.vioao.site/tags/Tomcat/"/>
+    
+      <category term="高并发" scheme="http://blog.vioao.site/tags/%E9%AB%98%E5%B9%B6%E5%8F%91/"/>
+    
+      <category term="慢查询" scheme="http://blog.vioao.site/tags/%E6%85%A2%E6%9F%A5%E8%AF%A2/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>项目重构感悟</title>
+    <link href="http://blog.vioao.site/posts/%E9%A1%B9%E7%9B%AE%E9%87%8D%E6%9E%84%E6%84%9F%E6%82%9F/"/>
+    <id>http://blog.vioao.site/posts/项目重构感悟/</id>
+    <published>2018-03-16T12:37:51.000Z</published>
+    <updated>2020-07-22T02:39:47.675Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;重构决定&quot;&gt;&lt;a href=&quot;#重构决定&quot; class=&quot;headerlink&quot; title=&quot;重构决定&quot;&gt;&lt;/a&gt;重构决定&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;需要提前做好新旧系统的&lt;strong&gt;切换方案的规划&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;要高度重视对数据的重构&lt;/strong&gt;，对数据的调整和兼容是重中之重&lt;/li&gt;
+&lt;li&gt;重构是为了&lt;strong&gt;解决实际的项目问题&lt;/strong&gt;，而不只是作为程序员的一个代码洁癖。所以，需要对新系统&lt;strong&gt;有可以量化的指标&lt;/strong&gt;(eg. 性能提升5个点、开发工作量减少30% 等)&lt;/li&gt;
+&lt;li&gt;技术选型时，不要盲目最求新技术，需要&lt;strong&gt;尽量使用成熟、简单的方案&lt;/strong&gt;，选择成熟简单的方案在遇到问题时多能在网上找到对应的解决方案。文档相对也会更完善。&lt;/li&gt;
+&lt;/ul&gt;
+    
+    </summary>
+    
+      <category term="工作记录" scheme="http://blog.vioao.site/categories/%E5%B7%A5%E4%BD%9C%E8%AE%B0%E5%BD%95/"/>
+    
+    
+      <category term="重构" scheme="http://blog.vioao.site/tags/%E9%87%8D%E6%9E%84/"/>
+    
+      <category term="项目管理" scheme="http://blog.vioao.site/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>分布式系统一致性问题处理思路</title>
+    <link href="http://blog.vioao.site/posts/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%B8%80%E8%87%B4%E6%80%A7%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86%E6%80%9D%E8%B7%AF/"/>
+    <id>http://blog.vioao.site/posts/分布式系统一致性问题处理思路/</id>
+    <published>2018-03-12T13:36:15.000Z</published>
+    <updated>2020-07-22T02:39:47.659Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;为啥出现一致性问题&quot;&gt;&lt;a href=&quot;#为啥出现一致性问题&quot; class=&quot;headerlink&quot; title=&quot;为啥出现一致性问题&quot;&gt;&lt;/a&gt;为啥出现一致性问题&lt;/h1&gt;&lt;p&gt;在传统单体架构中，数据状态的处理都在同一个服务和数据库中，而具有&lt;strong&gt;&lt;a href=&quot;https://baike.baidu.com/item/acid/10738?fr=aladdin&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;ACID特性&lt;/a&gt;&lt;/strong&gt;的数据库支持强一致性，就是说数据库本身是不会出现不一致的状态的，比如我们常用的关系型数据库MySQL就是通过多版本控制协议(MVCC)的实现来保证了强一致性。
+但是随着互联网的发展，用户增多&amp;amp;服务也越来越多越来越复杂，数据量和请求的并发量都上来了。为了满足这一变化，越来越多的系统从单体架构投入到服务化或者微服务架构。然而，微服务是把双刃剑，虽然能通过对服务的有效拆分来实现敏捷开发和自动化部署，并提高系统的水兵伸缩能力；但是微服务模式下，服务之间通过网络来通信(&lt;strong&gt;网络并不是可靠的&lt;/strong&gt;)，那么当网络异常时，就很容易引起各个系统之间的不一致。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="读书笔记" scheme="http://blog.vioao.site/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="分布式" scheme="http://blog.vioao.site/tags/%E5%88%86%E5%B8%83%E5%BC%8F/"/>
+    
+      <category term="一致性" scheme="http://blog.vioao.site/tags/%E4%B8%80%E8%87%B4%E6%80%A7/"/>
+    
+      <category term="读书笔记" scheme="http://blog.vioao.site/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Jasperreports OOM问题处理</title>
+    <link href="http://blog.vioao.site/posts/Jasperreports-OOM%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86/"/>
+    <id>http://blog.vioao.site/posts/Jasperreports-OOM问题处理/</id>
+    <published>2018-02-28T14:48:10.000Z</published>
+    <updated>2020-07-22T02:39:47.653Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;问题描述&quot;&gt;&lt;a href=&quot;#问题描述&quot; class=&quot;headerlink&quot; title=&quot;问题描述&quot;&gt;&lt;/a&gt;问题描述&lt;/h1&gt;&lt;p&gt;项目使用Jasperreports来转换导出PDF，不过在转换过程中有时会出现OOM的异常。将直接导致线上系统不可使用。主要导致OOM的问题有如下两种:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;jasper模板文件设计不合理导致Jasperreports进入死循环&lt;/li&gt;
+&lt;li&gt;需要转换的文件确实很大，超过了系统所支持的内存范围&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;此前就有遇到过上述情况导致系统不可用的情况，这明显影响了程序的健壮性。是需要处理的。此前对该的处理排查描述请查看之前的博文:&lt;strong&gt;&lt;a href=&quot;http://blog.csdn.net/u010862794/article/details/78020231&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;线上java程序CPU占用过高问题排查&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="工作记录" scheme="http://blog.vioao.site/categories/%E5%B7%A5%E4%BD%9C%E8%AE%B0%E5%BD%95/"/>
+    
+    
+      <category term="Java" scheme="http://blog.vioao.site/tags/Java/"/>
+    
+      <category term="JasperReports" scheme="http://blog.vioao.site/tags/JasperReports/"/>
+    
+      <category term="OOM" scheme="http://blog.vioao.site/tags/OOM/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>微信公众平台SDK JAVA实现WeChat-SDK</title>
+    <link href="http://blog.vioao.site/posts/%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%B9%B3%E5%8F%B0SDK-JAVA%E5%AE%9E%E7%8E%B0WeChat-SDK/"/>
+    <id>http://blog.vioao.site/posts/微信公众平台SDK-JAVA实现WeChat-SDK/</id>
+    <published>2018-01-21T02:31:13.000Z</published>
+    <updated>2020-07-22T02:39:47.665Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;最近有做一些涉及到微信公众平台和第三方平台开发的工作。需要使用微信提供的接口。然而微信只提供了基于基本的HTTP接口，并没有对应各语言的SDK实现。所以如果自己开发的话需要封装一套SDK。不过，微信公众平台出来几年了，市面上早就有不少JAVA实现的微信SDK了。于是便收集了一些开源的JAVA实现的微信SDK，但是最后都不是特别合适。最终决定自己写一个。下面给出各开源SDK的实现对比和自己的写的进展。&lt;/p&gt;
+&lt;h1 id=&quot;微信公众号java-sdk技术选型&quot;&gt;&lt;a href=&quot;#微信公众号java-sdk技术选型&quot; class=&quot;headerlink&quot; title=&quot;微信公众号java sdk技术选型&quot;&gt;&lt;/a&gt;微信公众号java sdk技术选型&lt;/h1&gt;&lt;p&gt;针对目前开源的公众号java sdk对比，之前已经有人对比过了。可以自行前去:&lt;a href=&quot;https://my.oschina.net/ywbrj042/blog/402049&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;微信公众号java sdk技术选型&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;针对上面几款开源的微信公众号SDK，针对我自己的需求，我自己也做了下简单的对比:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&quot;left&quot;&gt;-&lt;/th&gt;
+&lt;th align=&quot;center&quot;&gt;jfinal-weixin&lt;/th&gt;
+&lt;th align=&quot;center&quot;&gt;weixin-java-tools&lt;/th&gt;
+&lt;th align=&quot;center&quot;&gt;fastweixin&lt;/th&gt;
+&lt;th align=&quot;center&quot;&gt;weixin-popular&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;&lt;tr&gt;
+&lt;td align=&quot;left&quot;&gt;实现简单&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;√&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;x&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;√&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;√&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align=&quot;left&quot;&gt;更新快且全&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;√&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;√&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;√&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;√&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align=&quot;left&quot;&gt;有对应的实体封装&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;x&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;√&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;√&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;√&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align=&quot;left&quot;&gt;依赖少&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;x&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;x&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;√&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;√&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align=&quot;left&quot;&gt;方便支持多公众号&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;√&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;x&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;x&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;√&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align=&quot;left&quot;&gt;代码结构&amp;amp;可拓展性&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;√&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;√&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;√&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;x&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+&lt;p&gt;可以看出是没有一个是完全符合自己的需求的。没有找到方便支持多公众号管理，代码结构好容易扩展且依赖少，更新快，使用简洁的。所以最后自己还是决定自己实现对应的SDK了。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Java" scheme="http://blog.vioao.site/categories/Java/"/>
+    
+    
+      <category term="Java" scheme="http://blog.vioao.site/tags/Java/"/>
+    
+      <category term="WeChat" scheme="http://blog.vioao.site/tags/WeChat/"/>
+    
+      <category term="公众平台" scheme="http://blog.vioao.site/tags/%E5%85%AC%E4%BC%97%E5%B9%B3%E5%8F%B0/"/>
+    
+      <category term="开放平台" scheme="http://blog.vioao.site/tags/%E5%BC%80%E6%94%BE%E5%B9%B3%E5%8F%B0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>使用checkstyle校验代码</title>
+    <link href="http://blog.vioao.site/posts/%E4%BD%BF%E7%94%A8checkstyle%E6%A0%A1%E9%AA%8C%E4%BB%A3%E7%A0%81/"/>
+    <id>http://blog.vioao.site/posts/使用checkstyle校验代码/</id>
+    <published>2017-12-03T05:48:38.000Z</published>
+    <updated>2020-07-22T02:39:47.659Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;引入背景&quot;&gt;&lt;a href=&quot;#引入背景&quot; class=&quot;headerlink&quot; title=&quot;引入背景&quot;&gt;&lt;/a&gt;引入背景&lt;/h2&gt;&lt;p&gt;目前手上接管了一个旧项目,在调整的过程中发现其编码规范非常的多样化。其实就是没有规范了。代码中的命名、注释、换行等风格都有多种，差不多每个曾经修改过代码的程序员都留来过自己的风格。代码风格质量良莠不齐，这导致新员工在阅读代码时需要花更多的时间,也更加痛苦。所以考虑使用checkstyle来校验统一代码风格。
+起初考虑是直接在svn上做一个pre-commit的hook的。不过沟通无果，svn服务的权限无法掌控在自己手里。于是便考虑使用maven插件&lt;a href=&quot;http://maven.apache.org/plugins/maven-checkstyle-plugin/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Apache Maven Checkstyle Plugin&lt;/a&gt;，在本地编译的时候去校验。不过由于是旧项目，在使用插件时不希望校验以前的老旧代码，不然这将是一个灾难(除非你希望改到天荒地老)。那么，这边就希望只校验新增加和修改的文件。后面给出处理方式。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="工作记录" scheme="http://blog.vioao.site/categories/%E5%B7%A5%E4%BD%9C%E8%AE%B0%E5%BD%95/"/>
+    
+    
+      <category term="CheckStyle" scheme="http://blog.vioao.site/tags/CheckStyle/"/>
+    
+      <category term="Maven" scheme="http://blog.vioao.site/tags/Maven/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>SpringBoot 整合Mybatis/Druid/Quartz</title>
+    <link href="http://blog.vioao.site/posts/SpringBoot%E6%95%B4%E5%90%88Mybatis-Druid-Quartz/"/>
+    <id>http://blog.vioao.site/posts/SpringBoot整合Mybatis-Druid-Quartz/</id>
+    <published>2017-11-12T03:43:24.000Z</published>
+    <updated>2020-07-22T02:39:47.655Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;由于项目中定时任务逐渐增多，对系统的压力也慢慢增加。故打算将系统中的定时任务抽离出来。初步决定使用SpringBoot+mybatis+quartz的整合方式进行快速开发。
+整个整合会包含如下任务:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;整合Mybatis(包括通用Mapper和分页插件)&lt;/li&gt;
+&lt;li&gt;整合Quartz实现动态定时任务管理&lt;/li&gt;
+&lt;li&gt;整合Spring AOP编程(定时任务中的AOP也会生效)&lt;/li&gt;
+&lt;li&gt;整合Druid&lt;/li&gt;
+&lt;li&gt;Spring单元测试集成H2数据库&lt;/li&gt;
+&lt;/ol&gt;
+    
+    </summary>
+    
+      <category term="工作记录" scheme="http://blog.vioao.site/categories/%E5%B7%A5%E4%BD%9C%E8%AE%B0%E5%BD%95/"/>
+    
+    
+      <category term="SpringBoot" scheme="http://blog.vioao.site/tags/SpringBoot/"/>
+    
+      <category term="Quartz" scheme="http://blog.vioao.site/tags/Quartz/"/>
+    
+      <category term="Druid" scheme="http://blog.vioao.site/tags/Druid/"/>
+    
+      <category term="H2" scheme="http://blog.vioao.site/tags/H2/"/>
+    
+      <category term="Mybatis" scheme="http://blog.vioao.site/tags/Mybatis/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>mysql 5.7 group by 1055</title>
+    <link href="http://blog.vioao.site/posts/mysql-5-7-group-by-1055/"/>
+    <id>http://blog.vioao.site/posts/mysql-5-7-group-by-1055/</id>
+    <published>2017-10-21T04:15:43.000Z</published>
+    <updated>2020-07-22T02:39:47.655Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;最近遇到的一个问题，有个项目使用的mysql升级到5.7后，发现项目中有些sql语句执行会报错。&lt;/p&gt;
+&lt;p&gt;报错类似如下:&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;[SQL]select accountname,accounttype from weixin_account group by accountname;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;[Err] 1055 - &amp;apos;wcmgt.weixin_account.accounttype&amp;apos; isn&amp;apos;t in GROUP BY&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+
+&lt;p&gt;于是便查阅资料了。随后发现，原来mysql5.7.5后，ONLY_FULL_GROUP_BY 默认为真，那么此时select中的字段必须出现在group by中。官方的说明文档如下：&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="工作记录" scheme="http://blog.vioao.site/categories/%E5%B7%A5%E4%BD%9C%E8%AE%B0%E5%BD%95/"/>
+    
+    
+      <category term="MySQL" scheme="http://blog.vioao.site/tags/MySQL/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>线上程序CPU过高问题排查</title>
+    <link href="http://blog.vioao.site/posts/%E7%BA%BF%E4%B8%8A%E7%A8%8B%E5%BA%8FCPU%E8%BF%87%E9%AB%98%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/"/>
+    <id>http://blog.vioao.site/posts/线上程序CPU过高问题排查/</id>
+    <published>2017-09-24T01:44:18.000Z</published>
+    <updated>2020-07-22T02:39:47.665Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;简要&quot;&gt;&lt;a href=&quot;#简要&quot; class=&quot;headerlink&quot; title=&quot;简要&quot;&gt;&lt;/a&gt;简要&lt;/h1&gt;&lt;p&gt;工作中负责的有一个项目是使用iReport+JasperReport实现的一个打印系统。最近这个线上程序经常无响应，重启后恢复正常，但是时不时还是会出现类似的问题。
+最后发现是JasperReport的一个问题。有个JasperReport的转换任务内存占用特别高，当新对象需要分配内存时就会内存不够了，于是GC线程就不断GC，占用CPU。
+导致系统CPU占用超高。
+&lt;strong&gt;下面说下问题排查的一个思路步骤&lt;/strong&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="工作记录" scheme="http://blog.vioao.site/categories/%E5%B7%A5%E4%BD%9C%E8%AE%B0%E5%BD%95/"/>
+    
+    
+      <category term="Java" scheme="http://blog.vioao.site/tags/Java/"/>
+    
+      <category term="CPU" scheme="http://blog.vioao.site/tags/CPU/"/>
+    
+      <category term="线上问题排查" scheme="http://blog.vioao.site/tags/%E7%BA%BF%E4%B8%8A%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/"/>
+    
+  </entry>
+  
+</feed>
