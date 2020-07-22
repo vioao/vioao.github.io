@@ -9,14 +9,8 @@ steps:
         path: /drone/target/vioao.github.io
     commands:
       - npm install
-      - ./node_modules/hexo/bin/hexo clean && ls
-      - ./node_modules/hexo/bin/hexo g && ls
-      - cat /drone/src/public/README.MD
-      - cat ./themes/next/source/README.MD
+      - ./node_modules/hexo/bin/hexo clean && ./node_modules/hexo/bin/hexo g
       - rm -rf /drone/target/vioao.github.io/* && cp -r ./public/* /drone/target/vioao.github.io/
-      - pwd && ls
-      - ls /drone/src/public
-      - cat /drone/src/public/README.MD
     when:
       branch:
         - blog
