@@ -2,33 +2,31 @@ kind: pipeline
 name: default
 
 steps:
-#  - name: build
-#    image: node
-#    volumes:
-#      - name: target
-#        path: /drone/target/vioao.github.io
-#    commands:
-#      - npm install
-#      - ./node_modules/hexo/bin/hexo clean
-#      - ./node_modules/hexo/bin/hexo g
-#      - rm -rf /drone/target/vioao.github.io/*
-#      - cp -r /drone/src/public/* /drone/target/vioao.github.io
-#    when:
-#      branch:
-#        - blog
+  - name: build
+    image: node
+    volumes:
+      - name: target
+        path: /drone/target/vioao.github.io
+    commands:
+      - npm install
+      - ./node_modules/hexo/bin/hexo clean && ./node_modules/hexo/bin/hexo g
+      - rm -rf /drone/target/vioao.github.io/* && cp -r ./public/* /drone/target/vioao.github.io/
+    when:
+      branch:
+        - blog
 
   - name: publish github pages
     image: vioao/drone-gh-pages
     settings:
       remote_url: https://github.com/vioao/vioao.github.io.git
-      pages_directory: public/
+      pages_directory: ./public/
       target_branch: master
       username:
         from_secret: github_username
       password:
         from_secret: github_password
 
-#volumes:
-#  - name: target
-#    host:
-#      path: /var/www/vioao.github.io
+volumes:
+  - name: target
+    host:
+      path: /var/www/vioao.github.io
