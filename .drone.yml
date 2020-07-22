@@ -11,6 +11,8 @@ steps:
       - npm install
       - ./node_modules/hexo/bin/hexo clean && ./node_modules/hexo/bin/hexo g
       - rm -rf /drone/target/vioao.github.io/* && cp -r ./public/* /drone/target/vioao.github.io/
+      - pwd && ll
+      - ll /drone/src/public
     when:
       branch:
         - blog
