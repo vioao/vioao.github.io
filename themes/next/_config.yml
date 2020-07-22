@@ -586,6 +586,10 @@ vendors:
   # https://github.com/ethantw/Han
   han:
 
+  # https://github.com/theme-next/theme-next-pace
+  pace: //cdn.jsdelivr.net/npm/pace-js@1/pace.min.js
+  pace_css: //cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.css
+
 #_comment: 觉得不错就支持下吧！
 #wechatpay: /uploads/wechatpay.png
 #alipay: /uploads/alipay.png
@@ -601,3 +605,11 @@ version: 5.1.1
 cd_by: true
 show_music_player: false
 social_in_footer: true
+
+# https://github.com/theme-next/theme-next-pace
+pace:
+  enable: true
+  # Themes list:
+  # big-counter | bounce | barber-shop | center-atom | center-circle | center-radar | center-simple
+  # corner-indicator | fill-left | flat-top | flash | loading-bar | mac-osx | material | minimal
+  theme: minimal
