@@ -6,3 +6,7 @@
 - `npm install hexo -g`
 - `hexo new post "new post title"`
 - `hexo s`
+
+
+
+
