@@ -13,7 +13,6 @@ steps:
       - ./node_modules/hexo/bin/hexo g
       - rm -rf /drone/target/vioao.github.io/*
       - cp -r /drone/src/public/* /drone/target/vioao.github.io
-      - mkdir github_pages && cp -r /drone/src/public/* /drone/src/github_pages
     when:
       branch:
         - blog
@@ -22,9 +21,8 @@ steps:
     image: vioao/drone-gh-pages
     settings:
       remote_url: https://github.com/vioao/vioao.github.io.git
-      pages_directory: github_pages
+      pages_directory: public/
       target_branch: master
-      temporary_base: .github_tmp
       username:
         from_secret: github_username
       password:
