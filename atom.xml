@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.vioao.site/"/>
-  <updated>2020-07-22T02:43:51.302Z</updated>
+  <updated>2020-07-22T09:12:18.125Z</updated>
   <id>http://blog.vioao.site/</id>
   
   <author>
@@ -17,11 +17,52 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>[译]深入理解 Node.js Worker Threads</title>
+    <link href="http://blog.vioao.site/posts/%E8%AF%91-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3-Node-js-Worker-Threads/"/>
+    <id>http://blog.vioao.site/posts/译-深入理解-Node-js-Worker-Threads/</id>
+    <published>2020-07-22T05:51:51.000Z</published>
+    <updated>2020-07-22T09:12:18.125Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;最近工作中又有可能需要写 Node.js 应用了，距离上次写 Node.js 应用也有好些年了，所以就开始
+重新熟悉下 Node.js 了。刚好最近又在学 Go，其最大的特点就是简单、轻量级的并发模型。非常容易
+用它编写一个能够充分利用硬件资源的高性能应用。于是不免想起以前学习 Node.js 时会遇到的问题：如何
+让 Node.js 充分利用多核 CPU 的资源。于是，让我发现了，Node.js 从 v10.5.0 开始引入
+ worker_threads 模块来解决该问题。并让我发现了这篇文章。&lt;/p&gt;
+&lt;p&gt;此文为译文，原文如下。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;译自 &lt;a href=&quot;https://blog.insiderattack.net/deep-dive-into-worker-threads-in-node-js-e75e10546b11&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Deep Dive into Worker Threads in Node.js&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;hr&gt;
+&lt;p&gt;多年来，Node.js 一直都不是实现 CPU 密集型应用的最佳选择。其中最主要的原因就是 Node.js 仅仅
+是 Javascript 而 JavaScript 是单线程的。作为该问题一个解决方法，Node.js 从 v10.5.0 开
+始引入了实验性的 &lt;a href=&quot;https://nodejs.org/api/worker_threads.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Worker Threads&lt;/a&gt; 概
+念，并将其体现在 &lt;code&gt;worker_threads&lt;/code&gt; 模块，该模块从 Node.js v12 LTS 开始作为一个稳定功能
+模块提供出来。在这边文章中，我将会说明它们是如何工作的，怎样使用 worker threads 才能获取最好
+的性能。假如你对 Node.js worker threads 还不了解的话，我建议你查看它们的
+&lt;a href=&quot;https://nodejs.org/api/worker_threads.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;官方文档&lt;/a&gt; 。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;注：文中引用的 Node.js 代码片段版本为 &lt;a href=&quot;https://github.com/nodejs/node/tree/921493e2287aa895679620155b5288b2e1587bfd&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;921493e&lt;/a&gt; 。&lt;/p&gt;
+&lt;/blockquote&gt;
+    
+    </summary>
+    
+      <category term="Node.js" scheme="http://blog.vioao.site/categories/Node-js/"/>
+    
+    
+      <category term="多线程" scheme="http://blog.vioao.site/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/"/>
+    
+      <category term="Node.js" scheme="http://blog.vioao.site/tags/Node-js/"/>
+    
+  </entry>
+  
+  <entry>
     <title>压测对比: Spring WebFlux VS. Spring MVC</title>
     <link href="http://blog.vioao.site/posts/%E5%8E%8B%E6%B5%8B%E5%AF%B9%E6%AF%94-Spring-WebFlux-VS-Spring-MVC/"/>
     <id>http://blog.vioao.site/posts/压测对比-Spring-WebFlux-VS-Spring-MVC/</id>
     <published>2020-07-10T10:05:20.000Z</published>
-    <updated>2020-07-22T02:43:51.302Z</updated>
+    <updated>2020-07-22T09:12:18.118Z</updated>
     
     <summary type="html">
     
@@ -54,7 +95,7 @@ Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运
     <link href="http://blog.vioao.site/posts/Kafka-%E6%A6%82%E8%A7%88/"/>
     <id>http://blog.vioao.site/posts/Kafka-概览/</id>
     <published>2019-12-19T02:27:39.000Z</published>
-    <updated>2020-07-22T02:43:51.296Z</updated>
+    <updated>2020-07-22T09:12:18.112Z</updated>
     
     <summary type="html">
     
@@ -89,7 +130,7 @@ Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运
     <link href="http://blog.vioao.site/posts/RocketMQ-%E6%A6%82%E8%A7%88/"/>
     <id>http://blog.vioao.site/posts/RocketMQ-概览/</id>
     <published>2019-11-18T03:38:51.000Z</published>
-    <updated>2020-07-22T02:43:51.297Z</updated>
+    <updated>2020-07-22T09:12:18.113Z</updated>
     
     <summary type="html">
     
@@ -155,7 +196,7 @@ Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运
     <link href="http://blog.vioao.site/posts/%E4%BB%8E-VPS-%E5%88%B0%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91%E4%B8%80%E6%B0%94%E5%91%B5%E6%88%90/"/>
     <id>http://blog.vioao.site/posts/从-VPS-到科学上网一气呵成/</id>
     <published>2019-08-27T02:47:13.000Z</published>
-    <updated>2020-07-22T02:43:51.298Z</updated>
+    <updated>2020-07-22T09:12:18.115Z</updated>
     
     <summary type="html">
     
@@ -199,7 +240,7 @@ Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运
     <link href="http://blog.vioao.site/posts/%E8%AE%B0%E4%B8%80%E6%AC%A1-Gradle-Build-%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/"/>
     <id>http://blog.vioao.site/posts/记一次-Gradle-Build-问题分析/</id>
     <published>2019-08-24T02:48:26.000Z</published>
-    <updated>2020-07-22T02:43:51.310Z</updated>
+    <updated>2020-07-22T09:12:18.125Z</updated>
     
     <summary type="html">
     
@@ -228,7 +269,7 @@ Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运
     <link href="http://blog.vioao.site/posts/OTA-%E9%A1%B9%E7%9B%AE%E7%9F%A5%E8%AF%86/"/>
     <id>http://blog.vioao.site/posts/OTA-项目知识/</id>
     <published>2019-07-10T01:54:30.000Z</published>
-    <updated>2020-07-22T02:43:51.296Z</updated>
+    <updated>2020-07-22T09:12:18.112Z</updated>
     
     <summary type="html">
     
@@ -258,7 +299,7 @@ Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运
     <link href="http://blog.vioao.site/posts/Drone-%E5%88%9D%E6%8E%A2/"/>
     <id>http://blog.vioao.site/posts/Drone-初探/</id>
     <published>2019-06-21T03:14:55.000Z</published>
-    <updated>2020-07-22T02:43:51.282Z</updated>
+    <updated>2020-07-22T09:12:18.100Z</updated>
     
     <summary type="html">
     
@@ -295,7 +336,7 @@ Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运
     <link href="http://blog.vioao.site/posts/Flink-%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/"/>
     <id>http://blog.vioao.site/posts/Flink-入门教程/</id>
     <published>2019-06-08T02:18:40.000Z</published>
-    <updated>2020-07-22T02:43:51.283Z</updated>
+    <updated>2020-07-22T09:12:18.102Z</updated>
     
     <summary type="html">
     
@@ -325,7 +366,7 @@ Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运
     <link href="http://blog.vioao.site/posts/%E9%A1%B9%E7%9B%AE%E5%A4%8D%E7%9B%98%E6%80%9D%E8%80%83/"/>
     <id>http://blog.vioao.site/posts/项目复盘思考/</id>
     <published>2019-06-06T02:47:02.000Z</published>
-    <updated>2020-07-22T02:43:51.313Z</updated>
+    <updated>2020-07-22T09:12:18.129Z</updated>
     
     <summary type="html">
     
@@ -346,7 +387,7 @@ Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运
     <link href="http://blog.vioao.site/posts/%E4%B8%AD%E5%9B%BD%E7%81%BE%E5%AE%B3%E9%A2%84%E8%AD%A6%E7%88%AC%E5%8F%96%E8%A7%A3%E6%9E%90/"/>
     <id>http://blog.vioao.site/posts/中国灾害预警爬取解析/</id>
     <published>2019-01-28T02:21:14.000Z</published>
-    <updated>2020-07-22T02:43:51.298Z</updated>
+    <updated>2020-07-22T09:12:18.115Z</updated>
     
     <summary type="html">
     
@@ -368,7 +409,7 @@ Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运
     <link href="http://blog.vioao.site/posts/%E5%AE%9A%E4%BD%8DCPU%E5%BC%82%E5%B8%B8%E6%8A%96%E5%8A%A8-tomcat%E7%83%AD%E9%83%A8%E7%BD%B2%E7%9A%84%E5%9D%91/"/>
     <id>http://blog.vioao.site/posts/定位CPU异常抖动-tomcat热部署的坑/</id>
     <published>2018-04-29T06:34:30.000Z</published>
-    <updated>2020-07-22T02:43:51.306Z</updated>
+    <updated>2020-07-22T09:12:18.122Z</updated>
     
     <summary type="html">
     
@@ -402,7 +443,7 @@ Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运
     <link href="http://blog.vioao.site/posts/%E8%AF%B7%E6%B1%82%E5%93%8D%E5%BA%94%E6%85%A2%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/"/>
     <id>http://blog.vioao.site/posts/请求响应慢问题排查/</id>
     <published>2018-04-22T03:56:25.000Z</published>
-    <updated>2020-07-22T02:43:51.310Z</updated>
+    <updated>2020-07-22T09:12:18.126Z</updated>
     
     <summary type="html">
     
@@ -430,7 +471,7 @@ Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运
     <link href="http://blog.vioao.site/posts/%E9%A1%B9%E7%9B%AE%E9%87%8D%E6%9E%84%E6%84%9F%E6%82%9F/"/>
     <id>http://blog.vioao.site/posts/项目重构感悟/</id>
     <published>2018-03-16T12:37:51.000Z</published>
-    <updated>2020-07-22T02:43:51.318Z</updated>
+    <updated>2020-07-22T09:12:18.135Z</updated>
     
     <summary type="html">
     
@@ -457,7 +498,7 @@ Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运
     <link href="http://blog.vioao.site/posts/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%B8%80%E8%87%B4%E6%80%A7%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86%E6%80%9D%E8%B7%AF/"/>
     <id>http://blog.vioao.site/posts/分布式系统一致性问题处理思路/</id>
     <published>2018-03-12T13:36:15.000Z</published>
-    <updated>2020-07-22T02:43:51.302Z</updated>
+    <updated>2020-07-22T09:12:18.118Z</updated>
     
     <summary type="html">
     
@@ -482,7 +523,7 @@ Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运
     <link href="http://blog.vioao.site/posts/Jasperreports-OOM%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86/"/>
     <id>http://blog.vioao.site/posts/Jasperreports-OOM问题处理/</id>
     <published>2018-02-28T14:48:10.000Z</published>
-    <updated>2020-07-22T02:43:51.295Z</updated>
+    <updated>2020-07-22T09:12:18.112Z</updated>
     
     <summary type="html">
     
@@ -511,7 +552,7 @@ Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运
     <link href="http://blog.vioao.site/posts/%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%B9%B3%E5%8F%B0SDK-JAVA%E5%AE%9E%E7%8E%B0WeChat-SDK/"/>
     <id>http://blog.vioao.site/posts/微信公众平台SDK-JAVA实现WeChat-SDK/</id>
     <published>2018-01-21T02:31:13.000Z</published>
-    <updated>2020-07-22T02:43:51.309Z</updated>
+    <updated>2020-07-22T09:12:18.125Z</updated>
     
     <summary type="html">
     
@@ -593,7 +634,7 @@ Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运
     <link href="http://blog.vioao.site/posts/%E4%BD%BF%E7%94%A8checkstyle%E6%A0%A1%E9%AA%8C%E4%BB%A3%E7%A0%81/"/>
     <id>http://blog.vioao.site/posts/使用checkstyle校验代码/</id>
     <published>2017-12-03T05:48:38.000Z</published>
-    <updated>2020-07-22T02:43:51.302Z</updated>
+    <updated>2020-07-22T09:12:18.118Z</updated>
     
     <summary type="html">
     
@@ -616,7 +657,7 @@ Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运
     <link href="http://blog.vioao.site/posts/SpringBoot%E6%95%B4%E5%90%88Mybatis-Druid-Quartz/"/>
     <id>http://blog.vioao.site/posts/SpringBoot整合Mybatis-Druid-Quartz/</id>
     <published>2017-11-12T03:43:24.000Z</published>
-    <updated>2020-07-22T02:43:51.298Z</updated>
+    <updated>2020-07-22T09:12:18.114Z</updated>
     
     <summary type="html">
     
@@ -652,7 +693,7 @@ Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运
     <link href="http://blog.vioao.site/posts/mysql-5-7-group-by-1055/"/>
     <id>http://blog.vioao.site/posts/mysql-5-7-group-by-1055/</id>
     <published>2017-10-21T04:15:43.000Z</published>
-    <updated>2020-07-22T02:43:51.298Z</updated>
+    <updated>2020-07-22T09:12:18.114Z</updated>
     
     <summary type="html">
     
@@ -668,33 +709,6 @@ Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运
     
     
       <category term="MySQL" scheme="http://blog.vioao.site/tags/MySQL/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>线上程序CPU过高问题排查</title>
-    <link href="http://blog.vioao.site/posts/%E7%BA%BF%E4%B8%8A%E7%A8%8B%E5%BA%8FCPU%E8%BF%87%E9%AB%98%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/"/>
-    <id>http://blog.vioao.site/posts/线上程序CPU过高问题排查/</id>
-    <published>2017-09-24T01:44:18.000Z</published>
-    <updated>2020-07-22T02:43:51.309Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;简要&quot;&gt;&lt;a href=&quot;#简要&quot; class=&quot;headerlink&quot; title=&quot;简要&quot;&gt;&lt;/a&gt;简要&lt;/h1&gt;&lt;p&gt;工作中负责的有一个项目是使用iReport+JasperReport实现的一个打印系统。最近这个线上程序经常无响应，重启后恢复正常，但是时不时还是会出现类似的问题。
-最后发现是JasperReport的一个问题。有个JasperReport的转换任务内存占用特别高，当新对象需要分配内存时就会内存不够了，于是GC线程就不断GC，占用CPU。
-导致系统CPU占用超高。
-&lt;strong&gt;下面说下问题排查的一个思路步骤&lt;/strong&gt;&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="工作记录" scheme="http://blog.vioao.site/categories/%E5%B7%A5%E4%BD%9C%E8%AE%B0%E5%BD%95/"/>
-    
-    
-      <category term="Java" scheme="http://blog.vioao.site/tags/Java/"/>
-    
-      <category term="CPU" scheme="http://blog.vioao.site/tags/CPU/"/>
-    
-      <category term="线上问题排查" scheme="http://blog.vioao.site/tags/%E7%BA%BF%E4%B8%8A%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/"/>
     
   </entry>
   

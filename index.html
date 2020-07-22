@@ -330,6 +330,161 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://blog.vioao.site/posts/译-深入理解-Node-js-Worker-Threads/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Vioao">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Vioao's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/posts/译-深入理解-Node-js-Worker-Threads/" itemprop="url">[译]深入理解 Node.js Worker Threads</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-07-22T13:51:51+08:00">
+                2020-07-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Node-js/" itemprop="url" rel="index">
+                    <span itemprop="name">Node.js</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>最近工作中又有可能需要写 Node.js 应用了，距离上次写 Node.js 应用也有好些年了，所以就开始
+重新熟悉下 Node.js 了。刚好最近又在学 Go，其最大的特点就是简单、轻量级的并发模型。非常容易
+用它编写一个能够充分利用硬件资源的高性能应用。于是不免想起以前学习 Node.js 时会遇到的问题：如何
+让 Node.js 充分利用多核 CPU 的资源。于是，让我发现了，Node.js 从 v10.5.0 开始引入
+ worker_threads 模块来解决该问题。并让我发现了这篇文章。</p>
+<p>此文为译文，原文如下。</p>
+<blockquote>
+<p>译自 <a href="https://blog.insiderattack.net/deep-dive-into-worker-threads-in-node-js-e75e10546b11" target="_blank" rel="noopener">Deep Dive into Worker Threads in Node.js</a></p>
+</blockquote>
+<hr>
+<p>多年来，Node.js 一直都不是实现 CPU 密集型应用的最佳选择。其中最主要的原因就是 Node.js 仅仅
+是 Javascript 而 JavaScript 是单线程的。作为该问题一个解决方法，Node.js 从 v10.5.0 开
+始引入了实验性的 <a href="https://nodejs.org/api/worker_threads.html" target="_blank" rel="noopener">Worker Threads</a> 概
+念，并将其体现在 <code>worker_threads</code> 模块，该模块从 Node.js v12 LTS 开始作为一个稳定功能
+模块提供出来。在这边文章中，我将会说明它们是如何工作的，怎样使用 worker threads 才能获取最好
+的性能。假如你对 Node.js worker threads 还不了解的话，我建议你查看它们的
+<a href="https://nodejs.org/api/worker_threads.html" target="_blank" rel="noopener">官方文档</a> 。</p>
+<blockquote>
+<p>注：文中引用的 Node.js 代码片段版本为 <a href="https://github.com/nodejs/node/tree/921493e2287aa895679620155b5288b2e1587bfd" target="_blank" rel="noopener">921493e</a> 。</p>
+</blockquote>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/posts/译-深入理解-Node-js-Worker-Threads/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://blog.vioao.site/posts/压测对比-Spring-WebFlux-VS-Spring-MVC/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -911,149 +1066,6 @@ Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/posts/从-VPS-到科学上网一气呵成/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://blog.vioao.site/posts/记一次-Gradle-Build-问题分析/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Vioao">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/uploads/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Vioao's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/posts/记一次-Gradle-Build-问题分析/" itemprop="url">记一次 Gradle Build 问题分析</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-24T10:48:26+08:00">
-                2019-08-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/工作记录/" itemprop="url" rel="index">
-                    <span itemprop="name">工作记录</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h3 id="问题出现"><a href="#问题出现" class="headerlink" title="问题出现"></a>问题出现</h3><p>一次项目更新后，发现项目无法正常 build 了，出现如下报错：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">error: cannot access DoNotMock</span><br><span class="line">  class file <span class="keyword">for</span> com.google.errorprone.annotations.DoNotMock not found</span><br></pre></td></tr></table></figure>
-
-<h3 id="问题定位"><a href="#问题定位" class="headerlink" title="问题定位"></a>问题定位</h3><ol>
-<li><p>Review 代码更新，寻找可疑点</p>
-<p> 这一步 review 没有发现什么特殊的改动，只是更改了几个 proto 文件的定义。但是回退代码后却又能正常 build，所以说明构建失败的确是此次更新引入的问题。</p>
-</li>
-</ol>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/posts/记一次-Gradle-Build-问题分析/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>

@@ -1,6 +1,162 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>[译]深入理解 Node.js Worker Threads</title>
+    <url>/posts/%E8%AF%91-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3-Node-js-Worker-Threads/</url>
+    <content><![CDATA[<p>最近工作中又有可能需要写 Node.js 应用了，距离上次写 Node.js 应用也有好些年了，所以就开始
+重新熟悉下 Node.js 了。刚好最近又在学 Go，其最大的特点就是简单、轻量级的并发模型。非常容易
+用它编写一个能够充分利用硬件资源的高性能应用。于是不免想起以前学习 Node.js 时会遇到的问题：如何
+让 Node.js 充分利用多核 CPU 的资源。于是，让我发现了，Node.js 从 v10.5.0 开始引入
+ worker_threads 模块来解决该问题。并让我发现了这篇文章。</p>
+<p>此文为译文，原文如下。</p>
+<blockquote>
+<p>译自 <a href="https://blog.insiderattack.net/deep-dive-into-worker-threads-in-node-js-e75e10546b11" target="_blank" rel="noopener">Deep Dive into Worker Threads in Node.js</a></p>
+</blockquote>
+<hr>
+<p>多年来，Node.js 一直都不是实现 CPU 密集型应用的最佳选择。其中最主要的原因就是 Node.js 仅仅
+是 Javascript 而 JavaScript 是单线程的。作为该问题一个解决方法，Node.js 从 v10.5.0 开
+始引入了实验性的 <a href="https://nodejs.org/api/worker_threads.html" target="_blank" rel="noopener">Worker Threads</a> 概
+念，并将其体现在 <code>worker_threads</code> 模块，该模块从 Node.js v12 LTS 开始作为一个稳定功能
+模块提供出来。在这边文章中，我将会说明它们是如何工作的，怎样使用 worker threads 才能获取最好
+的性能。假如你对 Node.js worker threads 还不了解的话，我建议你查看它们的
+<a href="https://nodejs.org/api/worker_threads.html" target="_blank" rel="noopener">官方文档</a> 。</p>
+<blockquote>
+<p>注：文中引用的 Node.js 代码片段版本为 <a href="https://github.com/nodejs/node/tree/921493e2287aa895679620155b5288b2e1587bfd" target="_blank" rel="noopener">921493e</a> 。</p>
+</blockquote>
+<a id="more"></a>
+
+<h3 id="Node-js-的-CPU-密集型应用的历史"><a href="#Node-js-的-CPU-密集型应用的历史" class="headerlink" title="Node.js 的 CPU 密集型应用的历史"></a>Node.js 的 CPU 密集型应用的历史</h3><p>在 worker threads 出现前，就已经有很多种方案来完成基于 Node.js 的 CPU 密集型应用。常见的
+有如下几种：</p>
+<ul>
+<li>使用 <code>child_process</code> 模块，在子进程中运行耗费 CPU 的代码操作。</li>
+<li>使用 <code>cluster</code> 模块，在多个进程中运行耗费 CPU 资源的代码操作。</li>
+<li>使用第三方模块，如 Microsoft 的 <a href="https://github.com/microsoft/napajs" target="_blank" rel="noopener">Napa.js</a> 。</li>
+</ul>
+<p>但是，由于性能局限、额外的引入学习成本、接受度的不足、不稳定性以及文档缺失等原因，这其中没有
+一个方案是能被广泛接受的。</p>
+<h3 id="使用-worker-threads-来执行-CPU-密集的代码操作"><a href="#使用-worker-threads-来执行-CPU-密集的代码操作" class="headerlink" title="使用 worker threads 来执行 CPU 密集的代码操作"></a>使用 worker threads 来执行 CPU 密集的代码操作</h3><p>尽管 <code>worker_threads</code> 对于 JavaScript 的并发问题来说是一个优雅的解决方案，但是其实
+ JavaScript 本身并没有引进将多线程的语言特性。实际上，<code>worker_threads</code> 是通过允许应用
+可以运行多个独立的 JavaScript workers，workers 和 其父 workers 可以通过 Node.js 
+ 来通信。听起来很困惑？</p>
+<p><strong>在 Node.js 中，每个 worker 有他自己的 V8 实例和事件循环机制(Event Loop)。但是，和子进程不同，workers 是可以共享内存的。</strong></p>
+<p>在此文的后面我会解释它们是如何能够拥有独立的 V8 实例和事件循环(Event Loop)的。不过我们先来
+看看我们能如何使用 worker threads。下面是一个基本用法的示例：<code>worker-simple.js</code></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123;Worker, isMainThread, parentPort, workerData&#125; = <span class="built_in">require</span>(<span class="string">'worker_threads'</span>);</span><br><span class="line"><span class="keyword">if</span> (isMainThread) &#123;</span><br><span class="line"> <span class="keyword">const</span> worker = <span class="keyword">new</span> Worker(__filename, &#123;<span class="attr">workerData</span>: &#123;<span class="attr">num</span>: <span class="number">5</span>&#125;&#125;);</span><br><span class="line"> worker.once(<span class="string">'message'</span>, (result) =&gt; &#123;</span><br><span class="line"> <span class="built_in">console</span>.log(<span class="string">'square of 5 is :'</span>, result);</span><br><span class="line"> &#125;)</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line"> parentPort.postMessage(workerData.num * workerData.num)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在上面的例子中，我们将一个数字传给另一个 worker 来计算其平方值。在完成计算后，该 child worker
+会将其结果发送给 main worker。尽管这看起来很简单，但是如果你不了解 Node.js 的 worker threads
+的话，还是会觉得有些困惑的。</p>
+<h3 id="worker-threads-是如何工作的"><a href="#worker-threads-是如何工作的" class="headerlink" title="worker threads 是如何工作的"></a>worker threads 是如何工作的</h3><p>JavaScript 并没有多线程的特性，所以 Node.js 的 Worker Threads 和其他支持多线程的高级
+语言在处理上是不一样的。</p>
+<p>在 Node.js 中，一个 worker 的职责就是执行 parent worker 提供给他的代码片段(worker script)。
+这个 worker script 可以是一个单独的文件，也可以是一个能够被 <code>eval</code> 代码文本；它将被放在别
+的 worker 中独立运行，且 该 worker 和其 parent worker 之间是可以传递消息的。在我们的例子
+中，我们提供了 <code>__filename</code> 作为这个代码片段，那是因为 worker 和 parent worker 的执行
+代码是一样的，只是在其中通过 <code>isMainThread</code> 来区分了。</p>
+<p>每一个 worker 都通过一个 <a href="https://nodejs.org/api/worker_threads.html#worker_threads_class_messagechannel" target="_blank" rel="noopener">message channel</a>
+来和其 parent worker 通信。child worker 可以通过 <code>parentPort.postMessage</code> 将信息
+写入信道，而 parent worker 需要通过 <code>worker.postMessage()</code> 来将消息写入信道。看看下图
+(图一)他们是如何工作的</p>
+<img src="/posts/译-深入理解-Node-js-Worker-Threads/message_channel.png" title="Diagram 1: Message Channel between the parent and the child workers">
+
+<blockquote>
+<p>一个信道就是一个简单的通信渠道。它有两个端口，被叫做 ‘ports’。在 <a href="https://developer.mozilla.org/en-US/docs/Web/API/MessageChannel" target="_blank" rel="noopener">JavaScript</a> / <a href="https://nodejs.org/api/worker_threads.html#worker_threads_class_messagechannel" target="_blank" rel="noopener">NodeJS</a>
+中，信道的两端就只是被简单的叫做‘port1’ 和 ‘port2’……</p>
+</blockquote>
+<h3 id="Node-js-workers-是如何并行运行的"><a href="#Node-js-workers-是如何并行运行的" class="headerlink" title="Node.js workers 是如何并行运行的"></a>Node.js workers 是如何并行运行的</h3><p>现在，最大的问题就是,，既然 JavaScript 本身并不支持并行，那么两个 Node.js workers 是如何并行
+执行的呢？</p>
+<p>答案就是 <a href="https://v8docs.nodesource.com/node-0.8/d5/dda/classv8_1_1_isolate.html" target="_blank" rel="noopener">V8 Isolates</a> 。</p>
+<p><strong>V8 Isolates</strong> 是一个独立的 chrome V8 运行实例，其有独立的 JS 堆和微任务队列。这就为
+每一个 Node.js worker 独立运行提供了保障。其缺陷就是，workers 之间没法直接访问对方的堆。</p>
+<p>由于这个原因，每个 worker 都有其自己的 <a href="https://github.com/libuv/libuv" target="_blank" rel="noopener">libuv</a> event loop。</p>
+<h3 id="跨越-JS-C-的界限"><a href="#跨越-JS-C-的界限" class="headerlink" title="跨越 JS/C++ 的界限"></a>跨越 JS/C++ 的界限</h3><p>Worker 的实例化和通信是通过 C++ 的 worker 来实现的。该模块的实现在 <a href="https://github.com/nodejs/node/blob/921493e228/src/node_worker.cc" target="_blank" rel="noopener">worker.cc</a> 。</p>
+<p>Worker 的实现通过 <code>worker_threads</code> 模块暴露在了 JavaScript 的用户空间。这个 JS 的实现
+被分成了两个 scripts ：</p>
+<ul>
+<li>[Worker 初始化脚本] - 负责初始化 worker 实例并设置 parent-child worker 之间的通信
+使得 parent worker 可以将 metadata 传递给 child worker。</li>
+<li>[Worker 执行脚本] - 负责使用用户提供的 <code>workerData</code> 和 parent worker 提供的 
+metadata 来执行用户的 JS 脚本。</li>
+</ul>
+<p>下图（图二）提供了一个更清晰的说明。看看该图描述了些什么</p>
+<img src="/posts/译-深入理解-Node-js-Worker-Threads/worker_internals.png" title="Diagram 2: Worker Implementation Internals">
+
+<p>按照上面说的，我们可以把 worker 的设置进程分成两步。</p>
+<ul>
+<li>初始化 worker</li>
+<li>运行 worker</li>
+</ul>
+<p>让我们看卡这两步都干了啥。</p>
+<h4 id="初始化阶段"><a href="#初始化阶段" class="headerlink" title="初始化阶段"></a>初始化阶段</h4><ol>
+<li>用户空间的脚本通过 <code>worker_threads</code> 模块创建一个 worker 实例</li>
+<li>Node.js 的 parent worker 初始化脚本调用 C++ 模块，创建一个空的 C++ worker 对象。</li>
+<li>当 C++ worker 对象被创建后，它生成一个线程 ID 并分配给自己</li>
+<li>当 worker 对象被创建的时候，parent worker 会初创建一个空的始化信道（让我们称它为 <code>IMC</code>）。就是上面图二的 “Initialisation Message Channel”</li>
+<li>Node.js 的 parent worker 初始化脚本创建一个公共的 JS 信道（让我们称它为 <code>PMC</code>）。该信道是给用户空间的 JS 使用的，便于他们在 
+parent worker 和 child worker 之间通过 <code>*.postMessage()</code> 方法来传递消息。就是上面图一和图二的红色部分</li>
+<li>Node.js 的 parent worker 初始化脚本调用 C++ 模块，将初始化的 metadata 写入 IMC 来传递给 worker 的执行脚本。</li>
+</ol>
+<blockquote>
+<p>初始化 metadata 是什么？ worker 执行脚本启动时需要知道的数据，eg. 脚本名称、worker 数据、 PMC 的 <code>port2</code> 以及一些其他信息。
+根据我们的例子来说，初始化 metadata 就是类似如下的一条信息：<br>嗨，Worker 执行脚本，使用 worker data <code>{num: 5}</code> 来运行 <code>worker-simple.js</code>。并将 PMC 的 <code>port2</code> 传递给它，以便它能从 PMC 
+读取或写入消息。</p>
+</blockquote>
+<p>下面这个代码片段展示了初始化 metadata 是如何被写入到 IMC 的。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">const</span> kPublicPort = <span class="built_in">Symbol</span>(<span class="string">'kPublicPort'</span>);</span><br><span class="line"><span class="comment">// ...redacted...</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> &#123; port1, port2 &#125; = <span class="keyword">new</span> MessageChannel();</span><br><span class="line"><span class="keyword">this</span>[kPublicPort] = port1;</span><br><span class="line"><span class="keyword">this</span>[kPublicPort].on(<span class="string">'message'</span>, (message) =&gt; <span class="keyword">this</span>.emit(<span class="string">'message'</span>, message));</span><br><span class="line"><span class="comment">// ...redacted...</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">this</span>[kPort].postMessage(&#123;</span><br><span class="line">  type: <span class="string">'loadScript'</span>,</span><br><span class="line">  filename,</span><br><span class="line">  doEval: !!options.eval,</span><br><span class="line">  cwdCounter: cwdCounter || workerIo.sharedCwdCounter,</span><br><span class="line">  workerData: options.workerData,</span><br><span class="line">  publicPort: port2,</span><br><span class="line">  <span class="comment">// ...redacted...</span></span><br><span class="line">  hasStdin: !!options.stdin</span><br><span class="line">&#125;, [port2]);</span><br></pre></td></tr></table></figure>
+
+<p>在上面的片段中，<code>this[kPort]</code> 就是 IMC 的 end port。尽管此时已经向 IMC 写数据了，但是
+worker 执行脚本还是无法获取这些数据，因为它还没有被启动呢。</p>
+<h4 id="运行阶段"><a href="#运行阶段" class="headerlink" title="运行阶段"></a>运行阶段</h4><p>此时，初始化阶段完成。然后，就会调用 C++ 来启动这个 worker 线程。</p>
+<ol>
+<li>一个新的 v8 isolate 被创建并分配给这个 worker。这使得该 worker 可以拥有自己的运行时环境</li>
+<li>libuv 被初始化。这使得该 worker 可以拥有自己的 event loop</li>
+<li>Worker 初始化脚本被执行，启动 worker 的 event loop</li>
+<li>Worker 初始化脚本 调用 C++ 模块从 IMC 读取初始化 metadata</li>
+<li>Worker 执行脚本在 worker 中运行代码文件或代码片段。在我们的例子中就是 <code>worker-simple.js</code></li>
+</ol>
+<p>下面这个代码片段展示了 worker 是如何执行脚本的。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> publicWorker = <span class="built_in">require</span>(<span class="string">'worker_threads'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// ...redacted...</span></span><br><span class="line"></span><br><span class="line">port.on(<span class="string">'message'</span>, (message) =&gt; &#123;</span><br><span class="line">  <span class="keyword">if</span> (message.type === <span class="string">'loadScript'</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> &#123;</span><br><span class="line">      cwdCounter,</span><br><span class="line">      filename,</span><br><span class="line">      doEval,</span><br><span class="line">      workerData,</span><br><span class="line">      publicPort,</span><br><span class="line">      manifestSrc,</span><br><span class="line">      manifestURL,</span><br><span class="line">      hasStdin</span><br><span class="line">    &#125; = message;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// ...redacted...</span></span><br><span class="line">    initializeCJSLoader();</span><br><span class="line">    initializeESMLoader();</span><br><span class="line">    </span><br><span class="line">    publicWorker.parentPort = publicPort;</span><br><span class="line">    publicWorker.workerData = workerData;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// ...redacted...</span></span><br><span class="line">    </span><br><span class="line">    port.unref();</span><br><span class="line">    port.postMessage(&#123; <span class="attr">type</span>: UP_AND_RUNNING &#125;);</span><br><span class="line">    <span class="keyword">if</span> (doEval) &#123;</span><br><span class="line">      <span class="keyword">const</span> &#123; evalScript &#125; = <span class="built_in">require</span>(<span class="string">'internal/process/execution'</span>);</span><br><span class="line">      evalScript(<span class="string">'[worker eval]'</span>, filename);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      process.argv[<span class="number">1</span>] = filename; <span class="comment">// script filename</span></span><br><span class="line">      <span class="built_in">require</span>(<span class="string">'module'</span>).runMain();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// ...redacted...</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="发现了什么吗？"><a href="#发现了什么吗？" class="headerlink" title="发现了什么吗？"></a>发现了什么吗？</h4><p>在上面的代码片段中，你是否有发现 <code>workerData</code> 和 <code>parentPort</code> 属性是在
+ <code>require(&#39;worker_threads&#39;)</code> 中被 worker 执行脚本设置的？</p>
+<p>这就是为什么 <code>workerData</code> 和 <code>parentPort</code> 属性只能在 child worker thread 的代码
+而不是 parent worker thread 的代码中被访问了。假如你尝试在 parent worker 的代码中获取
+这些属性，你只能得到 <code>null</code>。</p>
+<h3 id="更好的使用-worker-threads"><a href="#更好的使用-worker-threads" class="headerlink" title="更好的使用 worker threads"></a>更好的使用 worker threads</h3><p>现在我们了解了 Node.js Worker Threads 是怎么工作的了。了解他们的原来能让我们更好的使用
+worker threads 来获取最佳的性能。当编写复杂的应用的时候（比 <code>worker-simple.js</code> 复杂的多）
+，我们需要牢记下面两个点</p>
+<ul>
+<li>尽管 worker threads 比实际的进程更加轻量级，但是大量频繁的创建使用它也是很昂贵的</li>
+<li>使用 worker threads 来并行的执行 I/O 操作时不划算的，请直接使用 Node.js 自身的 I/O
+操作，那会更高效</li>
+</ul>
+<p>为了克服上述的第一个问题吗，我们需要实现 “Worker 线程池”。</p>
+<h4 id="Worker-线程池"><a href="#Worker-线程池" class="headerlink" title="Worker 线程池"></a>Worker 线程池</h4><p>通过使用线程池技术，使得当新任务来临时，我们可以通过 parent-child 信道将 其传递给一个可用
+的 worker 来执行它，一旦这个 worker 完成了该 task，其可以用过同样的信道来将其执行结果传递
+过来。</p>
+<p>一旦正确的实现线程池，那么其将显著的提升应用性能。因为它能够减少额外的创建 threads 消耗。同样
+值得一提的是，创建大量线程并不一定就是特别高效了，因为其还受制于硬件的资源。</p>
+<p>下图是三种情况的一个性能比较，其实现了相同的功能：接受一个 string 然后给他加密并返回。三种不同
+的服务如下：</p>
+<ul>
+<li>没使用多线程的服务（no multi-threading）</li>
+<li>使用了多线程但没有使用线程池的服务（multi-threading（no thread pool））</li>
+<li>使用了多线程和线程池的服务（multi-threading（with thread pool））</li>
+</ul>
+<img src="/posts/译-深入理解-Node-js-Worker-Threads/worker_threads_efficient.png" title="How efficient is it to use worker_threads">
+
+<p>然而，Node.js 官方目前并没有提供线程池的使用。所以你需要依赖第三方的实现或者自己实现一个。
+这是我自己实现的一个 <a href="https://repl.it/@dpjayasekara/threadpool" target="_blank" rel="noopener">worker pool</a> 。<strong>它还不能被用于生产环境</strong></p>
+]]></content>
+      <categories>
+        <category>Node.js</category>
+      </categories>
+      <tags>
+        <tag>多线程</tag>
+        <tag>Node.js</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>压测对比: Spring WebFlux VS. Spring MVC</title>
     <url>/posts/%E5%8E%8B%E6%B5%8B%E5%AF%B9%E6%AF%94-Spring-WebFlux-VS-Spring-MVC/</url>
     <content><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>最近工作有个小项目，其场景主要是封装内部的接口请求，然后做个转换之后，就请求外部请求，之后再
