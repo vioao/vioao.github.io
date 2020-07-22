@@ -109,3 +109,4 @@ tag_generator:
 marked:
   gfm: true
   breaks: false
+  lazyload: true
