@@ -13,6 +13,7 @@ steps:
       - rm -rf /drone/target/vioao.github.io/* && cp -r ./public/* /drone/target/vioao.github.io/
       - pwd && ls
       - ls /drone/src/public
+      - cat /drone/src/public/README.MD
     when:
       branch:
         - blog
