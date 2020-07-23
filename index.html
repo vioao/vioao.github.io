@@ -213,6 +213,254 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.vioao.site/posts/Redis-问答PK/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.png">
+      <meta itemprop="name" content="Vioao">
+      <meta itemprop="description" content="记录JAVA相关工作和阅读生活点滴">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Vioao's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/posts/Redis-问答PK/" class="post-title-link" itemprop="url">Redis 问答 PK</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-07-23 17:17:53 / 修改时间：17:27:19" itemprop="dateCreated datePublished" datetime="2020-07-23T17:17:53+08:00">2020-07-23</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/中间件/" itemprop="url" rel="index"><span itemprop="name">中间件</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>作为一个后端程序员，面试过程中难免会被问到缓存的一些问题，而目前来说，Redis 就是使用的最为广泛的一个缓存中间件了。下面我们就以 Redis 为例，说一说面试过程中会经常会被问到的一些面试题。并试着了解面试官所想，抓住重点，奋力一击，让面试不再烦恼。</p>
+<h3 id="Redis-简介"><a href="#Redis-简介" class="headerlink" title="Redis 简介"></a>Redis 简介</h3><p>首先，简单回顾下 Redis 的简介，并提供一个思路范式。</p>
+<blockquote>
+<p>Redis 是一个开源（BSD许可），内存存储的数据结构服务器，可用作数据库，高速缓存和消息队列代理。它支持字符串、哈希表、列表、集合、有序集合，位图，HyperLogLogs 等数据类型。内置复制、Lua 脚本、LRU 收回、事务，以及不同级别磁盘持久化功能，同时通过 Redis Sentinel 提供高可用，通过 Redis Cluster 提供自动分区。根据月度排行网站 <a href="https://db-engines.com/en/" target="_blank" rel="noopener">DB-Engines</a> 的数据，Redis 是最流行的键值对存储数据库。</p>
+</blockquote>
+<p>上面是对 Redis 的一个基本介绍，但是在学习一门新技术的时候，一般至少需要考虑三个基本问题 WWH：</p>
+<ol>
+<li><strong>WHAT</strong>：是什么，该技术是什么，有什么特性</li>
+<li><strong>WHY</strong>：为什么，为什么要使用该技术，该技术解决了什么问题</li>
+<li><strong>HOW</strong>：怎么做，如何使用该技术</li>
+</ol>
+<p>如果需要再深入一点，那么就还有一个 <strong>HOW</strong>：该项技术是如何实现的，即需要明白该技术的实现原理。</p>
+<p>所以，猿们在使用某项技术或者学习某项新技术的时候，不妨按照上面的四个问题来思考下。或者回顾复习的时候也可以按照该思路来准备，因为一般的面试题也都是和上面几个问题相关的。下面要讲到的面试题或多或少都会和上面的四个问题挂钩。Let’s begin.</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/Redis-问答PK/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.vioao.site/posts/Java-多线程/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.png">
+      <meta itemprop="name" content="Vioao">
+      <meta itemprop="description" content="记录JAVA相关工作和阅读生活点滴">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Vioao's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/posts/Java-多线程/" class="post-title-link" itemprop="url">Java 多线程</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-07-23 17:12:38 / 修改时间：17:27:19" itemprop="dateCreated datePublished" datetime="2020-07-23T17:12:38+08:00">2020-07-23</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>本次本章从线程的基础讲到线程的相关实现类，每个章节算是一小块知识点，在每个知识点中，穿插地讲对应的知识原理，以及对应的常见面试题及其解答。多数面试题是前后环环相扣的。</p>
+<h3 id="什么是线程"><a href="#什么是线程" class="headerlink" title="什么是线程"></a>什么是线程</h3><p>线程是操作系统能够进行运算调度的最小单位。它被包含在进程之中，是进程中的实际运作单位。一条线程指的是进程中一个单一顺序的控制流，一个进程中可以并发多个线程，每条线程并行执行不同的任务。</p>
+<p>同一进程中的多条线程将共享该进程中的全部系统资源，如虚拟地址空间，文件描述符和信号处理等等。但同一进程中的多个线程有各自的调用栈（Call Stack），自己的寄存器环境（Register Context），自己的线程本地存储（Thread-local Storage）。</p>
+<p>一个进程可以有很多线程，每条线程并行执行不同的任务。在多核或多 CPU，或支持 Hyper-threading 的 CPU 上使用多线程程序设计的好处是显而易见的，即提高了程序的执行吞吐率。在单 CPU 单核的计算机上，使用多线程技术，也可以把进程中负责 I/O 处理、人机交互而常被阻塞的部分与密集计算的部分分开来执行，编写专门的 workhorse 线程执行密集计算，从而提高了程序的执行效率。</p>
+<p>可能的问题，分别对应上面三段内容：</p>
+<ol>
+<li>什么是线程</li>
+<li>哪些数据存储是线程私有的</li>
+<li>为什么要使用多线程，即使用多线程的好处</li>
+</ol>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/Java-多线程/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.vioao.site/posts/在-Maven-中央仓库发布自己的开源项目/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.png">
+      <meta itemprop="name" content="Vioao">
+      <meta itemprop="description" content="记录JAVA相关工作和阅读生活点滴">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Vioao's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/posts/在-Maven-中央仓库发布自己的开源项目/" class="post-title-link" itemprop="url">在 Maven 中央仓库发布自己的开源项目</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-07-23 17:01:41 / 修改时间：17:27:19" itemprop="dateCreated datePublished" datetime="2020-07-23T17:01:41+08:00">2020-07-23</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>写代码久了，一直在用别人提供的第三方包依赖，有时是不是也会想着有一天别人能够使用自己的开源出去的项目。让我们从最简单的开始，提取一个小项目，将其开源并发布到中央仓库让大伙可以直接通过配置 Maven 依赖来使用。</p>
+<h3 id="寻找项目方案"><a href="#寻找项目方案" class="headerlink" title="寻找项目方案"></a>寻找项目方案</h3><p>我相信应该是有不少人都有过开源并发布自己项目的想法的，但是其中最大的一个问题可能就是不知道该写点什么了、不知道有什么东西可以开源出去让别人使用的。没有关系，这边带你慢慢来提取出一个可行的项目方案。</p>
+<p>开源项目的种类多种多样，来源更是不用多说，我们这里不整这些这么广泛复杂的项目，我们就是想体验下将自己的项目构建发布到 Maven 中央仓库的快感。那么其实有一个特别容易的项目可以立马自己就着手设计的：实现 API。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/在-Maven-中央仓库发布自己的开源项目/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://blog.vioao.site/posts/译-深入理解-Node-js-Worker-Threads/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -244,7 +492,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-23 16:15:11" itemprop="dateModified" datetime="2020-07-23T16:15:11+08:00">2020-07-23</time>
+                <time title="修改时间：2020-07-23 17:27:19" itemprop="dateModified" datetime="2020-07-23T17:27:19+08:00">2020-07-23</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -344,7 +592,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-23 16:15:11" itemprop="dateModified" datetime="2020-07-23T16:15:11+08:00">2020-07-23</time>
+                <time title="修改时间：2020-07-23 17:27:19" itemprop="dateModified" datetime="2020-07-23T17:27:19+08:00">2020-07-23</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -380,322 +628,6 @@ Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/posts/压测对比-Spring-WebFlux-VS-Spring-MVC/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://blog.vioao.site/posts/Kafka-概览/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/avatar.png">
-      <meta itemprop="name" content="Vioao">
-      <meta itemprop="description" content="记录JAVA相关工作和阅读生活点滴">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Vioao's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/posts/Kafka-概览/" class="post-title-link" itemprop="url">Kafka 概览</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-12-19 10:27:39" itemprop="dateCreated datePublished" datetime="2019-12-19T10:27:39+08:00">2019-12-19</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-23 16:15:10" itemprop="dateModified" datetime="2020-07-23T16:15:10+08:00">2020-07-23</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/大数据/" itemprop="url" rel="index"><span itemprop="name">大数据</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p><a href="http://kafka.apachecn.org/intro.html" target="_blank" rel="noopener">Apache Kakfa</a> 是一个分布式流处理平台，既可以当做普通的消息中间件用于消息发布订阅，也可以存储并处理流式数据，其分布式设计使得其有较好的容错性，水平拓展性等。
-通常可以用于当做消息订阅发布用于业务系统中，或者用于大数据方向，接受存储大量的流式数据并和对应的大数据处理框架结合使用，eg. Kafka + Samza</p>
-<p>从物理部署层面来讲，其主要有如下几个模块：</p>
-<ol>
-<li>ZooKeeper
- 用于元数据保存以及事件通知</li>
-<li>Broker
- Kafka 的核心部分，用 scala 实现，负责处理客户端请求，持久化消息数据等</li>
-<li>Client（Consumer &amp; Producer）
- 客户端，Java 实现。生产者消费者实现</li>
-</ol>
-<p>下面分别从这几个模块来讲解 Kafka 相关的实现[<strong>基于 Kafka 2.4</strong>]。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/Kafka-概览/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://blog.vioao.site/posts/RocketMQ-概览/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/avatar.png">
-      <meta itemprop="name" content="Vioao">
-      <meta itemprop="description" content="记录JAVA相关工作和阅读生活点滴">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Vioao's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/posts/RocketMQ-概览/" class="post-title-link" itemprop="url">RocketMQ 概览</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-11-18 11:38:51" itemprop="dateCreated datePublished" datetime="2019-11-18T11:38:51+08:00">2019-11-18</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-23 16:15:10" itemprop="dateModified" datetime="2020-07-23T16:15:10+08:00">2020-07-23</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/大数据/" itemprop="url" rel="index"><span itemprop="name">大数据</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>Apache RocketMQ 是阿里开源的一款高性能、高吞吐量的分布式消息中间件。相比于 Kafka，其拥有更好的实时性和消息可靠性。更适用于和 Money 相关的系统。它支持如下特性：</p>
-<ul>
-<li>订阅/发布模式的消息<blockquote>
-<p>支持消费组模式的消费，即一个消费组集群内只有一个实例会收到那一条消息。</p>
-</blockquote>
-</li>
-<li>延时消息<blockquote>
-<p>只支持特定 Level 的延时设置，默认有 “1s 5s 10s 30s 1m 2m 3m 4m 5m 6m 7m 8m 9m 10m 20m 30m 1h 2h” 18个 Level。先扔到对应的延时队列，后台线程根据延时再将其挪到实际的 Topic 中。</p>
-</blockquote>
-</li>
-<li>顺序消息<blockquote>
-<p>只保证在单个 Broker 的单个 Queue 内是有序的，全局不保证有序。和 Kafka 一样.。</p>
-</blockquote>
-</li>
-<li>消息持久化<blockquote>
-<p>[主从同步 + 同步刷盘] 模式保证了持久数据的安全性。4.5 版本后加入 <a href="https://github.com/openmessaging/openmessaging-storage-dledger/blob/master/docs/cn/introduction_dledger.md#dledger-%E7%9A%84%E5%AE%9E%E7%8E%B0" target="_blank" rel="noopener">Dleger</a> 更是支持了 主从自动切换。</p>
-</blockquote>
-</li>
-<li>消息过滤<blockquote>
-<p>RocketMQ的消费者可以根据Tag进行消息过滤，也支持自定义属性过滤。消息过滤目前是在Broker端实现，减少了r无用消息的网络传输。</p>
-</blockquote>
-</li>
-<li>消息回溯<blockquote>
-<p>已消费过的消息，可以根据时间或 key 等维度来重新消费。在处理系统环境异常时很有用。</p>
-</blockquote>
-</li>
-<li>事务消息<blockquote>
-<p>先发送到一个特殊的系统 Topic 中，然后利用 2PC + 事务回查机制，判断将消息转到真正的 Topic 还是抛弃。</p>
-</blockquote>
-</li>
-<li>死信队列<blockquote>
-<p>消费失败并重试一定次数还是失败的的消息会先放到死信队列，需要手动进行重发</p>
-</blockquote>
-</li>
-<li>消息重试<blockquote>
-<p>每个消费组有一个 “%RETRY%+consumerGroup” 的重试队列。重试的消息会按照延迟的时间先放到 “SCHEDULE_TOPIC_XXXX” 队列中，然后才会被保存至 “%RETRY%+consumerGroup” 的重试队列中。</p>
-</blockquote>
-</li>
-<li>At-Least-Once<blockquote>
-<p>消息消费有 ACK 机制，消费结束才返回对应的 ACK 相应。和 Kafka 不太一样，Kafka 追求消息的大量快速处理，默认都是异步，整合成一批来消费生产的。</p>
-</blockquote>
-</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/RocketMQ-概览/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://blog.vioao.site/posts/从-VPS-到科学上网一气呵成/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/avatar.png">
-      <meta itemprop="name" content="Vioao">
-      <meta itemprop="description" content="记录JAVA相关工作和阅读生活点滴">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Vioao's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/posts/从-VPS-到科学上网一气呵成/" class="post-title-link" itemprop="url">从 VPS 到科学上网一气呵成</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-08-27 10:47:13" itemprop="dateCreated datePublished" datetime="2019-08-27T10:47:13+08:00">2019-08-27</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-23 16:15:10" itemprop="dateModified" datetime="2020-07-23T16:15:10+08:00">2020-07-23</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/VPS/" itemprop="url" rel="index"><span itemprop="name">VPS</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h3><p>最近自己的香港阿里云服务器到期了，也不打算续期了，是在太贵。最低配一年一千多，其实我也没啥事要做，再续期的话就不划算了，遍放弃了。但是，科学上网的需求还是有的啊。于是便想要买个 VPS 自己整个跳转用用，对于这个 VPS 我只有两个要求：</p>
-<ol>
-<li>便宜，一定要便宜！！！！毕竟自己需求较小，花多了钱觉得不划算</li>
-<li>流量要不限量。（虽然我也不咋用，但是我就是想要不限量）</li>
-</ol>
-<h3 id="VPS-购置"><a href="#VPS-购置" class="headerlink" title="VPS 购置"></a>VPS 购置</h3><h4 id="挑选-VPS"><a href="#挑选-VPS" class="headerlink" title="挑选 VPS"></a>挑选 VPS</h4><p>首先我是按照自己的要求 google 了一番合适的 VPS 的，有下面几个链接比较有用：</p>
-<ol>
-<li><a href="https://www.10besty.com/best-vps-hosting-services/" target="_blank" rel="noopener">2019 年最好的国外 VPS 推荐</a></li>
-<li><a href="https://www.vpser.net/ten-dollars-vps" target="_blank" rel="noopener">10美元以下国内VPS/美国VPS推荐</a></li>
-<li><a href="https://www.laozuo.org/myvps" target="_blank" rel="noopener">老左常用国内/国外便宜VPS主机商家推荐整理</a></li>
-</ol>
-<p>当然，按照我的要求，我选择了 <a href="https://my.frantech.ca/aff.php?aff=3157" target="_blank" rel="noopener"><strong>BuyVM</strong></a> 家最便宜的一个 VPS。配置收费如下：</p>
-<ul>
-<li>$2 USD/Month，年付更优惠：$18.68 USD/Year ，支持支付宝付款</li>
-<li>流量不限</li>
-<li>512M 内存</li>
-<li>10G 存储</li>
-<li>KVM 架构</li>
-<li>1 核 CPU</li>
-</ul>
-<p>这个配置用来部署一些小工具和用来科学上网是足够了。(这个，有个比较坑的地方就是，他的网速貌似不是很稳定，下载速度有时候有 1M/s，有时候只有 50k/s 这样子。。。。)</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/从-VPS-到科学上网一气呵成/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>

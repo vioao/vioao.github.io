@@ -213,6 +213,271 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.vioao.site/posts/Drone-初探/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.png">
+      <meta itemprop="name" content="Vioao">
+      <meta itemprop="description" content="记录JAVA相关工作和阅读生活点滴">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Vioao's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/posts/Drone-初探/" class="post-title-link" itemprop="url">Drone 初探</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-06-21 11:14:55" itemprop="dateCreated datePublished" datetime="2019-06-21T11:14:55+08:00">2019-06-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-07-23 17:27:19" itemprop="dateModified" datetime="2020-07-23T17:27:19+08:00">2020-07-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>Drone 是一个基于 Docker 的 CI/CD 工具，其所有编译、测试的流程都在 Docker 容器中进行。
+其主要核心应该就是 configuration as a code + docker 了。每个项目下都需要定义一个 yml 配置文件，默认为 .drone.yml ，
+在该配置文件中可自定义 Pipelines ，配置中的每一个 Pipeline 步骤都是在一个独立的 Docker 容器中自动执行的。
+并且 Drone 现在已默认无缝集成了多种代码管理平台，目前有如下：</p>
+<ul>
+<li>GitHub</li>
+<li>Bitbucket</li>
+<li>GitLab</li>
+<li>Gitea</li>
+<li>Gogs</li>
+</ul>
+<p>后面我会以集成 Github 为例来说明下我利用 Drone 自动将自己的 Github Pages 项目打包部署到自己服务器上的例子。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/Drone-初探/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.vioao.site/posts/Flink-入门教程/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.png">
+      <meta itemprop="name" content="Vioao">
+      <meta itemprop="description" content="记录JAVA相关工作和阅读生活点滴">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Vioao's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/posts/Flink-入门教程/" class="post-title-link" itemprop="url">Flink 入门教程</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-06-08 10:18:40" itemprop="dateCreated datePublished" datetime="2019-06-08T10:18:40+08:00">2019-06-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-07-23 17:27:19" itemprop="dateModified" datetime="2020-07-23T17:27:19+08:00">2020-07-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/中间件/" itemprop="url" rel="index"><span itemprop="name">中间件</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="大数据处理的应用场景"><a href="#大数据处理的应用场景" class="headerlink" title="大数据处理的应用场景"></a>大数据处理的应用场景</h3><p>大数据是近些年才出现的吗，人们是近些年才发现大数据的利用价值的吗？其实不然，早在几十年前，数学分析就已经涉猎金融行业了，人们依托于金融和数学知识来建立数学模型，利用金融市场所产的数据来预测金融市场产品收益同风险波动的关系。
+到如今，互联网也发展了好些年了，越来越多的数据产生(用户浏览数据、搜索记录、出行记录、消费记录；农作物的成长观察记录；病人的医疗记录等)，各行业也开始慢慢的重视起这些数据记录，希望通过对这些数据的分析处理从而得到相应的利益和研究价值。</p>
+<p>简单举几个例子，大数据处理可适用在在如下一些场景:</p>
+<ol>
+<li>医疗大数据、看病更高效(病例病理分析、基因数据分析)</li>
+<li>电商大数据、精准营销法宝(杀熟、哈哈哈哈或)</li>
+<li>零售大数据、最懂消费者(用户画像，精准推送)</li>
+<li>金融大数据、理财利器 (大数据选股)</li>
+<li>交通大数据、畅通出行 (城市大脑)
+……</li>
+</ol>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/Flink-入门教程/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.vioao.site/posts/项目复盘思考/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.png">
+      <meta itemprop="name" content="Vioao">
+      <meta itemprop="description" content="记录JAVA相关工作和阅读生活点滴">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Vioao's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/posts/项目复盘思考/" class="post-title-link" itemprop="url">项目复盘思考</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-06-06 10:47:02" itemprop="dateCreated datePublished" datetime="2019-06-06T10:47:02+08:00">2019-06-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-07-23 17:27:19" itemprop="dateModified" datetime="2020-07-23T17:27:19+08:00">2020-07-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/工作记录/" itemprop="url" rel="index"><span itemprop="name">工作记录</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>对自己所参与过的事物做个复盘是个好习惯，能让自己对事物有个更深的了解。比如说，读了一本书，那么这个时候你需要回去思考:这本书讲了些啥，对你有何影响；又或者，你参与了一个活动，你完了后，你也可以对其进行复盘，思考下这个活动的意义，这个活动是让你增加见识了还是让你放松心情了等；再或者，你参与了一个项目，这个时候还是可以复盘，考虑项目的进展中的难点等。其实复盘，就是对自己经历过的事物进行思考总结。是一个很好的自我矫正升华的方式。</p>
+<p>下面我以一个程序员参与的项目的复盘来简要说明下，复盘过程中可能思考的问题和方向。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/项目复盘思考/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://blog.vioao.site/posts/中国灾害预警爬取解析/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -244,7 +509,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-23 16:15:10" itemprop="dateModified" datetime="2020-07-23T16:15:10+08:00">2020-07-23</time>
+                <time title="修改时间：2020-07-23 17:27:19" itemprop="dateModified" datetime="2020-07-23T17:27:19+08:00">2020-07-23</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -327,7 +592,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-23 16:15:11" itemprop="dateModified" datetime="2020-07-23T16:15:11+08:00">2020-07-23</time>
+                <time title="修改时间：2020-07-23 17:27:19" itemprop="dateModified" datetime="2020-07-23T17:27:19+08:00">2020-07-23</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -362,257 +627,6 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/posts/定位CPU异常抖动-tomcat热部署的坑/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://blog.vioao.site/posts/请求响应慢问题排查/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/avatar.png">
-      <meta itemprop="name" content="Vioao">
-      <meta itemprop="description" content="记录JAVA相关工作和阅读生活点滴">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Vioao's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/posts/请求响应慢问题排查/" class="post-title-link" itemprop="url">请求响应慢问题排查</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-04-22 11:56:25" itemprop="dateCreated datePublished" datetime="2018-04-22T11:56:25+08:00">2018-04-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-23 16:15:11" itemprop="dateModified" datetime="2020-07-23T16:15:11+08:00">2020-07-23</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/工作记录/" itemprop="url" rel="index"><span itemprop="name">工作记录</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h1><p>简要说明下，系统是一个微信第第三方平台，用于托管微信公众号和小程序的。
-在一个普普通通的晚上，19点开始有公众号管理员向我们反馈，托管在我们平台的公众号一直提示  “<strong>该公众号提供的服务出现异常，请稍后再试</strong>“。</p>
-<h1 id="问题排查"><a href="#问题排查" class="headerlink" title="问题排查"></a>问题排查</h1><h2 id="验证问题"><a href="#验证问题" class="headerlink" title="验证问题"></a>验证问题</h2><p>自己去对应的公众号验证，发送消息，确确实实提示”<strong>该公众号提供的服务出现异常，请稍后再试</strong>“，影响到了公众号的正常服务。并且每次都是这个返回，说明服务其实是普遍性的异常了(这点其实挺重要，不过当时没引起注意)。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/请求响应慢问题排查/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://blog.vioao.site/posts/项目重构感悟/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/avatar.png">
-      <meta itemprop="name" content="Vioao">
-      <meta itemprop="description" content="记录JAVA相关工作和阅读生活点滴">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Vioao's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/posts/项目重构感悟/" class="post-title-link" itemprop="url">项目重构感悟</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-03-16 20:37:51" itemprop="dateCreated datePublished" datetime="2018-03-16T20:37:51+08:00">2018-03-16</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-23 16:15:11" itemprop="dateModified" datetime="2020-07-23T16:15:11+08:00">2020-07-23</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/工作记录/" itemprop="url" rel="index"><span itemprop="name">工作记录</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="重构决定"><a href="#重构决定" class="headerlink" title="重构决定"></a>重构决定</h1><ul>
-<li>需要提前做好新旧系统的<strong>切换方案的规划</strong></li>
-<li><strong>要高度重视对数据的重构</strong>，对数据的调整和兼容是重中之重</li>
-<li>重构是为了<strong>解决实际的项目问题</strong>，而不只是作为程序员的一个代码洁癖。所以，需要对新系统<strong>有可以量化的指标</strong>(eg. 性能提升5个点、开发工作量减少30% 等)</li>
-<li>技术选型时，不要盲目最求新技术，需要<strong>尽量使用成熟、简单的方案</strong>，选择成熟简单的方案在遇到问题时多能在网上找到对应的解决方案。文档相对也会更完善。</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/项目重构感悟/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://blog.vioao.site/posts/分布式系统一致性问题处理思路/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/avatar.png">
-      <meta itemprop="name" content="Vioao">
-      <meta itemprop="description" content="记录JAVA相关工作和阅读生活点滴">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Vioao's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/posts/分布式系统一致性问题处理思路/" class="post-title-link" itemprop="url">分布式系统一致性问题处理思路</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-03-12 21:36:15" itemprop="dateCreated datePublished" datetime="2018-03-12T21:36:15+08:00">2018-03-12</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-23 16:15:11" itemprop="dateModified" datetime="2020-07-23T16:15:11+08:00">2020-07-23</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/读书笔记/" itemprop="url" rel="index"><span itemprop="name">读书笔记</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="为啥出现一致性问题"><a href="#为啥出现一致性问题" class="headerlink" title="为啥出现一致性问题"></a>为啥出现一致性问题</h1><p>在传统单体架构中，数据状态的处理都在同一个服务和数据库中，而具有<strong><a href="https://baike.baidu.com/item/acid/10738?fr=aladdin" target="_blank" rel="noopener">ACID特性</a></strong>的数据库支持强一致性，就是说数据库本身是不会出现不一致的状态的，比如我们常用的关系型数据库MySQL就是通过多版本控制协议(MVCC)的实现来保证了强一致性。
-但是随着互联网的发展，用户增多&amp;服务也越来越多越来越复杂，数据量和请求的并发量都上来了。为了满足这一变化，越来越多的系统从单体架构投入到服务化或者微服务架构。然而，微服务是把双刃剑，虽然能通过对服务的有效拆分来实现敏捷开发和自动化部署，并提高系统的水兵伸缩能力；但是微服务模式下，服务之间通过网络来通信(<strong>网络并不是可靠的</strong>)，那么当网络异常时，就很容易引起各个系统之间的不一致。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/分布式系统一致性问题处理思路/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
