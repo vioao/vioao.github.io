@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 3.9.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/uploads/favicon.ico">
   <link rel="icon" type="image/png" sizes="16x16" href="/uploads/favicon.ico">
 
 <link rel="stylesheet" href="/css/main.css">
@@ -27,7 +28,7 @@
 <meta property="og:site_name" content="Vioao&#39;s Blog">
 <meta property="og:description" content="为啥出现一致性问题在传统单体架构中，数据状态的处理都在同一个服务和数据库中，而具有ACID特性的数据库支持强一致性，就是说数据库本身是不会出现不一致的状态的，比如我们常用的关系型数据库MySQL就是通过多版本控制协议(MVCC)的实现来保证了强一致性。 但是随着互联网的发展，用户增多&amp;amp;服务也越来越多越来越复杂，数据量和请求的并发量都上来了。为了满足这一变化，越来越多的系统从单体架构投入到服">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-07-23T06:48:23.657Z">
+<meta property="og:updated_time" content="2020-07-23T07:54:27.585Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="分布式系统一致性问题处理思路">
 <meta name="twitter:description" content="为啥出现一致性问题在传统单体架构中，数据状态的处理都在同一个服务和数据库中，而具有ACID特性的数据库支持强一致性，就是说数据库本身是不会出现不一致的状态的，比如我们常用的关系型数据库MySQL就是通过多版本控制协议(MVCC)的实现来保证了强一致性。 但是随着互联网的发展，用户增多&amp;amp;服务也越来越多越来越复杂，数据量和请求的并发量都上来了。为了满足这一变化，越来越多的系统从单体架构投入到服">
@@ -48,7 +49,7 @@
   <title>分布式系统一致性问题处理思路 | Vioao's Blog</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-100038035-1"></script>
-    <script>
+    <script data-pjax>
       if (CONFIG.hostname === location.hostname) {
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
@@ -58,7 +59,7 @@
     </script>
 
 
-  <script>
+  <script data-pjax>
     var _hmt = _hmt || [];
     (function() {
       var hm = document.createElement("script");
@@ -245,7 +246,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-23 14:48:23" itemprop="dateModified" datetime="2020-07-23T14:48:23+08:00">2020-07-23</time>
+                <time title="修改时间：2020-07-23 15:54:27" itemprop="dateModified" datetime="2020-07-23T15:54:27+08:00">2020-07-23</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -480,6 +481,7 @@
 
   
   <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
@@ -488,11 +490,70 @@
 <script src="/js/utils.js"></script><script src="/js/motion.js"></script>
 <script src="/js/schemes/muse.js"></script>
 <script src="/js/next-boot.js"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
 
 
 
   
-  <script>
+  <script data-pjax>
     (function(){
       var bp = document.createElement('script');
       var curProtocol = window.location.protocol.split(':')[0];
@@ -518,6 +579,7 @@
 
 
 
+    <div id="pjax">
   
 
   
@@ -528,7 +590,7 @@
 NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
   NexT.utils.getScript('//cdn.jsdelivr.net/npm/disqusjs@1/dist/disqus.js', () => {
     window.dsqjs = new DisqusJS({
-      api       : 'https://disqus.com/api/' || 'https://disqus.com/api/',
+      api       : 'https://disqus.skk.moe/disqus/' || 'https://disqus.com/api/',
       apikey    : '8O6WLttLODmGPEwm7CHPNDPJXfQqRCW2HSSrWZmULAfOWUc02kLl5UXTBIOIzzCZ/',
       shortname : 'vioao',
       url       : "http://blog.vioao.site/posts/分布式系统一致性问题处理思路/",
@@ -539,5 +601,6 @@ NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
 });
 </script>
 
+    </div>
 </body>
 </html>

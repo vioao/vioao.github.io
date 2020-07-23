@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 3.9.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/uploads/favicon.ico">
   <link rel="icon" type="image/png" sizes="16x16" href="/uploads/favicon.ico">
 
 <link rel="stylesheet" href="/css/main.css">
@@ -27,7 +28,7 @@
 <meta property="og:site_name" content="Vioao&#39;s Blog">
 <meta property="og:description" content="引入背景目前手上接管了一个旧项目,在调整的过程中发现其编码规范非常的多样化。其实就是没有规范了。代码中的命名、注释、换行等风格都有多种，差不多每个曾经修改过代码的程序员都留来过自己的风格。代码风格质量良莠不齐，这导致新员工在阅读代码时需要花更多的时间,也更加痛苦。所以考虑使用checkstyle来校验统一代码风格。 起初考虑是直接在svn上做一个pre-commit的hook的。不过沟通无果，sv">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-07-23T06:48:23.657Z">
+<meta property="og:updated_time" content="2020-07-23T07:54:27.584Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用checkstyle校验代码">
 <meta name="twitter:description" content="引入背景目前手上接管了一个旧项目,在调整的过程中发现其编码规范非常的多样化。其实就是没有规范了。代码中的命名、注释、换行等风格都有多种，差不多每个曾经修改过代码的程序员都留来过自己的风格。代码风格质量良莠不齐，这导致新员工在阅读代码时需要花更多的时间,也更加痛苦。所以考虑使用checkstyle来校验统一代码风格。 起初考虑是直接在svn上做一个pre-commit的hook的。不过沟通无果，sv">
@@ -48,7 +49,7 @@
   <title>使用checkstyle校验代码 | Vioao's Blog</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-100038035-1"></script>
-    <script>
+    <script data-pjax>
       if (CONFIG.hostname === location.hostname) {
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
@@ -58,7 +59,7 @@
     </script>
 
 
-  <script>
+  <script data-pjax>
     var _hmt = _hmt || [];
     (function() {
       var hm = document.createElement("script");
@@ -245,7 +246,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-23 14:48:23" itemprop="dateModified" datetime="2020-07-23T14:48:23+08:00">2020-07-23</time>
+                <time title="修改时间：2020-07-23 15:54:27" itemprop="dateModified" datetime="2020-07-23T15:54:27+08:00">2020-07-23</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -433,6 +434,7 @@
 
   
   <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
@@ -441,11 +443,70 @@
 <script src="/js/utils.js"></script><script src="/js/motion.js"></script>
 <script src="/js/schemes/muse.js"></script>
 <script src="/js/next-boot.js"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
 
 
 
   
-  <script>
+  <script data-pjax>
     (function(){
       var bp = document.createElement('script');
       var curProtocol = window.location.protocol.split(':')[0];
@@ -471,6 +532,7 @@
 
 
 
+    <div id="pjax">
   
 
   
@@ -481,7 +543,7 @@
 NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
   NexT.utils.getScript('//cdn.jsdelivr.net/npm/disqusjs@1/dist/disqus.js', () => {
     window.dsqjs = new DisqusJS({
-      api       : 'https://disqus.com/api/' || 'https://disqus.com/api/',
+      api       : 'https://disqus.skk.moe/disqus/' || 'https://disqus.com/api/',
       apikey    : '8O6WLttLODmGPEwm7CHPNDPJXfQqRCW2HSSrWZmULAfOWUc02kLl5UXTBIOIzzCZ/',
       shortname : 'vioao',
       url       : "http://blog.vioao.site/posts/使用checkstyle校验代码/",
@@ -492,5 +554,6 @@ NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
 });
 </script>
 
+    </div>
 </body>
 </html>
