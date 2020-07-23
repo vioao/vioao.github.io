@@ -2,8 +2,8 @@
 title: Flink 入门教程
 
 date: 2019-06-08 10:18:40
-tags: [Flink]
-categories: [大数据]
+tags: [Flink,大数据]
+categories: [中间件]
 ---
 
 ### 大数据处理的应用场景
