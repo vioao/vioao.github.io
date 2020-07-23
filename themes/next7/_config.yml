@@ -41,7 +41,7 @@ custom_file_path:
 
 favicon:
   small: /uploads/favicon.ico
-  #medium: /images/favicon-32x32-next.png
+  medium: /uploads/favicon.ico
   #apple_touch_icon: /images/apple-touch-icon-next.png
   #safari_pinned_tab: /images/logo.svg
   #android_manifest: /images/manifest.json
@@ -521,7 +521,7 @@ math:
 
 # Easily enable fast Ajax navigation on your website.
 # Dependencies: https://github.com/theme-next/theme-next-pjax
-pjax: false
+pjax: true
 
 # FancyBox is a tool that offers a nice and elegant way to add zooming functionality for images.
 # For more information: https://fancyapps.com/fancybox
@@ -605,7 +605,7 @@ disqusjs:
   # Leave api empty if you are able to connect to Disqus API. Otherwise you need a reverse proxy for it.
   # For example:
   # api: https://disqus.skk.moe/disqus/
-  api: https://disqus.com/api/
+  api: https://disqus.skk.moe/disqus/
   apikey: 8O6WLttLODmGPEwm7CHPNDPJXfQqRCW2HSSrWZmULAfOWUc02kLl5UXTBIOIzzCZ/
   shortname: vioao
 
