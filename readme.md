@@ -3,7 +3,7 @@
 - Auto build by [Vioao's Drone](http://drone.vioao.site)
 
 # dev
-- `npm install hexo -g`
+- `npm install`
 - `hexo new post "new post title"`
 - `hexo s`
 
