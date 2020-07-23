@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"blog.vioao.site","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"remove","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":"disqusjs","storage":true,"lazyload":true,"nav":null,"activeClass":"disqusjs"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"blog.vioao.site","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"remove","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":"disqusjs","storage":true,"lazyload":true,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="JAVA一. Java 集合资料:  Java 集合学习指南 Java NIO 系列教程  常见问题:  ConcurrentHashMap的实现实现原理,是如何实现高并发和同步的探索 ConcurrentHashMap高并发性的实现机制 集合类中线程安全的集合有哪些(HashTable,Vector),HashTable如何实现同步">
@@ -28,7 +28,7 @@
 <meta property="og:site_name" content="Vioao&#39;s Blog">
 <meta property="og:description" content="JAVA一. Java 集合资料:  Java 集合学习指南 Java NIO 系列教程  常见问题:  ConcurrentHashMap的实现实现原理,是如何实现高并发和同步的探索 ConcurrentHashMap高并发性的实现机制 集合类中线程安全的集合有哪些(HashTable,Vector),HashTable如何实现同步">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-07-23T07:54:27.596Z">
+<meta property="og:updated_time" content="2020-07-23T08:15:11.015Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试复习整理">
 <meta name="twitter:description" content="JAVA一. Java 集合资料:  Java 集合学习指南 Java NIO 系列教程  常见问题:  ConcurrentHashMap的实现实现原理,是如何实现高并发和同步的探索 ConcurrentHashMap高并发性的实现机制 集合类中线程安全的集合有哪些(HashTable,Vector),HashTable如何实现同步">
@@ -246,7 +246,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-23 15:54:27" itemprop="dateModified" datetime="2020-07-23T15:54:27+08:00">2020-07-23</time>
+                <time title="修改时间：2020-07-23 16:15:11" itemprop="dateModified" datetime="2020-07-23T16:15:11+08:00">2020-07-23</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -419,13 +419,7 @@
 
           </div>
           
-    
-  <div class="comments">
-    <div id="disqus_thread">
-      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
-    </div>
-  </div>
-  
+    <div class="comments" id="gitalk-container"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -506,7 +500,7 @@
 
   
   <script src="/lib/anime.min.js"></script>
-  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-pjax@0/pjax.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
@@ -609,20 +603,23 @@ window.addEventListener('pjax:success', () => {
 
   
 
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/disqusjs@1/dist/disqusjs.css">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
 
 <script>
-NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
-  NexT.utils.getScript('//cdn.jsdelivr.net/npm/disqusjs@1/dist/disqus.js', () => {
-    window.dsqjs = new DisqusJS({
-      api       : 'https://disqus.skk.moe/disqus/' || 'https://disqus.com/api/',
-      apikey    : '8O6WLttLODmGPEwm7CHPNDPJXfQqRCW2HSSrWZmULAfOWUc02kLl5UXTBIOIzzCZ/',
-      shortname : 'vioao',
-      url       : "http://blog.vioao.site/posts/面试复习整理/",
-      identifier: "posts/面试复习整理/",
-      title     : "面试复习整理",
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '65b1300922a4c2c8c9bb',
+      clientSecret: '4aa4b5ad38beb0385acbfb85ba840337969581d4',
+      repo        : 'vioao.github.io',
+      owner       : 'vioao',
+      admin       : ['vioao'],
+      id          : '0159c9498b20f2103547b3f1a62e80fd',
+        language: 'zh-CN',
+      distractionFreeMode: true
     });
-  }, window.DisqusJS);
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
 });
 </script>
 
