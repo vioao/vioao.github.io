@@ -3,7 +3,7 @@ title: 利用Github Pages和Hexo搭建个人博客
 date: 2017-05-29 10:02:26
 tags: [GitHub,Hexo,Next,博客]
 categories: [Html]
-comments: false
+
 ---
 
 ## Github Pages和Hexo介绍

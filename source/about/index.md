@@ -1,7 +1,6 @@
 ---
 title: 关于我
 date: 2017-05-19 20:59:45
-comments: false
 ---
 
 <!-- <center> <h3>Java软件工程师</h3> </centrt> -->

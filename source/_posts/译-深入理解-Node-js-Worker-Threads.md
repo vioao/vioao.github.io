@@ -1,6 +1,5 @@
 ---
 title: '[译]深入理解 Node.js Worker Threads'
-comments: false
 date: 2020-07-22 13:51:51
 tags: [Node.js, 多线程]
 categories: [Node.js]

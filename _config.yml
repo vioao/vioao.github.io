@@ -7,7 +7,7 @@ title: Vioao's Blog
 subtitle: Record a little bit
 description: 记录JAVA相关工作和阅读生活点滴
 author: Vioao
-language: zh-Hans
+language: zh-CN
 timezone: Asia/Shanghai
 
 # URL
@@ -63,7 +63,7 @@ pagination_dir: page
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: next
+theme: next7
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html

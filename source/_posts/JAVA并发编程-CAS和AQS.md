@@ -3,7 +3,7 @@ title: 'JAVA并发编程: CAS和AQS'
 date: 2017-06-06 23:35:21
 tags: [Java,并发编程,AQS,CAS]
 categories: [Java]
-comments: false
+
 ---
 
 说起JAVA并发编程，就不得不聊聊CAS(Compare And Swap)和AQS了(`AbstractQueuedSynchronizer`)。

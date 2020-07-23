@@ -1,6 +1,6 @@
 ---
 title: Kafka 概览
-comments: false
+
 date: 2019-12-19 10:27:39
 tags: [RocketMQ,JAVA,中间件]
 categories: [大数据]
