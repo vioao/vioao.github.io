@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/uploads/favicon.ico">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.vioao.site","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"remove","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":"disqusjs","storage":true,"lazyload":true,"nav":null,"activeClass":"disqusjs"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="前言如今开发一定规模的web系统时一般会在项目中加入缓存模块块来缓存数据以减轻数据库的压力。从而提高系统的访问速度。最近的面试过程中也有不少是缓存相关的问题，那么下面就来聊下期间被问到的一个缓存更新策略的问题。 我们以Redis作为缓存作为例子。那么问题来了，当缓存的数据需要更新时该如何做才能确保在保证一致性(没有脏数据)的情况下还能有不错的并发量。">
+<meta name="keywords" content="缓存,面试">
+<meta property="og:type" content="article">
+<meta property="og:title" content="聊聊缓存">
+<meta property="og:url" content="http://blog.vioao.site/posts/聊聊缓存/index.html">
+<meta property="og:site_name" content="Vioao&#39;s Blog">
+<meta property="og:description" content="前言如今开发一定规模的web系统时一般会在项目中加入缓存模块块来缓存数据以减轻数据库的压力。从而提高系统的访问速度。最近的面试过程中也有不少是缓存相关的问题，那么下面就来聊下期间被问到的一个缓存更新策略的问题。 我们以Redis作为缓存作为例子。那么问题来了，当缓存的数据需要更新时该如何做才能确保在保证一致性(没有脏数据)的情况下还能有不错的并发量。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-07-23T06:48:23.665Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="聊聊缓存">
+<meta name="twitter:description" content="前言如今开发一定规模的web系统时一般会在项目中加入缓存模块块来缓存数据以减轻数据库的压力。从而提高系统的访问速度。最近的面试过程中也有不少是缓存相关的问题，那么下面就来聊下期间被问到的一个缓存更新策略的问题。 我们以Redis作为缓存作为例子。那么问题来了，当缓存的数据需要更新时该如何做才能确保在保证一致性(没有脏数据)的情况下还能有不错的并发量。">
+
+<link rel="canonical" href="http://blog.vioao.site/posts/聊聊缓存/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>聊聊缓存 | Vioao's Blog</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-100038035-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-100038035-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?e10442447b2587d6a6580d90a763ecc6";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Vioao's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Record a little bit</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-fa fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories" rel="section"><i class="fa fa-fw fa-fa fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about" rel="section"><i class="fa fa-fw fa-fa fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives" rel="section"><i class="fa fa-fw fa-fa fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags" rel="section"><i class="fa fa-fw fa-fa fa-tags"></i>标签</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/vioao" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.vioao.site/posts/聊聊缓存/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.png">
+      <meta itemprop="name" content="Vioao">
+      <meta itemprop="description" content="记录JAVA相关工作和阅读生活点滴">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Vioao's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          聊聊缓存
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-05-20 00:10:01" itemprop="dateCreated datePublished" datetime="2017-05-20T00:10:01+08:00">2017-05-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-07-23 14:48:23" itemprop="dateModified" datetime="2020-07-23T14:48:23+08:00">2020-07-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试相关/" itemprop="url" rel="index"><span itemprop="name">面试相关</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>如今开发一定规模的web系统时一般会在项目中加入缓存模块块来缓存数据以减轻数据库的压力。从而提高系统的访问速度。最近的面试过程中也有不少是缓存相关的问题，那么下面就来聊下期间被问到的一个缓存更新策略的问题。
+我们以Redis作为缓存作为例子。那么问题来了，当缓存的数据需要更新时该如何做才能确保在保证一致性(没有脏数据)的情况下还能有不错的并发量。</p>
+<img data-src="/posts/聊聊缓存/redis.jpg">
+
+<a id="more"></a>
+
+<h2 id="面试过程"><a href="#面试过程" class="headerlink" title="面试过程"></a>面试过程</h2><p>通常我们项目中和缓存交道的架构图大体如下：</p>
+<img data-src="/posts/聊聊缓存/cache架构.png" title="cache架构图">
+
+<p>面试过程中，由于我说自己使用过redis来缓存系统中的一些经常读取但是比较少修改的数据，比如说游戏配置，活动礼包配置，玩家所玩过的游戏这些。
+于是面试官遍提出了如下的问题:</p>
+<blockquote>
+<p>你在更新缓存的时候是使用的什么策略</p>
+</blockquote>
+<p>其实工作中并没有怎么考虑这些问题，就直接回答:</p>
+<blockquote>
+<p>这么更新啊,成功写数据库之后再更新Redis中的数据就好啦</p>
+</blockquote>
+<p>接着面试官深入该问题，提出</p>
+<blockquote>
+<p>如果此时写数据库成功了，但是Redis中的数据还没更新，那么就会造成数据不一致，这问题怎么解决？</p>
+</blockquote>
+<p>然后我就想啊:</p>
+<blockquote>
+<p>那我们在更新数据库的数据之前把Redis中对应的缓存数据删除就可以了</p>
+</blockquote>
+<p>面试官接着问:</p>
+<blockquote>
+<p>那如果在删除了对应的缓存，但是还没有写如成功到数据库的时候，这时候又有一个请求来读取这个数据，那旧数据又会被存入缓存，依旧会造成上面提到的数据不一致的问题。</p>
+</blockquote>
+<p>然后我又想啊，的确是有这个问题，那能咋办呢？想想并发相关的数据正确性问题,回答:</p>
+<blockquote>
+<p>那就在写数据的时候对对应的数据加锁。完成写之后才能读取</p>
+</blockquote>
+<p>至此，该问题结束了。面试官也没有再深入的问了。不过我感觉到，面试官似乎并不是那么满意嘛。于是在回去后查询了些资料。查看了缓存更新的相关策略
+不过似乎都没有击到痛点。直到前端时间看到了几篇推文，算是有种问题解决的感觉。</p>
+<hr>
+<h2 id="问题总结"><a href="#问题总结" class="headerlink" title="问题总结"></a>问题总结</h2><p>总结下推文中的初始问题事件:
+现在假设有个账户余额表account(uid,money),场景为读多写少。读取用于余额的流程如下:</p>
+<ol>
+<li>根据uid去缓存中读取money</li>
+<li>如果缓存中有(缓存命中)，则直接返回对应uid的money</li>
+<li>如果缓存中没有，则从数据库中读取，并将数据存入缓存中</li>
+</ol>
+<p>那么问题来了，考虑到多并发，当用户余额需要更新时:</p>
+<ol>
+<li>是先更新数据库中的数据呢，还是先更新缓存中的数据呢</li>
+<li>是直接更新缓存中的数据呢，还是直接淘汰掉缓存中对应的用户的缓存呢</li>
+</ol>
+<hr>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>对应解决方案:</p>
+<ol>
+<li>那到底是选择更新缓存还是淘汰缓存呢，主要取决于“更新缓存的复杂度”。不过，<strong>淘汰缓存操作简单，并且带来的副作用只是增加了一次cache miss</strong>，建议作为通用的处理方式。</li>
+<li>如果出现不一致，谁先做对业务的影响较小，就谁先执行。<ul>
+<li>假设先写数据库，再淘汰缓存：第一步写数据库操作成功，第二步淘汰缓存失败，则会出现DB中是新数据，Cache中是旧数据，数据不一致。</li>
+<li>假设先淘汰缓存，再写数据库：第一步淘汰缓存成功，第二步写数据库失败，则只会引发一次Cache miss。</li>
+<li>结论：数据和缓存的操作时序，结论是清楚的：<strong>先淘汰缓存，再写数据库。</strong></li>
+</ul>
+</li>
+<li>让同一个数据的访问能<strong>串行化</strong><ul>
+<li>修改服务Service连接池，id取模选取服务连接，能够保证同一个数据的读写都落在同一个后端服务上</li>
+<li>修改数据库DB连接池，id取模选取DB连接，能够保证同一个数据的读写在数据库层面是串行的</li>
+</ul>
+</li>
+</ol>
+<hr>
+<p>最后放出前面提到的推文:</p>
+<ul>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MjM5ODYxMDA5OQ==&mid=404087915&idx=1&sn=075664193f334874a3fc87fd4f712ebc&scene=21#wechat_redirect" target="_blank" rel="noopener">缓存架构设计细节二三事</a></li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MjM5ODYxMDA5OQ==&mid=403963671&idx=1&sn=51a2d2fd70212451cd5f22bbe2c6f8d6&scene=21#wechat_redirect" target="_blank" rel="noopener">细聊冗余表数据一致性</a></li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MjM5ODYxMDA5OQ==&mid=404202261&idx=1&sn=1b8254ba5013952923bdc21e0579108e&scene=21#wechat_redirect" target="_blank" rel="noopener">缓存与数据库一致性保证</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Vioao
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.vioao.site/posts/聊聊缓存/" title="聊聊缓存">http://blog.vioao.site/posts/聊聊缓存/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/缓存/" rel="tag"><i class="fa fa-tag"></i> 缓存</a>
+              <a href="/tags/面试/" rel="tag"><i class="fa fa-tag"></i> 面试</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/项目架构图/" rel="prev" title="项目架构图">
+      <i class="fa fa-chevron-left"></i> 项目架构图
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/MySql-5-7-18免安装版安装使用/" rel="next" title="MySql 5.7.18免安装版安装使用">
+      MySql 5.7.18免安装版安装使用 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Vioao</span>
+</div>
+  <div class="powered-by">CI/CD by
+    <a class="theme-link theme-link-bottom" target="_blank" href="http://drone.vioao.site">Vioao's Drone</a>
+  </div>
+
+
+
+  <span> | </span>
+  <div class="powered-by">Social:
+    
+        <a class="theme-link theme-link-bottom" href="https://github.com/vioao || fab fa-github" target="_blank" title="GitHub" >
+          GitHub
+        </a>
+        <div style="margin-left: 5px; display: inline-block"> </div>
+    
+        <a class="theme-link theme-link-bottom" href="http://blog.csdn.net/u010862794 || fab fa-csdn" target="_blank" title="CSDN" >
+          CSDN
+        </a>
+        <div style="margin-left: 5px; display: inline-block"> </div>
+    
+  </div>
+
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/disqusjs@1/dist/disqusjs.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/disqusjs@1/dist/disqus.js', () => {
+    window.dsqjs = new DisqusJS({
+      api       : 'https://disqus.com/api/' || 'https://disqus.com/api/',
+      apikey    : '8O6WLttLODmGPEwm7CHPNDPJXfQqRCW2HSSrWZmULAfOWUc02kLl5UXTBIOIzzCZ/',
+      shortname : 'vioao',
+      url       : "http://blog.vioao.site/posts/聊聊缓存/",
+      identifier: "posts/聊聊缓存/",
+      title     : "聊聊缓存",
+    });
+  }, window.DisqusJS);
+});
+</script>
+
+</body>
+</html>

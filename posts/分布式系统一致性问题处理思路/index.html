@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/uploads/favicon.ico">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.vioao.site","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"remove","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":"disqusjs","storage":true,"lazyload":true,"nav":null,"activeClass":"disqusjs"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="为啥出现一致性问题在传统单体架构中，数据状态的处理都在同一个服务和数据库中，而具有ACID特性的数据库支持强一致性，就是说数据库本身是不会出现不一致的状态的，比如我们常用的关系型数据库MySQL就是通过多版本控制协议(MVCC)的实现来保证了强一致性。 但是随着互联网的发展，用户增多&amp;amp;服务也越来越多越来越复杂，数据量和请求的并发量都上来了。为了满足这一变化，越来越多的系统从单体架构投入到服">
+<meta name="keywords" content="分布式,一致性,读书笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="分布式系统一致性问题处理思路">
+<meta property="og:url" content="http://blog.vioao.site/posts/分布式系统一致性问题处理思路/index.html">
+<meta property="og:site_name" content="Vioao&#39;s Blog">
+<meta property="og:description" content="为啥出现一致性问题在传统单体架构中，数据状态的处理都在同一个服务和数据库中，而具有ACID特性的数据库支持强一致性，就是说数据库本身是不会出现不一致的状态的，比如我们常用的关系型数据库MySQL就是通过多版本控制协议(MVCC)的实现来保证了强一致性。 但是随着互联网的发展，用户增多&amp;amp;服务也越来越多越来越复杂，数据量和请求的并发量都上来了。为了满足这一变化，越来越多的系统从单体架构投入到服">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-07-23T06:48:23.657Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="分布式系统一致性问题处理思路">
+<meta name="twitter:description" content="为啥出现一致性问题在传统单体架构中，数据状态的处理都在同一个服务和数据库中，而具有ACID特性的数据库支持强一致性，就是说数据库本身是不会出现不一致的状态的，比如我们常用的关系型数据库MySQL就是通过多版本控制协议(MVCC)的实现来保证了强一致性。 但是随着互联网的发展，用户增多&amp;amp;服务也越来越多越来越复杂，数据量和请求的并发量都上来了。为了满足这一变化，越来越多的系统从单体架构投入到服">
+
+<link rel="canonical" href="http://blog.vioao.site/posts/分布式系统一致性问题处理思路/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>分布式系统一致性问题处理思路 | Vioao's Blog</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-100038035-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-100038035-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?e10442447b2587d6a6580d90a763ecc6";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Vioao's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Record a little bit</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-fa fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories" rel="section"><i class="fa fa-fw fa-fa fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about" rel="section"><i class="fa fa-fw fa-fa fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives" rel="section"><i class="fa fa-fw fa-fa fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags" rel="section"><i class="fa fa-fw fa-fa fa-tags"></i>标签</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/vioao" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.vioao.site/posts/分布式系统一致性问题处理思路/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.png">
+      <meta itemprop="name" content="Vioao">
+      <meta itemprop="description" content="记录JAVA相关工作和阅读生活点滴">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Vioao's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          分布式系统一致性问题处理思路
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-03-12 21:36:15" itemprop="dateCreated datePublished" datetime="2018-03-12T21:36:15+08:00">2018-03-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-07-23 14:48:23" itemprop="dateModified" datetime="2020-07-23T14:48:23+08:00">2020-07-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/读书笔记/" itemprop="url" rel="index"><span itemprop="name">读书笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="为啥出现一致性问题"><a href="#为啥出现一致性问题" class="headerlink" title="为啥出现一致性问题"></a>为啥出现一致性问题</h1><p>在传统单体架构中，数据状态的处理都在同一个服务和数据库中，而具有<strong><a href="https://baike.baidu.com/item/acid/10738?fr=aladdin" target="_blank" rel="noopener">ACID特性</a></strong>的数据库支持强一致性，就是说数据库本身是不会出现不一致的状态的，比如我们常用的关系型数据库MySQL就是通过多版本控制协议(MVCC)的实现来保证了强一致性。
+但是随着互联网的发展，用户增多&amp;服务也越来越多越来越复杂，数据量和请求的并发量都上来了。为了满足这一变化，越来越多的系统从单体架构投入到服务化或者微服务架构。然而，微服务是把双刃剑，虽然能通过对服务的有效拆分来实现敏捷开发和自动化部署，并提高系统的水兵伸缩能力；但是微服务模式下，服务之间通过网络来通信(<strong>网络并不是可靠的</strong>)，那么当网络异常时，就很容易引起各个系统之间的不一致。</p>
+<a id="more"></a>
+
+<h1 id="一致性相关思想理论"><a href="#一致性相关思想理论" class="headerlink" title="一致性相关思想理论"></a>一致性相关思想理论</h1><h2 id="一致性类别"><a href="#一致性类别" class="headerlink" title="一致性类别"></a>一致性类别</h2><ul>
+<li><p>强一致
+当更新操作完成之后，任何多个后续进程或者线程的访问都会返回最新的更新过的值。这种是对用户最友好的，就是用户上一次写什么，下一次就保证能读到什么。根据 CAP 理论，这种实现需要牺牲可用性。</p>
+</li>
+<li><p>弱一致性
+系统并不保证续进程或者线程的访问都会返回最新的更新过的值。系统在数据写入成功之后，不承诺立即可以读到最新写入的值，也不会具体的承诺多久之后可以读到。</p>
+</li>
+<li><p>最终一致性
+弱一致性的特定形式。系统保证在没有后续更新的前提下，系统最终返回上一次更新操作的值。在没有故障发生的前提下，不一致窗口的时间主要受通信延迟，系统负载和复制副本的个数影响。DNS 是一个典型的最终一致性系统。</p>
+</li>
+</ul>
+<h2 id="CAP原理"><a href="#CAP原理" class="headerlink" title="CAP原理"></a>CAP原理</h2><ul>
+<li><strong>C:Consistency</strong>： 一致性；同一时刻，同一数据，各系统间的值相同。</li>
+<li><strong>A:Availability</strong>：可用性；服务能一直保证是可用的状态，能保证在有限的时间内处理完请求并响应。</li>
+<li><strong>P:Partition Tolerance</strong>：分区容忍性；出现网络分区时(网络断了、程序bug、死机等)，系统仍可继续工作。</li>
+</ul>
+<p><strong>CAP原理证明，任何分布式系统只可以同时满足以上特性中的两种。</strong></p>
+<h2 id="BASE思想"><a href="#BASE思想" class="headerlink" title="BASE思想"></a>BASE思想</h2><p>BASE思想是解决一般分布式一致性问题的基本思路，其满足CAP原理，通过牺牲强一致性获得可用性，通过达到最终一致性来满足业务的绝大多数需求。</p>
+<ul>
+<li><strong>BA: Basically Available</strong>；基本可用</li>
+<li><strong>S: Soft state</strong>；软状态，状态在一段时间内可不同步</li>
+<li><strong>E: Eventually consistent</strong>；最终一致性，在一定时间窗口内，数据最终达成一致。</li>
+</ul>
+<h1 id="如何保证最终一致性"><a href="#如何保证最终一致性" class="headerlink" title="如何保证最终一致性"></a>如何保证最终一致性</h1><p>当数据量和请求量都很大的时候，系统无法通过<strong>向上扩展(scale up)</strong>或者说向上扩展(scale up)的成本很高时并且<strong>水平切分</strong>后无法将相关数据分到数据库的同一个片上时，为了保证系统的可用性，我们可以通过牺牲强一致性获得可用性，通过达到最终一致性来满足业务的绝大多数需求。</p>
+<p>一般来说，保证最终一致性的核心思想就是<strong>查询-&gt;补偿</strong>，通过查询操作的状态，或者查询数据或消息的差异来判断是否有不一致的情况发生，如果有，则执行对应的补偿行为。补偿行为有以下几种:</p>
+<ul>
+<li><strong>自动恢复</strong>，程序根据发生不一致的环境，自动重试或回滚操作来达到一致状态。</li>
+<li><strong>运营手工恢复</strong>，程序无法自动恢复时，通过通知运营人员手工进行补偿。</li>
+<li><strong>技术运营</strong>，通过手工数据库或者代码变更来进行补偿以达到一致状态。这是最糟的情况，生产中应尽量避免。</li>
+</ul>
+<h2 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h2><p>对于查询，需要确保有<strong>保存对应的操作状态</strong>并<strong>唯一区分每个操作</strong>。</p>
+<h3 id="保存操作状态"><a href="#保存操作状态" class="headerlink" title="保存操作状态"></a>保存操作状态</h3><p>通常是通过将操作执行状态或消息发送状态保存到数据库中以确保后续可以通过查询接口查询到对应的状态来执行补偿操作。一般步骤如下：
+ 在操作执行前(消息发送前)，将对应的操作记录(消息)持久化到业务数据库，状态标记为待执行(待发送)，然后执行操作(发送消息)，如果成功。则改变对应的状态为执行成功(发送成功)。
+通常保存记录的数据库或消息中间件是独立于业务系统的。</p>
+<h3 id="唯一区分每个操作"><a href="#唯一区分每个操作" class="headerlink" title="唯一区分每个操作"></a>唯一区分每个操作</h3><p>在分布式系统中，这需要一个全局唯一的ID来区分每一个服务操作，对于全局唯一ID有以下两种方式:</p>
+<ul>
+<li><strong>持久型</strong>，使用数据库表自增或Sequence生成，通常为了提高效率，每个应用会缓存一个批次的ID。</li>
+<li><strong>时间型</strong> ，一般由机器号、业务号、时间、单节点内自增ID等组成，可以保证ID的粗略递增。 eg. Twitter的Snowflake算法</li>
+</ul>
+<h2 id="补偿"><a href="#补偿" class="headerlink" title="补偿"></a>补偿</h2><h3 id="单次补偿"><a href="#单次补偿" class="headerlink" title="单次补偿"></a>单次补偿</h3><p>服务操作完成后，<strong>立即</strong>通过查询接口查询<strong>单次</strong>操作的执行状态，及时的根据操作状态判断是否需要进行对应的补偿操作。</p>
+<h3 id="定期校对"><a href="#定期校对" class="headerlink" title="定期校对"></a>定期校对</h3><p>事后<strong>定期</strong>异步的<strong>批量</strong>校对操作的状态，根据操作状态判断是否需要进行对应的补偿操作。定期校对多用于金融系统中，如商户交易对账、现金对账等都属于定期校对。
+根据系统的需求，以上两种补偿方式可单独使用，也可一起使用以尽可能的保证数据的一致性。</p>
+<hr>
+<p>在上面的处理过程中，有一种情况需要特别考虑，就是各个服务之间的通讯超时问题，由于超时情况下，我们不知道到服务到底是否执行成功，所以需要特殊考虑。</p>
+<h2 id="超时处理"><a href="#超时处理" class="headerlink" title="超时处理"></a>超时处理</h2><h2 id="交互模式"><a href="#交互模式" class="headerlink" title="交互模式"></a>交互模式</h2><p>讲超时处理前，我们先大致讲下系统间的几种交互模式:</p>
+<ul>
+<li><strong>同步调用模式</strong>,适用于大规模、<strong>高并发的短小操作</strong> 。eg. JDBC</li>
+<li><strong>异步调用模式</strong><ul>
+<li><strong>异步接口模式</strong>，适用于<strong>非核心</strong>链路上<strong>高负载</strong>的处理环节，通常<strong>操作比较耗时</strong>，且对<strong>时效性要求不高</strong>。eg. 商品出售后，商户的入账收入</li>
+<li><strong>消息队列异步处理模式</strong>，通过消息队列，服务A将事件传递给服务B而<strong>不需要等待服务B的返回结果(即上游服务不关心下游的处理结果)</strong>。eg. 订单成功后，对应的物流处理</li>
+</ul>
+</li>
+</ul>
+<h2 id="超时补偿原则"><a href="#超时补偿原则" class="headerlink" title="超时补偿原则"></a>超时补偿原则</h2><p>超时情况下，我们都需要对服务间超时照成的后果进行处理，处理方式有快速失败和内部补偿两种，补偿模式又分调用方补偿和接收方补偿两种。那么我们该如何做决定呢，可参考如下原则:</p>
+<ul>
+<li>服务A调用服务B，如果服务B响应服务A并且告诉服务A消息已接收，那么服务A的任务就结束了；如果服务B处理失败，那么服务B应该负责重试或补偿。在这种情况下，服务B需要接收消息持久化后再告诉服务A接收成功随后才去执行对应的处理操作</li>
+<li>服务A调用服务B，服务B没有给出明确的接收响应，eg 超时，那么服务A应该重试，知道服务B表明接收到了消息（这需要保证消息的幂等性或者进行滤重，不然会产生重复处理的问题）。</li>
+</ul>
+<hr>
+<p><strong>参考:</strong></p>
+<ul>
+<li><a href="https://www.cnblogs.com/lzyGod/p/5558474.html" target="_blank" rel="noopener">保证分布式系统数据一致性的6种方案(转载)</a></li>
+<li>《分布式服务架构-原理、设计与实践》</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Vioao
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.vioao.site/posts/分布式系统一致性问题处理思路/" title="分布式系统一致性问题处理思路">http://blog.vioao.site/posts/分布式系统一致性问题处理思路/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/分布式/" rel="tag"><i class="fa fa-tag"></i> 分布式</a>
+              <a href="/tags/一致性/" rel="tag"><i class="fa fa-tag"></i> 一致性</a>
+              <a href="/tags/读书笔记/" rel="tag"><i class="fa fa-tag"></i> 读书笔记</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/Jasperreports-OOM问题处理/" rel="prev" title="Jasperreports OOM问题处理">
+      <i class="fa fa-chevron-left"></i> Jasperreports OOM问题处理
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/项目重构感悟/" rel="next" title="项目重构感悟">
+      项目重构感悟 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Vioao</span>
+</div>
+  <div class="powered-by">CI/CD by
+    <a class="theme-link theme-link-bottom" target="_blank" href="http://drone.vioao.site">Vioao's Drone</a>
+  </div>
+
+
+
+  <span> | </span>
+  <div class="powered-by">Social:
+    
+        <a class="theme-link theme-link-bottom" href="https://github.com/vioao || fab fa-github" target="_blank" title="GitHub" >
+          GitHub
+        </a>
+        <div style="margin-left: 5px; display: inline-block"> </div>
+    
+        <a class="theme-link theme-link-bottom" href="http://blog.csdn.net/u010862794 || fab fa-csdn" target="_blank" title="CSDN" >
+          CSDN
+        </a>
+        <div style="margin-left: 5px; display: inline-block"> </div>
+    
+  </div>
+
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/disqusjs@1/dist/disqusjs.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/disqusjs@1/dist/disqus.js', () => {
+    window.dsqjs = new DisqusJS({
+      api       : 'https://disqus.com/api/' || 'https://disqus.com/api/',
+      apikey    : '8O6WLttLODmGPEwm7CHPNDPJXfQqRCW2HSSrWZmULAfOWUc02kLl5UXTBIOIzzCZ/',
+      shortname : 'vioao',
+      url       : "http://blog.vioao.site/posts/分布式系统一致性问题处理思路/",
+      identifier: "posts/分布式系统一致性问题处理思路/",
+      title     : "分布式系统一致性问题处理思路",
+    });
+  }, window.DisqusJS);
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/uploads/favicon.ico">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.vioao.site","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"remove","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":"disqusjs","storage":true,"lazyload":true,"nav":null,"activeClass":"disqusjs"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="问题出现一次项目更新后，发现项目无法正常 build 了，出现如下报错： 12error: cannot access DoNotMock  class file for com.google.errorprone.annotations.DoNotMock not found  问题定位 Review 代码更新，寻找可疑点  这一步 review 没有发现什么特殊的改动，只是更改了几个 prot">
+<meta name="keywords" content="Java,Gradle">
+<meta property="og:type" content="article">
+<meta property="og:title" content="记一次 Gradle Build 问题分析">
+<meta property="og:url" content="http://blog.vioao.site/posts/记一次-Gradle-Build-问题分析/index.html">
+<meta property="og:site_name" content="Vioao&#39;s Blog">
+<meta property="og:description" content="问题出现一次项目更新后，发现项目无法正常 build 了，出现如下报错： 12error: cannot access DoNotMock  class file for com.google.errorprone.annotations.DoNotMock not found  问题定位 Review 代码更新，寻找可疑点  这一步 review 没有发现什么特殊的改动，只是更改了几个 prot">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-07-23T06:48:23.666Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="记一次 Gradle Build 问题分析">
+<meta name="twitter:description" content="问题出现一次项目更新后，发现项目无法正常 build 了，出现如下报错： 12error: cannot access DoNotMock  class file for com.google.errorprone.annotations.DoNotMock not found  问题定位 Review 代码更新，寻找可疑点  这一步 review 没有发现什么特殊的改动，只是更改了几个 prot">
+
+<link rel="canonical" href="http://blog.vioao.site/posts/记一次-Gradle-Build-问题分析/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>记一次 Gradle Build 问题分析 | Vioao's Blog</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-100038035-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-100038035-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?e10442447b2587d6a6580d90a763ecc6";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Vioao's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Record a little bit</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-fa fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories" rel="section"><i class="fa fa-fw fa-fa fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about" rel="section"><i class="fa fa-fw fa-fa fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives" rel="section"><i class="fa fa-fw fa-fa fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags" rel="section"><i class="fa fa-fw fa-fa fa-tags"></i>标签</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/vioao" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.vioao.site/posts/记一次-Gradle-Build-问题分析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.png">
+      <meta itemprop="name" content="Vioao">
+      <meta itemprop="description" content="记录JAVA相关工作和阅读生活点滴">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Vioao's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          记一次 Gradle Build 问题分析
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-08-24 10:48:26" itemprop="dateCreated datePublished" datetime="2019-08-24T10:48:26+08:00">2019-08-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-07-23 14:48:23" itemprop="dateModified" datetime="2020-07-23T14:48:23+08:00">2020-07-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/工作记录/" itemprop="url" rel="index"><span itemprop="name">工作记录</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="问题出现"><a href="#问题出现" class="headerlink" title="问题出现"></a>问题出现</h3><p>一次项目更新后，发现项目无法正常 build 了，出现如下报错：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">error: cannot access DoNotMock</span><br><span class="line">  class file <span class="keyword">for</span> com.google.errorprone.annotations.DoNotMock not found</span><br></pre></td></tr></table></figure>
+
+<h3 id="问题定位"><a href="#问题定位" class="headerlink" title="问题定位"></a>问题定位</h3><ol>
+<li><p>Review 代码更新，寻找可疑点</p>
+<p> 这一步 review 没有发现什么特殊的改动，只是更改了几个 proto 文件的定义。但是回退代码后却又能正常 build，所以说明构建失败的确是此次更新引入的问题。</p>
+</li>
+</ol>
+<a id="more"></a>
+
+<ol start="2">
+<li><p>根据报错信息寻找问题根源</p>
+<ol>
+<li><p>寻找错误包</p>
+<p> 看错误是类找不到的问题，那么首先确定这个类是哪个包的；Google 了下，该类出现在 <a href="https://github.com/google/error-prone" target="_blank" rel="noopener">error-prone</a> , 并且发现 <code>DoNotMock</code> 从 2.3.0 开始就被移除掉了，相关讨论见 <a href="https://github.com/google/error-prone/issues/572" target="_blank" rel="noopener">GITHUB</a></p>
+ <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.google.errorprone<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>error_prone_annotations<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.2.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>分析包依赖</p>
+<p> 从上面其实就可以看出这应该是一个依赖包不对带来的问题。那么此时就需要分析项目的依赖。重点查看 <strong>error_prone_annotations</strong> 的相关依赖。分析如下（本来在 console 中 <strong>error_prone_annotations</strong> 有高亮的，贴上来就没有了）：</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"> $ ./gradlew dependencies -q --configuration compile | grep error_prone_annotations --color -C 10</span><br><span class="line">compile - Dependencies <span class="keyword">for</span> <span class="built_in">source</span> <span class="built_in">set</span> <span class="string">'main'</span> (deprecated, use <span class="string">'implementation'</span> instead).</span><br><span class="line">+--- net.xxxx.mshell:mshell-java-dropwizard-core:10.0.0</span><br><span class="line">|    +--- io.dropwizard:dropwizard-core:1.3.13</span><br><span class="line">|    |    +--- io.dropwizard:dropwizard-util:1.3.13</span><br><span class="line">|    |    |    +--- com.fasterxml.jackson.core:jackson-annotations:2.9.0 -&gt; 2.9.9</span><br><span class="line">|    |    |    +--- com.google.guava:guava:24.1.1-jre -&gt; 27.1-jre</span><br><span class="line">|    |    |    |    +--- com.google.guava:failureaccess:1.0.1</span><br><span class="line">|    |    |    |    +--- com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava</span><br><span class="line">|    |    |    |    +--- com.google.code.findbugs:jsr305:3.0.2</span><br><span class="line">|    |    |    |    +--- org.checkerframework:checker-qual:2.5.2</span><br><span class="line">|    |    |    |    +--- com.google.errorprone:error_prone_annotations:2.2.0 -&gt; 2.3.2 <span class="comment"># here use error_prone_annotations 2.3.2</span></span><br><span class="line">|    |    |    |    +--- com.google.j2objc:j2objc-annotations:1.1</span><br><span class="line">|    |    |    |    \--- org.codehaus.mojo:animal-sniffer-annotations:1.17</span><br><span class="line">|    |    |    +--- com.google.code.findbugs:jsr305:3.0.2</span><br><span class="line">|    |    |    \--- joda-time:joda-time:2.10.1</span><br><span class="line">|    |    +--- io.dropwizard:dropwizard-jackson:1.3.13</span><br><span class="line">|    |    |    +--- com.google.guava:guava:24.1.1-jre -&gt; 27.1-jre (*)</span><br><span class="line">|    |    |    +--- io.dropwizard:dropwizard-util:1.3.13 (*)</span><br><span class="line">|    |    |    +--- com.fasterxml.jackson.core:jackson-core:2.9.9</span><br><span class="line">|    |    |    +--- com.fasterxml.jackson.core:jackson-annotations:2.9.0 -&gt; 2.9.9</span><br><span class="line">|    |    |    +--- com.fasterxml.jackson.core:jackson-databind:2.9.9.1</span><br><span class="line">--</span><br><span class="line">--</span><br><span class="line">|    |    |    |    +--- io.dropwizard:dropwizard-configuration:1.3.5 -&gt; 1.3.13 (*)</span><br><span class="line">|    |    |    |    \--- org.apache.commons:commons-lang3:3.4 -&gt; 3.8.1</span><br><span class="line">|    |    |    +--- com.google.protobuf:protobuf-java:3.6.0 -&gt; 3.8.0</span><br><span class="line">|    |    |    \--- net.jodah:failsafe:2.0.1</span><br><span class="line">|    |    +--- net.xxxx.experimentation:java-mr-hyde-client:0.5.1 (*)</span><br><span class="line">|    |    +--- io.dropwizard:dropwizard-logging:1.3.13 (*)</span><br><span class="line">|    |    +--- io.dropwizard:dropwizard-configuration:1.3.13 (*)</span><br><span class="line">|    |    +--- io.dropwizard:dropwizard-metrics:1.3.13 (*)</span><br><span class="line">|    |    +--- io.dropwizard.metrics:metrics-healthchecks:4.0.2 -&gt; 4.0.5 (*)</span><br><span class="line">|    |    +--- org.slf4j:jcl-over-slf4j:1.7.25 -&gt; 1.7.26 (*)</span><br><span class="line">|    |    \--- com.google.errorprone:error_prone_annotations:2.0.12 -&gt; 2.3.2  <span class="comment"># here use error_prone_annotations 2.3.2</span></span><br><span class="line">|    +--- net.xxxx.mshell:mshell-java-secrets:10.0.0 (*)</span><br><span class="line">|    +--- net.xxxx.mshell:mshell-java-metrics:10.0.0 (*)</span><br><span class="line">|    +--- net.xxxx.mshell:mshell-java-async-client:10.0.0</span><br><span class="line">|    |    +--- org.asynchttpclient:async-http-client:2.4.9</span><br><span class="line">|    |    |    +--- org.asynchttpclient:async-http-client-netty-utils:2.4.9</span><br><span class="line">|    |    |    |    +--- io.netty:netty-buffer:4.1.25.Final</span><br><span class="line">|    |    |    |    |    \--- io.netty:netty-common:4.1.25.Final</span><br><span class="line">|    |    |    |    +--- org.slf4j:slf4j-api:1.7.25 -&gt; 1.7.26</span><br><span class="line">|    |    |    |    \--- com.sun.activation:javax.activation:1.2.0</span><br><span class="line">|    |    |    +--- io.netty:netty-codec-http:4.1.25.Final</span><br><span class="line">--</span><br><span class="line">--</span><br><span class="line">|    |    |    +--- com.lightstep.tracer:java-common:0.15.8</span><br><span class="line">|    |    |    |    +--- io.opentracing:opentracing-api:0.31.0</span><br><span class="line">|    |    |    |    +--- io.opentracing:opentracing-util:0.31.0 (*)</span><br><span class="line">|    |    |    |    +--- com.google.protobuf:protobuf-java:3.5.1 -&gt; 3.8.0</span><br><span class="line">|    |    |    |    \--- com.google.api.grpc:grpc-google-common-protos:1.12.0</span><br><span class="line">|    |    |    |         +--- io.grpc:grpc-stub:1.10.1 -&gt; 1.13.2</span><br><span class="line">|    |    |    |         |    \--- io.grpc:grpc-core:1.13.2</span><br><span class="line">|    |    |    |         |         +--- io.grpc:grpc-context:1.13.2</span><br><span class="line">|    |    |    |         |         +--- com.google.code.gson:gson:2.7</span><br><span class="line">|    |    |    |         |         +--- com.google.guava:guava:20.0 -&gt; 27.1-jre (*)</span><br><span class="line">|    |    |    |         |         +--- com.google.errorprone:error_prone_annotations:2.1.2 -&gt; 2.3.2 <span class="comment"># here use error_prone_annotations 2.3</span></span><br><span class="line">|    |    |    |         |         +--- com.google.code.findbugs:jsr305:3.0.0 -&gt; 3.0.2</span><br><span class="line">|    |    |    |         |         +--- io.opencensus:opencensus-api:0.12.3</span><br><span class="line">|    |    |    |         |         \--- io.opencensus:opencensus-contrib-grpc-metrics:0.12.3</span><br><span class="line">|    |    |    |         |              \--- io.opencensus:opencensus-api:0.12.3</span><br><span class="line">|    |    |    |         +--- io.grpc:grpc-protobuf:1.10.1 -&gt; 1.13.2</span><br><span class="line">|    |    |    |         |    +--- io.grpc:grpc-core:1.13.2 (*)</span><br><span class="line">|    |    |    |         |    +--- com.google.protobuf:protobuf-java:3.5.1 -&gt; 3.8.0</span><br><span class="line">|    |    |    |         |    +--- com.google.guava:guava:20.0 -&gt; 27.1-jre (*)</span><br><span class="line">|    |    |    |         |    +--- com.google.api.grpc:proto-google-common-protos:1.0.0 -&gt; 1.12.0</span><br><span class="line">|    |    |    |         |    |    \--- com.google.protobuf:protobuf-java:3.5.1 -&gt; 3.8.0</span><br><span class="line">--</span><br><span class="line">--</span><br><span class="line">|    |    +--- io.prometheus:simpleclient:0.6.0</span><br><span class="line">|    |    \--- io.dropwizard.metrics:metrics-core:3.1.2 -&gt; 4.0.5 (*)</span><br><span class="line">|    \--- javax.xml.bind:jaxb-api:2.3.1</span><br><span class="line">|         \--- javax.activation:javax.activation-api:1.2.0</span><br><span class="line">\--- io.dropwizard.modules:dropwizard-protobuf:1.3.12-1</span><br><span class="line">     +--- io.dropwizard:dropwizard-core:1.3.12 -&gt; 1.3.13 (*)</span><br><span class="line">     +--- com.google.protobuf:protobuf-java:3.8.0</span><br><span class="line">     \--- com.google.protobuf:protobuf-java-util:3.8.0</span><br><span class="line">          +--- com.google.protobuf:protobuf-java:3.8.0</span><br><span class="line">          +--- com.google.guava:guava:26.0-android -&gt; 27.1-jre (*)</span><br><span class="line">          +--- com.google.errorprone:error_prone_annotations:2.3.2    <span class="comment"># here use error_prone_annotations 2.3</span></span><br><span class="line">          \--- com.google.code.gson:gson:2.7</span><br></pre></td></tr></table></figure>
+
+<p>从上面可以看出，最终用的是 2.3.2 的 <code>error_prone_annotations</code> ，该版本中是没有 <code>DoNotMock</code> 注解的。而 2.3.2 版本的 <code>error_prone_annotations</code> 是由 <code>protobuf-java-util:3.8.0</code> 引入。至此找到问题所在。就是包依赖的问题</p>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="问题解决"><a href="#问题解决" class="headerlink" title="问题解决"></a>问题解决</h3><p>在上一步中已已经确定问题点，就是包依赖导致的问题。那么我们便可以着手解决问题，该问题可以有<strong>三个解决方案</strong>：</p>
+<ol>
+<li><p>编译时强制使用含 <code>DoNotMock</code> 的  <code>error_prone_annotations</code></p>
+ <figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">implementation(<span class="string">'com.google.errorprone:error_prone_annotations:2.2.0'</span>) &#123;</span><br><span class="line">    force = <span class="keyword">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在依赖中移除 <code>error_prone_annotations:2.3.2</code></p>
+ <figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">compile</span> (<span class="string">"io.dropwizard.modules:dropwizard-protobuf:$&#123;dropwizardProtobufVersion&#125;"</span>) &#123;</span><br><span class="line">    <span class="keyword">exclude</span> <span class="keyword">group</span>: <span class="string">'com.google.errorprone'</span>, module: <span class="string">'error_prone_annotations'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>升级所有依赖 <code>error_prone_annotations</code> 的包，升级到新版不使用  <code>DoNotMock</code>；该方案影响较大。需要先全局查找使用了 <code>DoNotMock</code> 的包。然后分析其使用依赖，再判断是否能升级。</p>
+</li>
+</ol>
+<h3 id="问题回顾"><a href="#问题回顾" class="headerlink" title="问题回顾"></a>问题回顾</h3><p>问题是解决了，但是有个疑问。此次更新中，我们并没有更新相关的包依赖，为何以前 build 的时候没有出错，而这次却出错了呢？<br>这边再次 Review 了下更新的代码，再结合此前对包依赖的分析，发现了问题所在。此次更新中，我们在 proto 文件中定义了 grpc 接口服务，而此服务的编译依赖包 <code>io.grpc</code> ；即编译 grpc 接口服务的包需要使用到相关的类，而这些类中有些使用了 <code>DoNotMock</code>。而不幸的是，我们引用的其他包中使用了更新的 <code>error_prone_annotations</code> ，然该包中又不含 <code>DoNotMock</code>，从而导致了编译错误。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">error: cannot access DoNotMock</span><br><span class="line">  class file <span class="keyword">for</span> com.google.errorprone.annotations.DoNotMock not found</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Vioao
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.vioao.site/posts/记一次-Gradle-Build-问题分析/" title="记一次 Gradle Build 问题分析">http://blog.vioao.site/posts/记一次-Gradle-Build-问题分析/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"><i class="fa fa-tag"></i> Java</a>
+              <a href="/tags/Gradle/" rel="tag"><i class="fa fa-tag"></i> Gradle</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/OTA-项目知识/" rel="prev" title="OTA 项目知识">
+      <i class="fa fa-chevron-left"></i> OTA 项目知识
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/从-VPS-到科学上网一气呵成/" rel="next" title="从 VPS 到科学上网一气呵成">
+      从 VPS 到科学上网一气呵成 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Vioao</span>
+</div>
+  <div class="powered-by">CI/CD by
+    <a class="theme-link theme-link-bottom" target="_blank" href="http://drone.vioao.site">Vioao's Drone</a>
+  </div>
+
+
+
+  <span> | </span>
+  <div class="powered-by">Social:
+    
+        <a class="theme-link theme-link-bottom" href="https://github.com/vioao || fab fa-github" target="_blank" title="GitHub" >
+          GitHub
+        </a>
+        <div style="margin-left: 5px; display: inline-block"> </div>
+    
+        <a class="theme-link theme-link-bottom" href="http://blog.csdn.net/u010862794 || fab fa-csdn" target="_blank" title="CSDN" >
+          CSDN
+        </a>
+        <div style="margin-left: 5px; display: inline-block"> </div>
+    
+  </div>
+
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/disqusjs@1/dist/disqusjs.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/disqusjs@1/dist/disqus.js', () => {
+    window.dsqjs = new DisqusJS({
+      api       : 'https://disqus.com/api/' || 'https://disqus.com/api/',
+      apikey    : '8O6WLttLODmGPEwm7CHPNDPJXfQqRCW2HSSrWZmULAfOWUc02kLl5UXTBIOIzzCZ/',
+      shortname : 'vioao',
+      url       : "http://blog.vioao.site/posts/记一次-Gradle-Build-问题分析/",
+      identifier: "posts/记一次-Gradle-Build-问题分析/",
+      title     : "记一次 Gradle Build 问题分析",
+    });
+  }, window.DisqusJS);
+});
+</script>
+
+</body>
+</html>

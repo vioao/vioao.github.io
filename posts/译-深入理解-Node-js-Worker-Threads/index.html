@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/uploads/favicon.ico">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.vioao.site","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"remove","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":"disqusjs","storage":true,"lazyload":true,"nav":null,"activeClass":"disqusjs"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="最近工作中又有可能需要写 Node.js 应用了，距离上次写 Node.js 应用也有好些年了，所以就开始 重新熟悉下 Node.js 了。刚好最近又在学 Go，其最大的特点就是简单、轻量级的并发模型。非常容易 用它编写一个能够充分利用硬件资源的高性能应用。于是不免想起以前学习 Node.js 时会遇到的问题：如何 让 Node.js 充分利用多核 CPU 的资源。于是，让我发现了，Node.js">
+<meta name="keywords" content="多线程,Node.js">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[译]深入理解 Node.js Worker Threads">
+<meta property="og:url" content="http://blog.vioao.site/posts/译-深入理解-Node-js-Worker-Threads/index.html">
+<meta property="og:site_name" content="Vioao&#39;s Blog">
+<meta property="og:description" content="最近工作中又有可能需要写 Node.js 应用了，距离上次写 Node.js 应用也有好些年了，所以就开始 重新熟悉下 Node.js 了。刚好最近又在学 Go，其最大的特点就是简单、轻量级的并发模型。非常容易 用它编写一个能够充分利用硬件资源的高性能应用。于是不免想起以前学习 Node.js 时会遇到的问题：如何 让 Node.js 充分利用多核 CPU 的资源。于是，让我发现了，Node.js">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-07-23T06:48:23.666Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[译]深入理解 Node.js Worker Threads">
+<meta name="twitter:description" content="最近工作中又有可能需要写 Node.js 应用了，距离上次写 Node.js 应用也有好些年了，所以就开始 重新熟悉下 Node.js 了。刚好最近又在学 Go，其最大的特点就是简单、轻量级的并发模型。非常容易 用它编写一个能够充分利用硬件资源的高性能应用。于是不免想起以前学习 Node.js 时会遇到的问题：如何 让 Node.js 充分利用多核 CPU 的资源。于是，让我发现了，Node.js">
+
+<link rel="canonical" href="http://blog.vioao.site/posts/译-深入理解-Node-js-Worker-Threads/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>[译]深入理解 Node.js Worker Threads | Vioao's Blog</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-100038035-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-100038035-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?e10442447b2587d6a6580d90a763ecc6";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Vioao's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Record a little bit</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-fa fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories" rel="section"><i class="fa fa-fw fa-fa fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about" rel="section"><i class="fa fa-fw fa-fa fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives" rel="section"><i class="fa fa-fw fa-fa fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags" rel="section"><i class="fa fa-fw fa-fa fa-tags"></i>标签</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/vioao" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.vioao.site/posts/译-深入理解-Node-js-Worker-Threads/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.png">
+      <meta itemprop="name" content="Vioao">
+      <meta itemprop="description" content="记录JAVA相关工作和阅读生活点滴">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Vioao's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          [译]深入理解 Node.js Worker Threads
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-07-22 13:51:51" itemprop="dateCreated datePublished" datetime="2020-07-22T13:51:51+08:00">2020-07-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-07-23 14:48:23" itemprop="dateModified" datetime="2020-07-23T14:48:23+08:00">2020-07-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Node-js/" itemprop="url" rel="index"><span itemprop="name">Node.js</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>最近工作中又有可能需要写 Node.js 应用了，距离上次写 Node.js 应用也有好些年了，所以就开始
+重新熟悉下 Node.js 了。刚好最近又在学 Go，其最大的特点就是简单、轻量级的并发模型。非常容易
+用它编写一个能够充分利用硬件资源的高性能应用。于是不免想起以前学习 Node.js 时会遇到的问题：如何
+让 Node.js 充分利用多核 CPU 的资源。于是，让我发现了，Node.js 从 v10.5.0 开始引入
+ worker_threads 模块来解决该问题。并让我发现了这篇文章。</p>
+<p>此文为译文，原文如下。</p>
+<blockquote>
+<p>译自 <a href="https://blog.insiderattack.net/deep-dive-into-worker-threads-in-node-js-e75e10546b11" target="_blank" rel="noopener">Deep Dive into Worker Threads in Node.js</a></p>
+</blockquote>
+<hr>
+<p>多年来，Node.js 一直都不是实现 CPU 密集型应用的最佳选择。其中最主要的原因就是 Node.js 仅仅
+是 Javascript 而 JavaScript 是单线程的。作为该问题一个解决方法，Node.js 从 v10.5.0 开
+始引入了实验性的 <a href="https://nodejs.org/api/worker_threads.html" target="_blank" rel="noopener">Worker Threads</a> 概
+念，并将其体现在 <code>worker_threads</code> 模块，该模块从 Node.js v12 LTS 开始作为一个稳定功能
+模块提供出来。在这边文章中，我将会说明它们是如何工作的，怎样使用 worker threads 才能获取最好
+的性能。假如你对 Node.js worker threads 还不了解的话，我建议你查看它们的
+<a href="https://nodejs.org/api/worker_threads.html" target="_blank" rel="noopener">官方文档</a> 。</p>
+<blockquote>
+<p>注：文中引用的 Node.js 代码片段版本为 <a href="https://github.com/nodejs/node/tree/921493e2287aa895679620155b5288b2e1587bfd" target="_blank" rel="noopener">921493e</a> 。</p>
+</blockquote>
+<a id="more"></a>
+
+<h3 id="Node-js-的-CPU-密集型应用的历史"><a href="#Node-js-的-CPU-密集型应用的历史" class="headerlink" title="Node.js 的 CPU 密集型应用的历史"></a>Node.js 的 CPU 密集型应用的历史</h3><p>在 worker threads 出现前，就已经有很多种方案来完成基于 Node.js 的 CPU 密集型应用。常见的
+有如下几种：</p>
+<ul>
+<li>使用 <code>child_process</code> 模块，在子进程中运行耗费 CPU 的代码操作。</li>
+<li>使用 <code>cluster</code> 模块，在多个进程中运行耗费 CPU 资源的代码操作。</li>
+<li>使用第三方模块，如 Microsoft 的 <a href="https://github.com/microsoft/napajs" target="_blank" rel="noopener">Napa.js</a> 。</li>
+</ul>
+<p>但是，由于性能局限、额外的引入学习成本、接受度的不足、不稳定性以及文档缺失等原因，这其中没有
+一个方案是能被广泛接受的。</p>
+<h3 id="使用-worker-threads-来执行-CPU-密集的代码操作"><a href="#使用-worker-threads-来执行-CPU-密集的代码操作" class="headerlink" title="使用 worker threads 来执行 CPU 密集的代码操作"></a>使用 worker threads 来执行 CPU 密集的代码操作</h3><p>尽管 <code>worker_threads</code> 对于 JavaScript 的并发问题来说是一个优雅的解决方案，但是其实
+ JavaScript 本身并没有引进将多线程的语言特性。实际上，<code>worker_threads</code> 是通过允许应用
+可以运行多个独立的 JavaScript workers，workers 和 其父 workers 可以通过 Node.js 
+ 来通信。听起来很困惑？</p>
+<p><strong>在 Node.js 中，每个 worker 有他自己的 V8 实例和事件循环机制(Event Loop)。但是，和子进程不同，workers 是可以共享内存的。</strong></p>
+<p>在此文的后面我会解释它们是如何能够拥有独立的 V8 实例和事件循环(Event Loop)的。不过我们先来
+看看我们能如何使用 worker threads。下面是一个基本用法的示例：<code>worker-simple.js</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123;Worker, isMainThread, parentPort, workerData&#125; = <span class="built_in">require</span>(<span class="string">'worker_threads'</span>);</span><br><span class="line"><span class="keyword">if</span> (isMainThread) &#123;</span><br><span class="line"> <span class="keyword">const</span> worker = <span class="keyword">new</span> Worker(__filename, &#123;<span class="attr">workerData</span>: &#123;<span class="attr">num</span>: <span class="number">5</span>&#125;&#125;);</span><br><span class="line"> worker.once(<span class="string">'message'</span>, (result) =&gt; &#123;</span><br><span class="line"> <span class="built_in">console</span>.log(<span class="string">'square of 5 is :'</span>, result);</span><br><span class="line"> &#125;)</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line"> parentPort.postMessage(workerData.num * workerData.num)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在上面的例子中，我们将一个数字传给另一个 worker 来计算其平方值。在完成计算后，该 child worker
+会将其结果发送给 main worker。尽管这看起来很简单，但是如果你不了解 Node.js 的 worker threads
+的话，还是会觉得有些困惑的。</p>
+<h3 id="worker-threads-是如何工作的"><a href="#worker-threads-是如何工作的" class="headerlink" title="worker threads 是如何工作的"></a>worker threads 是如何工作的</h3><p>JavaScript 并没有多线程的特性，所以 Node.js 的 Worker Threads 和其他支持多线程的高级
+语言在处理上是不一样的。</p>
+<p>在 Node.js 中，一个 worker 的职责就是执行 parent worker 提供给他的代码片段(worker script)。
+这个 worker script 可以是一个单独的文件，也可以是一个能够被 <code>eval</code> 代码文本；它将被放在别
+的 worker 中独立运行，且 该 worker 和其 parent worker 之间是可以传递消息的。在我们的例子
+中，我们提供了 <code>__filename</code> 作为这个代码片段，那是因为 worker 和 parent worker 的执行
+代码是一样的，只是在其中通过 <code>isMainThread</code> 来区分了。</p>
+<p>每一个 worker 都通过一个 <a href="https://nodejs.org/api/worker_threads.html#worker_threads_class_messagechannel" target="_blank" rel="noopener">message channel</a>
+来和其 parent worker 通信。child worker 可以通过 <code>parentPort.postMessage</code> 将信息
+写入信道，而 parent worker 需要通过 <code>worker.postMessage()</code> 来将消息写入信道。看看下图
+(图一)他们是如何工作的</p>
+<img data-src="/posts/译-深入理解-Node-js-Worker-Threads/message_channel.png" title="Diagram 1: Message Channel between the parent and the child workers">
+
+<blockquote>
+<p>一个信道就是一个简单的通信渠道。它有两个端口，被叫做 ‘ports’。在 <a href="https://developer.mozilla.org/en-US/docs/Web/API/MessageChannel" target="_blank" rel="noopener">JavaScript</a> / <a href="https://nodejs.org/api/worker_threads.html#worker_threads_class_messagechannel" target="_blank" rel="noopener">NodeJS</a>
+中，信道的两端就只是被简单的叫做‘port1’ 和 ‘port2’……</p>
+</blockquote>
+<h3 id="Node-js-workers-是如何并行运行的"><a href="#Node-js-workers-是如何并行运行的" class="headerlink" title="Node.js workers 是如何并行运行的"></a>Node.js workers 是如何并行运行的</h3><p>现在，最大的问题就是,，既然 JavaScript 本身并不支持并行，那么两个 Node.js workers 是如何并行
+执行的呢？</p>
+<p>答案就是 <a href="https://v8docs.nodesource.com/node-0.8/d5/dda/classv8_1_1_isolate.html" target="_blank" rel="noopener">V8 Isolates</a> 。</p>
+<p><strong>V8 Isolates</strong> 是一个独立的 chrome V8 运行实例，其有独立的 JS 堆和微任务队列。这就为
+每一个 Node.js worker 独立运行提供了保障。其缺陷就是，workers 之间没法直接访问对方的堆。</p>
+<p>由于这个原因，每个 worker 都有其自己的 <a href="https://github.com/libuv/libuv" target="_blank" rel="noopener">libuv</a> event loop。</p>
+<h3 id="跨越-JS-C-的界限"><a href="#跨越-JS-C-的界限" class="headerlink" title="跨越 JS/C++ 的界限"></a>跨越 JS/C++ 的界限</h3><p>Worker 的实例化和通信是通过 C++ 的 worker 来实现的。该模块的实现在 <a href="https://github.com/nodejs/node/blob/921493e228/src/node_worker.cc" target="_blank" rel="noopener">worker.cc</a> 。</p>
+<p>Worker 的实现通过 <code>worker_threads</code> 模块暴露在了 JavaScript 的用户空间。这个 JS 的实现
+被分成了两个 scripts ：</p>
+<ul>
+<li>[Worker 初始化脚本] - 负责初始化 worker 实例并设置 parent-child worker 之间的通信
+使得 parent worker 可以将 metadata 传递给 child worker。</li>
+<li>[Worker 执行脚本] - 负责使用用户提供的 <code>workerData</code> 和 parent worker 提供的 
+metadata 来执行用户的 JS 脚本。</li>
+</ul>
+<p>下图（图二）提供了一个更清晰的说明。看看该图描述了些什么</p>
+<img data-src="/posts/译-深入理解-Node-js-Worker-Threads/worker_internals.png" title="Diagram 2: Worker Implementation Internals">
+
+<p>按照上面说的，我们可以把 worker 的设置进程分成两步。</p>
+<ul>
+<li>初始化 worker</li>
+<li>运行 worker</li>
+</ul>
+<p>让我们看卡这两步都干了啥。</p>
+<h4 id="初始化阶段"><a href="#初始化阶段" class="headerlink" title="初始化阶段"></a>初始化阶段</h4><ol>
+<li>用户空间的脚本通过 <code>worker_threads</code> 模块创建一个 worker 实例</li>
+<li>Node.js 的 parent worker 初始化脚本调用 C++ 模块，创建一个空的 C++ worker 对象。</li>
+<li>当 C++ worker 对象被创建后，它生成一个线程 ID 并分配给自己</li>
+<li>当 worker 对象被创建的时候，parent worker 会初创建一个空的始化信道（让我们称它为 <code>IMC</code>）。就是上面图二的 “Initialisation Message Channel”</li>
+<li>Node.js 的 parent worker 初始化脚本创建一个公共的 JS 信道（让我们称它为 <code>PMC</code>）。该信道是给用户空间的 JS 使用的，便于他们在 
+parent worker 和 child worker 之间通过 <code>*.postMessage()</code> 方法来传递消息。就是上面图一和图二的红色部分</li>
+<li>Node.js 的 parent worker 初始化脚本调用 C++ 模块，将初始化的 metadata 写入 IMC 来传递给 worker 的执行脚本。</li>
+</ol>
+<blockquote>
+<p>初始化 metadata 是什么？ worker 执行脚本启动时需要知道的数据，eg. 脚本名称、worker 数据、 PMC 的 <code>port2</code> 以及一些其他信息。
+根据我们的例子来说，初始化 metadata 就是类似如下的一条信息：<br>嗨，Worker 执行脚本，使用 worker data <code>{num: 5}</code> 来运行 <code>worker-simple.js</code>。并将 PMC 的 <code>port2</code> 传递给它，以便它能从 PMC 
+读取或写入消息。</p>
+</blockquote>
+<p>下面这个代码片段展示了初始化 metadata 是如何被写入到 IMC 的。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">const</span> kPublicPort = <span class="built_in">Symbol</span>(<span class="string">'kPublicPort'</span>);</span><br><span class="line"><span class="comment">// ...redacted...</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> &#123; port1, port2 &#125; = <span class="keyword">new</span> MessageChannel();</span><br><span class="line"><span class="keyword">this</span>[kPublicPort] = port1;</span><br><span class="line"><span class="keyword">this</span>[kPublicPort].on(<span class="string">'message'</span>, (message) =&gt; <span class="keyword">this</span>.emit(<span class="string">'message'</span>, message));</span><br><span class="line"><span class="comment">// ...redacted...</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">this</span>[kPort].postMessage(&#123;</span><br><span class="line">  type: <span class="string">'loadScript'</span>,</span><br><span class="line">  filename,</span><br><span class="line">  doEval: !!options.eval,</span><br><span class="line">  cwdCounter: cwdCounter || workerIo.sharedCwdCounter,</span><br><span class="line">  workerData: options.workerData,</span><br><span class="line">  publicPort: port2,</span><br><span class="line">  <span class="comment">// ...redacted...</span></span><br><span class="line">  hasStdin: !!options.stdin</span><br><span class="line">&#125;, [port2]);</span><br></pre></td></tr></table></figure>
+
+<p>在上面的片段中，<code>this[kPort]</code> 就是 IMC 的 end port。尽管此时已经向 IMC 写数据了，但是
+worker 执行脚本还是无法获取这些数据，因为它还没有被启动呢。</p>
+<h4 id="运行阶段"><a href="#运行阶段" class="headerlink" title="运行阶段"></a>运行阶段</h4><p>此时，初始化阶段完成。然后，就会调用 C++ 来启动这个 worker 线程。</p>
+<ol>
+<li>一个新的 v8 isolate 被创建并分配给这个 worker。这使得该 worker 可以拥有自己的运行时环境</li>
+<li>libuv 被初始化。这使得该 worker 可以拥有自己的 event loop</li>
+<li>Worker 初始化脚本被执行，启动 worker 的 event loop</li>
+<li>Worker 初始化脚本 调用 C++ 模块从 IMC 读取初始化 metadata</li>
+<li>Worker 执行脚本在 worker 中运行代码文件或代码片段。在我们的例子中就是 <code>worker-simple.js</code></li>
+</ol>
+<p>下面这个代码片段展示了 worker 是如何执行脚本的。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> publicWorker = <span class="built_in">require</span>(<span class="string">'worker_threads'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// ...redacted...</span></span><br><span class="line"></span><br><span class="line">port.on(<span class="string">'message'</span>, (message) =&gt; &#123;</span><br><span class="line">  <span class="keyword">if</span> (message.type === <span class="string">'loadScript'</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> &#123;</span><br><span class="line">      cwdCounter,</span><br><span class="line">      filename,</span><br><span class="line">      doEval,</span><br><span class="line">      workerData,</span><br><span class="line">      publicPort,</span><br><span class="line">      manifestSrc,</span><br><span class="line">      manifestURL,</span><br><span class="line">      hasStdin</span><br><span class="line">    &#125; = message;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// ...redacted...</span></span><br><span class="line">    initializeCJSLoader();</span><br><span class="line">    initializeESMLoader();</span><br><span class="line">    </span><br><span class="line">    publicWorker.parentPort = publicPort;</span><br><span class="line">    publicWorker.workerData = workerData;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// ...redacted...</span></span><br><span class="line">    </span><br><span class="line">    port.unref();</span><br><span class="line">    port.postMessage(&#123; <span class="attr">type</span>: UP_AND_RUNNING &#125;);</span><br><span class="line">    <span class="keyword">if</span> (doEval) &#123;</span><br><span class="line">      <span class="keyword">const</span> &#123; evalScript &#125; = <span class="built_in">require</span>(<span class="string">'internal/process/execution'</span>);</span><br><span class="line">      evalScript(<span class="string">'[worker eval]'</span>, filename);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      process.argv[<span class="number">1</span>] = filename; <span class="comment">// script filename</span></span><br><span class="line">      <span class="built_in">require</span>(<span class="string">'module'</span>).runMain();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// ...redacted...</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="发现了什么吗？"><a href="#发现了什么吗？" class="headerlink" title="发现了什么吗？"></a>发现了什么吗？</h4><p>在上面的代码片段中，你是否有发现 <code>workerData</code> 和 <code>parentPort</code> 属性是在
+ <code>require(&#39;worker_threads&#39;)</code> 中被 worker 执行脚本设置的？</p>
+<p>这就是为什么 <code>workerData</code> 和 <code>parentPort</code> 属性只能在 child worker thread 的代码
+而不是 parent worker thread 的代码中被访问了。假如你尝试在 parent worker 的代码中获取
+这些属性，你只能得到 <code>null</code>。</p>
+<h3 id="更好的使用-worker-threads"><a href="#更好的使用-worker-threads" class="headerlink" title="更好的使用 worker threads"></a>更好的使用 worker threads</h3><p>现在我们了解了 Node.js Worker Threads 是怎么工作的了。了解他们的原来能让我们更好的使用
+worker threads 来获取最佳的性能。当编写复杂的应用的时候（比 <code>worker-simple.js</code> 复杂的多）
+，我们需要牢记下面两个点</p>
+<ul>
+<li>尽管 worker threads 比实际的进程更加轻量级，但是大量频繁的创建使用它也是很昂贵的</li>
+<li>使用 worker threads 来并行的执行 I/O 操作时不划算的，请直接使用 Node.js 自身的 I/O
+操作，那会更高效</li>
+</ul>
+<p>为了克服上述的第一个问题吗，我们需要实现 “Worker 线程池”。</p>
+<h4 id="Worker-线程池"><a href="#Worker-线程池" class="headerlink" title="Worker 线程池"></a>Worker 线程池</h4><p>通过使用线程池技术，使得当新任务来临时，我们可以通过 parent-child 信道将 其传递给一个可用
+的 worker 来执行它，一旦这个 worker 完成了该 task，其可以用过同样的信道来将其执行结果传递
+过来。</p>
+<p>一旦正确的实现线程池，那么其将显著的提升应用性能。因为它能够减少额外的创建 threads 消耗。同样
+值得一提的是，创建大量线程并不一定就是特别高效了，因为其还受制于硬件的资源。</p>
+<p>下图是三种情况的一个性能比较，其实现了相同的功能：接受一个 string 然后给他加密并返回。三种不同
+的服务如下：</p>
+<ul>
+<li>没使用多线程的服务（no multi-threading）</li>
+<li>使用了多线程但没有使用线程池的服务（multi-threading（no thread pool））</li>
+<li>使用了多线程和线程池的服务（multi-threading（with thread pool））</li>
+</ul>
+<img data-src="/posts/译-深入理解-Node-js-Worker-Threads/worker_threads_efficient.png" title="How efficient is it to use worker_threads">
+
+<p>然而，Node.js 官方目前并没有提供线程池的使用。所以你需要依赖第三方的实现或者自己实现一个。
+这是我自己实现的一个 <a href="https://repl.it/@dpjayasekara/threadpool" target="_blank" rel="noopener">worker pool</a> 。<strong>它还不能被用于生产环境</strong></p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Vioao
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.vioao.site/posts/译-深入理解-Node-js-Worker-Threads/" title="[译]深入理解 Node.js Worker Threads">http://blog.vioao.site/posts/译-深入理解-Node-js-Worker-Threads/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/多线程/" rel="tag"><i class="fa fa-tag"></i> 多线程</a>
+              <a href="/tags/Node-js/" rel="tag"><i class="fa fa-tag"></i> Node.js</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/压测对比-Spring-WebFlux-VS-Spring-MVC/" rel="prev" title="压测对比: Spring WebFlux VS. Spring MVC">
+      <i class="fa fa-chevron-left"></i> 压测对比: Spring WebFlux VS. Spring MVC
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Vioao</span>
+</div>
+  <div class="powered-by">CI/CD by
+    <a class="theme-link theme-link-bottom" target="_blank" href="http://drone.vioao.site">Vioao's Drone</a>
+  </div>
+
+
+
+  <span> | </span>
+  <div class="powered-by">Social:
+    
+        <a class="theme-link theme-link-bottom" href="https://github.com/vioao || fab fa-github" target="_blank" title="GitHub" >
+          GitHub
+        </a>
+        <div style="margin-left: 5px; display: inline-block"> </div>
+    
+        <a class="theme-link theme-link-bottom" href="http://blog.csdn.net/u010862794 || fab fa-csdn" target="_blank" title="CSDN" >
+          CSDN
+        </a>
+        <div style="margin-left: 5px; display: inline-block"> </div>
+    
+  </div>
+
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/disqusjs@1/dist/disqusjs.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/disqusjs@1/dist/disqus.js', () => {
+    window.dsqjs = new DisqusJS({
+      api       : 'https://disqus.com/api/' || 'https://disqus.com/api/',
+      apikey    : '8O6WLttLODmGPEwm7CHPNDPJXfQqRCW2HSSrWZmULAfOWUc02kLl5UXTBIOIzzCZ/',
+      shortname : 'vioao',
+      url       : "http://blog.vioao.site/posts/译-深入理解-Node-js-Worker-Threads/",
+      identifier: "posts/译-深入理解-Node-js-Worker-Threads/",
+      title     : "[译]深入理解 Node.js Worker Threads",
+    });
+  }, window.DisqusJS);
+});
+</script>
+
+</body>
+</html>

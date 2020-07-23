@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/uploads/favicon.ico">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.vioao.site","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"remove","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":"disqusjs","storage":true,"lazyload":true,"nav":null,"activeClass":"disqusjs"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="对自己所参与过的事物做个复盘是个好习惯，能让自己对事物有个更深的了解。比如说，读了一本书，那么这个时候你需要回去思考:这本书讲了些啥，对你有何影响；又或者，你参与了一个活动，你完了后，你也可以对其进行复盘，思考下这个活动的意义，这个活动是让你增加见识了还是让你放松心情了等；再或者，你参与了一个项目，这个时候还是可以复盘，考虑项目的进展中的难点等。其实复盘，就是对自己经历过的事物进行思考总结。是一个">
+<meta name="keywords" content="项目经验">
+<meta property="og:type" content="article">
+<meta property="og:title" content="项目复盘思考">
+<meta property="og:url" content="http://blog.vioao.site/posts/项目复盘思考/index.html">
+<meta property="og:site_name" content="Vioao&#39;s Blog">
+<meta property="og:description" content="对自己所参与过的事物做个复盘是个好习惯，能让自己对事物有个更深的了解。比如说，读了一本书，那么这个时候你需要回去思考:这本书讲了些啥，对你有何影响；又或者，你参与了一个活动，你完了后，你也可以对其进行复盘，思考下这个活动的意义，这个活动是让你增加见识了还是让你放松心情了等；再或者，你参与了一个项目，这个时候还是可以复盘，考虑项目的进展中的难点等。其实复盘，就是对自己经历过的事物进行思考总结。是一个">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-07-23T06:48:23.675Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="项目复盘思考">
+<meta name="twitter:description" content="对自己所参与过的事物做个复盘是个好习惯，能让自己对事物有个更深的了解。比如说，读了一本书，那么这个时候你需要回去思考:这本书讲了些啥，对你有何影响；又或者，你参与了一个活动，你完了后，你也可以对其进行复盘，思考下这个活动的意义，这个活动是让你增加见识了还是让你放松心情了等；再或者，你参与了一个项目，这个时候还是可以复盘，考虑项目的进展中的难点等。其实复盘，就是对自己经历过的事物进行思考总结。是一个">
+
+<link rel="canonical" href="http://blog.vioao.site/posts/项目复盘思考/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>项目复盘思考 | Vioao's Blog</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-100038035-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-100038035-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?e10442447b2587d6a6580d90a763ecc6";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Vioao's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Record a little bit</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-fa fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories" rel="section"><i class="fa fa-fw fa-fa fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about" rel="section"><i class="fa fa-fw fa-fa fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives" rel="section"><i class="fa fa-fw fa-fa fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags" rel="section"><i class="fa fa-fw fa-fa fa-tags"></i>标签</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/vioao" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.vioao.site/posts/项目复盘思考/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.png">
+      <meta itemprop="name" content="Vioao">
+      <meta itemprop="description" content="记录JAVA相关工作和阅读生活点滴">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Vioao's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          项目复盘思考
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-06-06 10:47:02" itemprop="dateCreated datePublished" datetime="2019-06-06T10:47:02+08:00">2019-06-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-07-23 14:48:23" itemprop="dateModified" datetime="2020-07-23T14:48:23+08:00">2020-07-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/工作记录/" itemprop="url" rel="index"><span itemprop="name">工作记录</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>对自己所参与过的事物做个复盘是个好习惯，能让自己对事物有个更深的了解。比如说，读了一本书，那么这个时候你需要回去思考:这本书讲了些啥，对你有何影响；又或者，你参与了一个活动，你完了后，你也可以对其进行复盘，思考下这个活动的意义，这个活动是让你增加见识了还是让你放松心情了等；再或者，你参与了一个项目，这个时候还是可以复盘，考虑项目的进展中的难点等。其实复盘，就是对自己经历过的事物进行思考总结。是一个很好的自我矫正升华的方式。</p>
+<p>下面我以一个程序员参与的项目的复盘来简要说明下，复盘过程中可能思考的问题和方向。</p>
+<a id="more"></a>
+
+<h2 id="抛出问题"><a href="#抛出问题" class="headerlink" title="抛出问题"></a>抛出问题</h2><ol>
+<li>为什么要做这个项目？</li>
+<li>项目是怎么选型的？</li>
+<li>项目的规模(数据量、并发量、增量)？</li>
+<li>项目中遇到了什么难点？是如何解决这些问题的？</li>
+<li>项目还有什么不足？有什么解决方案？</li>
+</ol>
+<h2 id="问题解答"><a href="#问题解答" class="headerlink" title="问题解答"></a>问题解答</h2><p>这里以之前我做过的一个出单项目为例子简单说一下可能的问题思考总结。</p>
+<hr>
+<h3 id="为什么要做这个项目"><a href="#为什么要做这个项目" class="headerlink" title="为什么要做这个项目"></a>为什么要做这个项目</h3><p>面对日益增加的互联网合作伙伴对接平安的出单系统,原有的系统已经无法完全满足与日俱增出单压力。对此，针对保险单较为单一的投保，分离业务，做成一个互联网出单系统。快速响应合作伙伴的出单需求.</p>
+<h3 id="项目是怎么选型的"><a href="#项目是怎么选型的" class="headerlink" title="项目是怎么选型的"></a>项目是怎么选型的</h3><p>SpringCloud: 成熟的为服务体系,JAVA生态,成员已有springboot基础. 公司内部已有基于springcloud的成功案例.
+MongoDB: 简单保单类型适合嵌套文档形式存储. 分布式(支持分片，可扩展), 高可用(可配置副本)
+RockMq: 在保证了可靠性的前提下，队列特性足够丰富，可运维程度比较高。其快速横向扩展的能力，也能保证未来几年我们对其性能的要求。RocketMQ基于Java语言开发</p>
+<img data-src="/posts/项目复盘思考/mq.jpg" title="mq对比">
+
+<blockquote>
+<p><strong>RabbitMQ</strong>由于采用同步刷盘，其可靠性非常强(采用ACK机制)，但是性能却是这三款开源产品中最差的，在实际的测试中也能很轻易的得到验证。所以RabbitMQ更适合使用在对消息可靠性要求很高，但对消息吞吐量不太敏感的场景中。这里额外提一下一个个人经验，我们在对开源产品选型时，建议大家需要了解该产品是基于什么协议/规范实现的，这样大致就清楚了这款开源产品可以解决什么问题，适用于哪些场景。例如消息中间件领域的AMQP、JMS、STOMP协议，工作流领域的bpmn2.0标准。
+<strong>Kafka</strong>是由LinkedIn开发的一个分布式的消息系统，使用Scala编写，它以可水平扩展和高吞吐率而被广泛使用。目前越来越多的开源分布式处理系统如Cloudera、Apache Storm、Spark都支持与Kafka集成。Kafka的高吞吐是其最重要的一个特点，这也带来了一个潜在隐患在异常情况下，其消息丢失率较高。所以它比较适用于将高吞吐作为首要考虑，能容忍少量消息丢失的场景。例如作为大数据平台数据传输的流式管道，其在日志采集场景中也被广泛应用。
+<strong>RocketMQ</strong>的核心架构设计参考了Kafka，有网友甚至提出它是Kafka Java版本的实现。不可否认的是RocketMQ的设计实现的确参考了很多Kafka的设计思想，比如说均采用了基于文件的存储方案、Topic的并行化操作、底层网络协议均基于TCP (RocketMQ使用netty成熟的解决方案，Kafka使用一套自行设计的基于TCP层的协议)，但两者之间相对特点还是比较明显，RocketMQ在牺牲了部分性能的前提下，提供了更多的机制来保证消息的可靠性，同时也提供了更为丰富和实用的消息队列特性。比如说消息的查询、消息的回溯。这些接口的提供，极大的便利了消息中间件的运维，提高了在一些异常场景中的故障恢复速度。
+<strong>最终选择了RocketMQ</strong>，理由是RocketMQ在保证了可靠性的前提下，队列特性足够丰富，可运维程度比较高。其快速横向扩展的能力，也能保证未来几年我们对其性能的要求。另外RocketMQ基于Java语言开发，也降低了我们后续对其进行扩展和二次开发的难度。</p>
+</blockquote>
+<h3 id="项目的规模-数据量、并发量、增量等）"><a href="#项目的规模-数据量、并发量、增量等）" class="headerlink" title="项目的规模(数据量、并发量、增量等）"></a>项目的规模(数据量、并发量、增量等）</h3><p>1wQPS， 每日单量60w、目前已有6000w单量.
+还有比如说项目部署的规模等情况(eg. 服务器多少台，缓存服务，消息中间件等是如何部署的)</p>
+<h3 id="项目中遇到了什么难点？是如何解决这些问题的"><a href="#项目中遇到了什么难点？是如何解决这些问题的" class="headerlink" title="项目中遇到了什么难点？是如何解决这些问题的"></a>项目中遇到了什么难点？是如何解决这些问题的</h3><blockquote>
+<p>压测监控查看各方面的系统资源并未达到瓶颈,但是并发量达不到预期</p>
+</blockquote>
+<p>问题解决和排查思路: 老一套方案,首先定位性能瓶颈: CPU/内存/IO等</p>
+<ol>
+<li><p>ps aux | grep appname 查看进程ID</p>
+</li>
+<li><p>top -H pid查看cpu和内存的使用情况(未发现应用服务器的cpu和内存有较高的使用率)
+ cpu繁忙一般可能的情况如下:</p>
+<ul>
+<li>线程中的不合理循环</li>
+<li>发生了频繁的full gc</li>
+<li>多线程的上下文频繁切换</li>
+</ul>
+</li>
+<li><p>通过jmap/jstack命令查看内存/线程信息(可能是线程出现等待导致，所以也需要查看线程信息)</p>
+</li>
+<li><p>通过<a href="https://github.com/MartinDai/Arthas" target="_blank" rel="noopener">Arthas</a>工具查看接口执行过程中每个方法的耗时情况</p>
+<blockquote>
+<p>$trace xxx #cost
+方法内部调用路径，并输出方法路径上的每个节点上耗时, trace 命令能主动搜索 class-pattern／method-pattern 对应的方法调用路径，渲染和统计整个调用链路上的所有性能开销和追踪调用链路。trace 能方便的帮助你定位和发现因 RT 高而导致的性能问题缺陷，但其每次只能跟踪一级方法的调用链路</p>
+</blockquote>
+<p> 结果如下(包名经过处理):</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">+---[0.001162ms] com.xxx.service.dto.ApplyResultDTO:setApplyPolicyNo()</span><br><span class="line">        +---[0.511972ms] com.xxx.service.apply.save.ApplySaveService:fillApplyPolicyNo()</span><br><span class="line">        +---[19.709352ms] com.xxx.service.apply.save.ApplySaveService:saveContractDTOInfo()</span><br><span class="line">        +---[1.313593ms] com.xxx.service.apply.save.ApplySaveService:saveApplyParameterInfo()</span><br><span class="line">        +---[min=4.35E-4ms,max=9.48E-4ms,total=0.002326ms,count=3] java.lang.StringBuilder:&lt;init&gt;()</span><br><span class="line">        +---[min=5.1E-4ms,max=0.00146ms,total=0.004705ms,count=6] java.lang.StringBuilder:append()</span><br><span class="line">        +---[0.001361ms] com.xxx.base.dto.BaseInfoDTO:getTransactionNo()</span><br><span class="line">        +---[min=4.86E-4ms,max=6.61E-4ms,total=0.001777ms,count=3] java.lang.StringBuilder:toString()</span><br><span class="line">        +---[523.544075ms] com.xxx.common.service.redis.RedisService:stringSet()</span><br><span class="line">        +---[9.91E-4ms] com.xxx.common.util.StringUtils:isNotBlank()</span><br><span class="line">        +---[min=6.07E-4ms,max=7.75E-4ms,total=0.001382ms,count=2] java.lang.String:equals()</span><br><span class="line">        +---[min=5.03E-4ms,max=6.95E-4ms,total=0.001198ms,count=2] java.lang.Integer:intValue()</span><br><span class="line">        +---[min=592.763104ms,max=868.853641ms,total=1461.616745ms,count=2] com.xxx.common.service.redis.RedisService:ObjectSet()</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>通过trace 定位到是redis耗时后，定位redis问题</p>
+<ol>
+<li>查看redis服务器状态，发现压测时有台服务器的 查看redis服务器状态，发现压测时有台服务器的CPU达到70%左右</li>
+<li>slowlog get 命令获取redis慢查询定位到是某个key的读取导致, 到此发现是redis数据的热点问题</li>
+</ol>
+</li>
+<li><p>解决方案</p>
+<ol>
+<li>出现该问题是有工具类滥用redis的问题，每次获取数据都从redis获取。首先，调整代码，增加内存缓存。redis缓存刷新时发布事件动态刷新内存缓存； 然后，优化存储的dto，只缓存必要的数据。减小数据量；最后，替换序列化工具,将jackson序列化替换为fastjson.</li>
+<li>流程中部分耗时的IO操作线程异步后台处理</li>
+</ol>
+</li>
+</ol>
+<h3 id="项目还有什么不足？有什么解决方案？"><a href="#项目还有什么不足？有什么解决方案？" class="headerlink" title="项目还有什么不足？有什么解决方案？"></a>项目还有什么不足？有什么解决方案？</h3><ol>
+<li>缺少网关限流<blockquote>
+<p>spring-cloud-zuul-ratelimit、 针对不同合作伙伴分别限流</p>
+</blockquote>
+</li>
+<li>使用了较多的内存缓存，这些缓存通常无需改变<blockquote>
+<p>调整jvm参数,如增加老年代比例。减少gc耗时停顿时间 </p>
+</blockquote>
+</li>
+<li>使用缓存时没考虑并发问题导致的数据不一致性<blockquote>
+<p>目前使用缓存的时候，策略是先删除缓存后更新数据库的，在并发情况下，可能会导致缓存和数据库的数据不一致，该问题需要解决。目前考虑的解决方案有如下几种:</p>
+<ul>
+<li>在写数据库操作的时候。利用Redis加锁，使得数据更新完成之后才能读缓存   </li>
+<li>写数据库后，启动一个延迟定时任务，定时任务负责读取数据库的最新数据更新Redis中的缓存</li>
+<li>Redis读写请求入队列，根据请求类型决定是否需要阻塞等待，以保证数据的一致性  </li>
+</ul>
+</blockquote>
+</li>
+</ol>
+<hr>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>上面只是给了一个例子，还有更多的思考点等着自己去发掘。再者每个人的经历也不一样，思考方向也许也会有更多的不同，但是最重要的是一个保持思考总结的习惯，该习惯并不是一定要等事情完结后才去考虑，在过程中我们也需要不断的思考总结。
+人会在思考总结中进步，如果只是走马观花一般，那就真的像网上传的一样(十年工作经验，其实就是一年的工作经验重复可十年)。希望大家不是活成了段子，而是在不断的进步，看到越来越好的自己。</p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Vioao
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.vioao.site/posts/项目复盘思考/" title="项目复盘思考">http://blog.vioao.site/posts/项目复盘思考/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/项目经验/" rel="tag"><i class="fa fa-tag"></i> 项目经验</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/中国灾害预警爬取解析/" rel="prev" title="中国灾害预警爬取解析">
+      <i class="fa fa-chevron-left"></i> 中国灾害预警爬取解析
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/Flink-入门教程/" rel="next" title="Flink 入门教程">
+      Flink 入门教程 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Vioao</span>
+</div>
+  <div class="powered-by">CI/CD by
+    <a class="theme-link theme-link-bottom" target="_blank" href="http://drone.vioao.site">Vioao's Drone</a>
+  </div>
+
+
+
+  <span> | </span>
+  <div class="powered-by">Social:
+    
+        <a class="theme-link theme-link-bottom" href="https://github.com/vioao || fab fa-github" target="_blank" title="GitHub" >
+          GitHub
+        </a>
+        <div style="margin-left: 5px; display: inline-block"> </div>
+    
+        <a class="theme-link theme-link-bottom" href="http://blog.csdn.net/u010862794 || fab fa-csdn" target="_blank" title="CSDN" >
+          CSDN
+        </a>
+        <div style="margin-left: 5px; display: inline-block"> </div>
+    
+  </div>
+
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/disqusjs@1/dist/disqusjs.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/disqusjs@1/dist/disqus.js', () => {
+    window.dsqjs = new DisqusJS({
+      api       : 'https://disqus.com/api/' || 'https://disqus.com/api/',
+      apikey    : '8O6WLttLODmGPEwm7CHPNDPJXfQqRCW2HSSrWZmULAfOWUc02kLl5UXTBIOIzzCZ/',
+      shortname : 'vioao',
+      url       : "http://blog.vioao.site/posts/项目复盘思考/",
+      identifier: "posts/项目复盘思考/",
+      title     : "项目复盘思考",
+    });
+  }, window.DisqusJS);
+});
+</script>
+
+</body>
+</html>
