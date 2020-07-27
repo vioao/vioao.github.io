@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 3.9.0">
+<meta name="generator" content="Hexo 4.2.1">
   <link rel="icon" type="image/png" sizes="32x32" href="/uploads/favicon.ico">
   <link rel="icon" type="image/png" sizes="16x16" href="/uploads/favicon.ico">
 
@@ -21,19 +21,22 @@
   </script>
 
   <meta name="description" content="说起JAVA并发编程，就不得不聊聊CAS(Compare And Swap)和AQS了(AbstractQueuedSynchronizer)。  CAS(Compare And Swap)什么是CAS CAS(Compare And Swap)，即比较并交换。是解决多线程并行情况下使用锁造成性能损耗的一种机制，CAS操作包含三个操作数——内存位置（V）、预期原值（A）和新值(B)。如果内存位置的">
-<meta name="keywords" content="Java,并发编程,AQS,CAS">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JAVA并发编程: CAS和AQS">
-<meta property="og:url" content="http://blog.vioao.site/posts/JAVA并发编程-CAS和AQS/index.html">
+<meta property="og:url" content="http://blog.vioao.site/posts/JAVA%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B-CAS%E5%92%8CAQS/index.html">
 <meta property="og:site_name" content="Vioao&#39;s Blog">
 <meta property="og:description" content="说起JAVA并发编程，就不得不聊聊CAS(Compare And Swap)和AQS了(AbstractQueuedSynchronizer)。  CAS(Compare And Swap)什么是CAS CAS(Compare And Swap)，即比较并交换。是解决多线程并行情况下使用锁造成性能损耗的一种机制，CAS操作包含三个操作数——内存位置（V）、预期原值（A）和新值(B)。如果内存位置的">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-07-23T09:27:19.774Z">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-06-06T15:35:21.000Z">
+<meta property="article:modified_time" content="2020-07-27T02:23:53.561Z">
+<meta property="article:author" content="Vioao">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="并发编程">
+<meta property="article:tag" content="AQS">
+<meta property="article:tag" content="CAS">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="JAVA并发编程: CAS和AQS">
-<meta name="twitter:description" content="说起JAVA并发编程，就不得不聊聊CAS(Compare And Swap)和AQS了(AbstractQueuedSynchronizer)。  CAS(Compare And Swap)什么是CAS CAS(Compare And Swap)，即比较并交换。是解决多线程并行情况下使用锁造成性能损耗的一种机制，CAS操作包含三个操作数——内存位置（V）、预期原值（A）和新值(B)。如果内存位置的">
 
-<link rel="canonical" href="http://blog.vioao.site/posts/JAVA并发编程-CAS和AQS/">
+<link rel="canonical" href="http://blog.vioao.site/posts/JAVA%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B-CAS%E5%92%8CAQS/">
 
 
 <script id="page-configurations">
@@ -95,6 +98,7 @@
   </style>
 </noscript>
 
+<link rel="alternate" href="/atom.xml" title="Vioao's Blog" type="application/atom+xml">
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
@@ -216,7 +220,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://blog.vioao.site/posts/JAVA并发编程-CAS和AQS/">
+    <link itemprop="mainEntityOfPage" href="http://blog.vioao.site/posts/JAVA%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B-CAS%E5%92%8CAQS/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/uploads/avatar.png">
@@ -246,7 +250,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-23 17:27:19" itemprop="dateModified" datetime="2020-07-23T17:27:19+08:00">2020-07-23</time>
+                <time title="修改时间：2020-07-27 10:23:53" itemprop="dateModified" datetime="2020-07-27T10:23:53+08:00">2020-07-27</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -293,8 +297,7 @@
 <hr>
 <h2 id="AQS-AbstractQueuedSynchronizer"><a href="#AQS-AbstractQueuedSynchronizer" class="headerlink" title="AQS(AbstractQueuedSynchronizer)"></a>AQS(<code>AbstractQueuedSynchronizer</code>)</h2><h3 id="什么是AQS"><a href="#什么是AQS" class="headerlink" title="什么是AQS"></a>什么是AQS</h3><p>AQS(<code>AbstractQueuedSynchronizer</code>)，AQS是JDK下提供的一套用于实现基于FIFO等待队列的阻塞锁和相关的同步器的一个同步框架。这个抽象类被设计为作为一些可用原子int值来表示状态的同步器的基类。如果你有看过类似 <code>CountDownLatch</code> 类的源码实现，会发现其内部有一个继承了 <code>AbstractQueuedSynchronizer</code> 的内部类 <code>Sync</code> 。可见 <code>CountDownLatch</code> 是基于AQS框架来实现的一个同步器.类似的同步器在JUC下还有不少。(eg.  <code>Semaphore</code> )</p>
 <h3 id="AQS用法"><a href="#AQS用法" class="headerlink" title="AQS用法"></a>AQS用法</h3><p>如上所述，AQS管理一个关于状态信息的单一整数，该整数可以表现任何状态。比如， <code>Semaphore</code> 用它来表现剩余的许可数，<code>ReentrantLock</code> 用它来表现拥有它的线程已经请求了多少次锁；<code>FutureTask</code> 用它来表现任务的状态(尚未开始、运行、完成和取消)</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">To use this class as the basis of a synchronizer, redefine the</span><br><span class="line">* following methods, as applicable, by inspecting and/or modifying</span><br><span class="line">* the synchronization state using &#123;@link #getState&#125;, &#123;@link</span><br><span class="line">* #setState&#125; and/or &#123;@link #compareAndSetState&#125;:</span><br><span class="line">*</span><br><span class="line">* &lt;ul&gt;</span><br><span class="line">* &lt;li&gt; &#123;@link #tryAcquire&#125;</span><br><span class="line">* &lt;li&gt; &#123;@link #tryRelease&#125;</span><br><span class="line">* &lt;li&gt; &#123;@link #tryAcquireShared&#125;</span><br><span class="line">* &lt;li&gt; &#123;@link #tryReleaseShared&#125;</span><br><span class="line">* &lt;li&gt; &#123;@link #isHeldExclusively&#125;</span><br><span class="line">* &lt;/ul&gt;</span><br></pre></td></tr></table></figure>
-
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">To use this class as the basis of a synchronizer, redefine the</span><br><span class="line">* following methods, as applicable, by inspecting and&#x2F;or modifying</span><br><span class="line">* the synchronization state using &#123;@link #getState&#125;, &#123;@link</span><br><span class="line">* #setState&#125; and&#x2F;or &#123;@link #compareAndSetState&#125;:</span><br><span class="line">*</span><br><span class="line">* &lt;ul&gt;</span><br><span class="line">* &lt;li&gt; &#123;@link #tryAcquire&#125;</span><br><span class="line">* &lt;li&gt; &#123;@link #tryRelease&#125;</span><br><span class="line">* &lt;li&gt; &#123;@link #tryAcquireShared&#125;</span><br><span class="line">* &lt;li&gt; &#123;@link #tryReleaseShared&#125;</span><br><span class="line">* &lt;li&gt; &#123;@link #isHeldExclusively&#125;</span><br><span class="line">* &lt;&#x2F;ul&gt;</span><br></pre></td></tr></table></figure>
 <p>如JDK的文档中所说，使用AQS来实现一个同步器需要覆盖实现如下几个方法，并且使用<code>getState</code>,<code>setState</code>,<code>compareAndSetState</code>这几个方法来设置获取状态</p>
 <ol>
 <li><code>boolean tryAcquire(int arg)</code></li>
@@ -323,7 +326,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://blog.vioao.site/posts/JAVA并发编程-CAS和AQS/" title="JAVA并发编程: CAS和AQS">http://blog.vioao.site/posts/JAVA并发编程-CAS和AQS/</a>
+    <a href="http://blog.vioao.site/posts/JAVA%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B-CAS%E5%92%8CAQS/" title="JAVA并发编程: CAS和AQS">http://blog.vioao.site/posts/JAVA并发编程-CAS和AQS/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -336,7 +339,7 @@
           
           <div class="post-tags">
               <a href="/tags/Java/" rel="tag"><i class="fa fa-tag"></i> Java</a>
-              <a href="/tags/并发编程/" rel="tag"><i class="fa fa-tag"></i> 并发编程</a>
+              <a href="/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" rel="tag"><i class="fa fa-tag"></i> 并发编程</a>
               <a href="/tags/AQS/" rel="tag"><i class="fa fa-tag"></i> AQS</a>
               <a href="/tags/CAS/" rel="tag"><i class="fa fa-tag"></i> CAS</a>
           </div>
@@ -347,12 +350,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/posts/Lock-和-synchronized/" rel="prev" title="Lock 和 synchronized">
-      <i class="fa fa-chevron-left"></i> Lock 和 synchronized
+    <a href="/posts/HashMap%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" rel="prev" title="HashMap源码解析">
+      <i class="fa fa-chevron-left"></i> HashMap源码解析
     </a></div>
       <div class="post-nav-item">
-    <a href="/posts/HashMap源码解析/" rel="next" title="HashMap源码解析">
-      HashMap源码解析 <i class="fa fa-chevron-right"></i>
+    <a href="/posts/Lock-%E5%92%8C-synchronized/" rel="next" title="Lock 和 synchronized">
+      Lock 和 synchronized <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -453,9 +456,17 @@
   <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
 <script src="/js/schemes/muse.js"></script>
+
+
 <script src="/js/next-boot.js"></script>
+
   <script>
 var pjax = new Pjax({
   selectors: [
@@ -532,7 +543,9 @@ window.addEventListener('pjax:success', () => {
 
 
 
-  <script src="/js/local-search.js"></script>
+  
+<script src="/js/local-search.js"></script>
+
 
 
 
@@ -561,7 +574,7 @@ NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
       repo        : 'vioao.github.io',
       owner       : 'vioao',
       admin       : ['vioao'],
-      id          : '218840dafe3cf7c1150b9faa75b2934d',
+      id          : 'a15c01bf5554b9c3e280141592ca6954',
         language: 'zh-CN',
       distractionFreeMode: true
     });

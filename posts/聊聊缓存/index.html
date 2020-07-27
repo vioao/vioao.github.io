@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 3.9.0">
+<meta name="generator" content="Hexo 4.2.1">
   <link rel="icon" type="image/png" sizes="32x32" href="/uploads/favicon.ico">
   <link rel="icon" type="image/png" sizes="16x16" href="/uploads/favicon.ico">
 
@@ -21,19 +21,23 @@
   </script>
 
   <meta name="description" content="前言如今开发一定规模的web系统时一般会在项目中加入缓存模块块来缓存数据以减轻数据库的压力。从而提高系统的访问速度。最近的面试过程中也有不少是缓存相关的问题，那么下面就来聊下期间被问到的一个缓存更新策略的问题。 我们以Redis作为缓存作为例子。那么问题来了，当缓存的数据需要更新时该如何做才能确保在保证一致性(没有脏数据)的情况下还能有不错的并发量。">
-<meta name="keywords" content="缓存,面试">
 <meta property="og:type" content="article">
 <meta property="og:title" content="聊聊缓存">
-<meta property="og:url" content="http://blog.vioao.site/posts/聊聊缓存/index.html">
+<meta property="og:url" content="http://blog.vioao.site/posts/%E8%81%8A%E8%81%8A%E7%BC%93%E5%AD%98/index.html">
 <meta property="og:site_name" content="Vioao&#39;s Blog">
 <meta property="og:description" content="前言如今开发一定规模的web系统时一般会在项目中加入缓存模块块来缓存数据以减轻数据库的压力。从而提高系统的访问速度。最近的面试过程中也有不少是缓存相关的问题，那么下面就来聊下期间被问到的一个缓存更新策略的问题。 我们以Redis作为缓存作为例子。那么问题来了，当缓存的数据需要更新时该如何做才能确保在保证一致性(没有脏数据)的情况下还能有不错的并发量。">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-07-23T09:27:19.791Z">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://blog.vioao.site/posts/%E8%81%8A%E8%81%8A%E7%BC%93%E5%AD%98/redis.jpg">
+<meta property="og:image" content="http://blog.vioao.site/posts/%E8%81%8A%E8%81%8A%E7%BC%93%E5%AD%98/cache%E6%9E%B6%E6%9E%84.png">
+<meta property="article:published_time" content="2017-05-19T16:10:01.000Z">
+<meta property="article:modified_time" content="2020-07-27T02:23:53.578Z">
+<meta property="article:author" content="Vioao">
+<meta property="article:tag" content="缓存">
+<meta property="article:tag" content="面试">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="聊聊缓存">
-<meta name="twitter:description" content="前言如今开发一定规模的web系统时一般会在项目中加入缓存模块块来缓存数据以减轻数据库的压力。从而提高系统的访问速度。最近的面试过程中也有不少是缓存相关的问题，那么下面就来聊下期间被问到的一个缓存更新策略的问题。 我们以Redis作为缓存作为例子。那么问题来了，当缓存的数据需要更新时该如何做才能确保在保证一致性(没有脏数据)的情况下还能有不错的并发量。">
+<meta name="twitter:image" content="http://blog.vioao.site/posts/%E8%81%8A%E8%81%8A%E7%BC%93%E5%AD%98/redis.jpg">
 
-<link rel="canonical" href="http://blog.vioao.site/posts/聊聊缓存/">
+<link rel="canonical" href="http://blog.vioao.site/posts/%E8%81%8A%E8%81%8A%E7%BC%93%E5%AD%98/">
 
 
 <script id="page-configurations">
@@ -95,6 +99,7 @@
   </style>
 </noscript>
 
+<link rel="alternate" href="/atom.xml" title="Vioao's Blog" type="application/atom+xml">
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
@@ -216,7 +221,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://blog.vioao.site/posts/聊聊缓存/">
+    <link itemprop="mainEntityOfPage" href="http://blog.vioao.site/posts/%E8%81%8A%E8%81%8A%E7%BC%93%E5%AD%98/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/uploads/avatar.png">
@@ -246,7 +251,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-23 17:27:19" itemprop="dateModified" datetime="2020-07-23T17:27:19+08:00">2020-07-23</time>
+                <time title="修改时间：2020-07-27 10:23:53" itemprop="dateModified" datetime="2020-07-27T10:23:53+08:00">2020-07-27</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -254,7 +259,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试相关/" itemprop="url" rel="index"><span itemprop="name">面试相关</span></a>
+                  <a href="/categories/%E9%9D%A2%E8%AF%95%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">面试相关</span></a>
                 </span>
             </span>
 
@@ -271,12 +276,12 @@
       
         <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>如今开发一定规模的web系统时一般会在项目中加入缓存模块块来缓存数据以减轻数据库的压力。从而提高系统的访问速度。最近的面试过程中也有不少是缓存相关的问题，那么下面就来聊下期间被问到的一个缓存更新策略的问题。
 我们以Redis作为缓存作为例子。那么问题来了，当缓存的数据需要更新时该如何做才能确保在保证一致性(没有脏数据)的情况下还能有不错的并发量。</p>
-<img data-src="/posts/聊聊缓存/redis.jpg">
+<img data-src="/posts/%E8%81%8A%E8%81%8A%E7%BC%93%E5%AD%98/redis.jpg" class="">
 
 <a id="more"></a>
 
 <h2 id="面试过程"><a href="#面试过程" class="headerlink" title="面试过程"></a>面试过程</h2><p>通常我们项目中和缓存交道的架构图大体如下：</p>
-<img data-src="/posts/聊聊缓存/cache架构.png" title="cache架构图">
+<img data-src="/posts/%E8%81%8A%E8%81%8A%E7%BC%93%E5%AD%98/cache%E6%9E%B6%E6%9E%84.png" class="" title="cache架构图">
 
 <p>面试过程中，由于我说自己使用过redis来缓存系统中的一些经常读取但是比较少修改的数据，比如说游戏配置，活动礼包配置，玩家所玩过的游戏这些。
 于是面试官遍提出了如下的问题:</p>
@@ -356,7 +361,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://blog.vioao.site/posts/聊聊缓存/" title="聊聊缓存">http://blog.vioao.site/posts/聊聊缓存/</a>
+    <a href="http://blog.vioao.site/posts/%E8%81%8A%E8%81%8A%E7%BC%93%E5%AD%98/" title="聊聊缓存">http://blog.vioao.site/posts/聊聊缓存/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -368,8 +373,8 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/缓存/" rel="tag"><i class="fa fa-tag"></i> 缓存</a>
-              <a href="/tags/面试/" rel="tag"><i class="fa fa-tag"></i> 面试</a>
+              <a href="/tags/%E7%BC%93%E5%AD%98/" rel="tag"><i class="fa fa-tag"></i> 缓存</a>
+              <a href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag"><i class="fa fa-tag"></i> 面试</a>
           </div>
 
         
@@ -378,12 +383,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/posts/项目架构图/" rel="prev" title="项目架构图">
-      <i class="fa fa-chevron-left"></i> 项目架构图
+    <a href="/posts/MySql-5-7-18%E5%85%8D%E5%AE%89%E8%A3%85%E7%89%88%E5%AE%89%E8%A3%85%E4%BD%BF%E7%94%A8/" rel="prev" title="MySql 5.7.18免安装版安装使用">
+      <i class="fa fa-chevron-left"></i> MySql 5.7.18免安装版安装使用
     </a></div>
       <div class="post-nav-item">
-    <a href="/posts/MySql-5-7-18免安装版安装使用/" rel="next" title="MySql 5.7.18免安装版安装使用">
-      MySql 5.7.18免安装版安装使用 <i class="fa fa-chevron-right"></i>
+    <a href="/posts/%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%E5%9B%BE/" rel="next" title="项目架构图">
+      项目架构图 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -484,9 +489,17 @@
   <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
 <script src="/js/schemes/muse.js"></script>
+
+
 <script src="/js/next-boot.js"></script>
+
   <script>
 var pjax = new Pjax({
   selectors: [
@@ -563,7 +576,9 @@ window.addEventListener('pjax:success', () => {
 
 
 
-  <script src="/js/local-search.js"></script>
+  
+<script src="/js/local-search.js"></script>
+
 
 
 
@@ -592,7 +607,7 @@ NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
       repo        : 'vioao.github.io',
       owner       : 'vioao',
       admin       : ['vioao'],
-      id          : 'c31c0f43d67258b129a9c9ae2750f426',
+      id          : '3dfe624680a7b8f53dd283687e2ceb94',
         language: 'zh-CN',
       distractionFreeMode: true
     });

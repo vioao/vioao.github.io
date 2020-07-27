@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 3.9.0">
+<meta name="generator" content="Hexo 4.2.1">
   <link rel="icon" type="image/png" sizes="32x32" href="/uploads/favicon.ico">
   <link rel="icon" type="image/png" sizes="16x16" href="/uploads/favicon.ico">
 
@@ -21,19 +21,20 @@
   </script>
 
   <meta name="description" content="引入背景目前手上接管了一个旧项目,在调整的过程中发现其编码规范非常的多样化。其实就是没有规范了。代码中的命名、注释、换行等风格都有多种，差不多每个曾经修改过代码的程序员都留来过自己的风格。代码风格质量良莠不齐，这导致新员工在阅读代码时需要花更多的时间,也更加痛苦。所以考虑使用checkstyle来校验统一代码风格。 起初考虑是直接在svn上做一个pre-commit的hook的。不过沟通无果，sv">
-<meta name="keywords" content="CheckStyle,Maven">
 <meta property="og:type" content="article">
 <meta property="og:title" content="使用checkstyle校验代码">
-<meta property="og:url" content="http://blog.vioao.site/posts/使用checkstyle校验代码/index.html">
+<meta property="og:url" content="http://blog.vioao.site/posts/%E4%BD%BF%E7%94%A8checkstyle%E6%A0%A1%E9%AA%8C%E4%BB%A3%E7%A0%81/index.html">
 <meta property="og:site_name" content="Vioao&#39;s Blog">
 <meta property="og:description" content="引入背景目前手上接管了一个旧项目,在调整的过程中发现其编码规范非常的多样化。其实就是没有规范了。代码中的命名、注释、换行等风格都有多种，差不多每个曾经修改过代码的程序员都留来过自己的风格。代码风格质量良莠不齐，这导致新员工在阅读代码时需要花更多的时间,也更加痛苦。所以考虑使用checkstyle来校验统一代码风格。 起初考虑是直接在svn上做一个pre-commit的hook的。不过沟通无果，sv">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-07-23T09:27:19.783Z">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-12-03T05:48:38.000Z">
+<meta property="article:modified_time" content="2020-07-27T02:23:53.569Z">
+<meta property="article:author" content="Vioao">
+<meta property="article:tag" content="CheckStyle">
+<meta property="article:tag" content="Maven">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="使用checkstyle校验代码">
-<meta name="twitter:description" content="引入背景目前手上接管了一个旧项目,在调整的过程中发现其编码规范非常的多样化。其实就是没有规范了。代码中的命名、注释、换行等风格都有多种，差不多每个曾经修改过代码的程序员都留来过自己的风格。代码风格质量良莠不齐，这导致新员工在阅读代码时需要花更多的时间,也更加痛苦。所以考虑使用checkstyle来校验统一代码风格。 起初考虑是直接在svn上做一个pre-commit的hook的。不过沟通无果，sv">
 
-<link rel="canonical" href="http://blog.vioao.site/posts/使用checkstyle校验代码/">
+<link rel="canonical" href="http://blog.vioao.site/posts/%E4%BD%BF%E7%94%A8checkstyle%E6%A0%A1%E9%AA%8C%E4%BB%A3%E7%A0%81/">
 
 
 <script id="page-configurations">
@@ -95,6 +96,7 @@
   </style>
 </noscript>
 
+<link rel="alternate" href="/atom.xml" title="Vioao's Blog" type="application/atom+xml">
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
@@ -216,7 +218,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://blog.vioao.site/posts/使用checkstyle校验代码/">
+    <link itemprop="mainEntityOfPage" href="http://blog.vioao.site/posts/%E4%BD%BF%E7%94%A8checkstyle%E6%A0%A1%E9%AA%8C%E4%BB%A3%E7%A0%81/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/uploads/avatar.png">
@@ -246,7 +248,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-23 17:27:19" itemprop="dateModified" datetime="2020-07-23T17:27:19+08:00">2020-07-23</time>
+                <time title="修改时间：2020-07-27 10:23:53" itemprop="dateModified" datetime="2020-07-27T10:23:53+08:00">2020-07-27</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -254,7 +256,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/工作记录/" itemprop="url" rel="index"><span itemprop="name">工作记录</span></a>
+                  <a href="/categories/%E5%B7%A5%E4%BD%9C%E8%AE%B0%E5%BD%95/" itemprop="url" rel="index"><span itemprop="name">工作记录</span></a>
                 </span>
             </span>
 
@@ -279,19 +281,19 @@
 更新信息请查阅<a href="http://checkstyle.sourceforge.net/index.html" target="_blank" rel="noopener">官方文档</a></p>
 <h2 id="Apache-Maven-Checkstyle-Plugin介绍"><a href="#Apache-Maven-Checkstyle-Plugin介绍" class="headerlink" title="Apache Maven Checkstyle Plugin介绍"></a>Apache Maven Checkstyle Plugin介绍</h2><p>Apache Maven Checkstyle Plugink可以根据预先定义好的编码标准校验代码并生成检查报告。使用该插件需要在pom文件中定义，并配置对应的代码标准配置文件。插件中默认已经包含两个标准文件 <a href="http://checkstyle.sourceforge.net/sun_style.html" target="_blank" rel="noopener">sun_style.xml</a>、<a href="http://checkstyle.sourceforge.net/google_style.html" target="_blank" rel="noopener">google_style.xml</a>
 更新信息请查阅<a href="http://maven.apache.org/plugins/maven-checkstyle-plugin/" target="_blank" rel="noopener">官方文档</a></p>
-<h2 id="项目引入Maven-Checkstyle-Plugin统一编码"><a href="#项目引入Maven-Checkstyle-Plugin统一编码" class="headerlink" title="项目引入Maven Checkstyle Plugin统一编码"></a>项目引入Maven Checkstyle Plugin统一编码</h2><h3 id="添加pom-xml配置"><a href="#添加pom-xml配置" class="headerlink" title="添加pom.xml配置"></a>添加pom.xml配置</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&lt;plugin&gt;</span><br><span class="line">   &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;</span><br><span class="line">   &lt;artifactId&gt;maven-checkstyle-plugin&lt;/artifactId&gt;</span><br><span class="line">   &lt;version&gt;2.17&lt;/version&gt;</span><br><span class="line">   &lt;executions&gt;</span><br><span class="line">     &lt;execution&gt;</span><br><span class="line">       &lt;id&gt;validate&lt;/id&gt;</span><br><span class="line">       &lt;phase&gt;validate&lt;/phase&gt;</span><br><span class="line">       &lt;configuration&gt;</span><br><span class="line">         &lt;!-- 使用内置google编码规范 --&gt;</span><br><span class="line">         &lt;configLocation&gt;checkstyle.xml&lt;/configLocation&gt;</span><br><span class="line">         &lt;encoding&gt;UTF-8&lt;/encoding&gt;</span><br><span class="line">         &lt;consoleOutput&gt;true&lt;/consoleOutput&gt;</span><br><span class="line">         &lt;!-- 校验不通过时直接编译失败 --&gt;</span><br><span class="line">         &lt;failsOnError&gt;true&lt;/failsOnError&gt;</span><br><span class="line">         &lt;linkXRef&gt;false&lt;/linkXRef&gt;</span><br><span class="line">       &lt;/configuration&gt;</span><br><span class="line">       &lt;goals&gt;</span><br><span class="line">         &lt;goal&gt;check&lt;/goal&gt;</span><br><span class="line">       &lt;/goals&gt;</span><br><span class="line">     &lt;/execution&gt;</span><br><span class="line">   &lt;/executions&gt;</span><br><span class="line"> &lt;/plugin&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="项目引入Maven-Checkstyle-Plugin统一编码"><a href="#项目引入Maven-Checkstyle-Plugin统一编码" class="headerlink" title="项目引入Maven Checkstyle Plugin统一编码"></a>项目引入Maven Checkstyle Plugin统一编码</h2><h3 id="添加pom-xml配置"><a href="#添加pom-xml配置" class="headerlink" title="添加pom.xml配置"></a>添加pom.xml配置</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&lt;plugin&gt;</span><br><span class="line">   &lt;groupId&gt;org.apache.maven.plugins&lt;&#x2F;groupId&gt;</span><br><span class="line">   &lt;artifactId&gt;maven-checkstyle-plugin&lt;&#x2F;artifactId&gt;</span><br><span class="line">   &lt;version&gt;2.17&lt;&#x2F;version&gt;</span><br><span class="line">   &lt;executions&gt;</span><br><span class="line">     &lt;execution&gt;</span><br><span class="line">       &lt;id&gt;validate&lt;&#x2F;id&gt;</span><br><span class="line">       &lt;phase&gt;validate&lt;&#x2F;phase&gt;</span><br><span class="line">       &lt;configuration&gt;</span><br><span class="line">         &lt;!-- 使用内置google编码规范 --&gt;</span><br><span class="line">         &lt;configLocation&gt;checkstyle.xml&lt;&#x2F;configLocation&gt;</span><br><span class="line">         &lt;encoding&gt;UTF-8&lt;&#x2F;encoding&gt;</span><br><span class="line">         &lt;consoleOutput&gt;true&lt;&#x2F;consoleOutput&gt;</span><br><span class="line">         &lt;!-- 校验不通过时直接编译失败 --&gt;</span><br><span class="line">         &lt;failsOnError&gt;true&lt;&#x2F;failsOnError&gt;</span><br><span class="line">         &lt;linkXRef&gt;false&lt;&#x2F;linkXRef&gt;</span><br><span class="line">       &lt;&#x2F;configuration&gt;</span><br><span class="line">       &lt;goals&gt;</span><br><span class="line">         &lt;goal&gt;check&lt;&#x2F;goal&gt;</span><br><span class="line">       &lt;&#x2F;goals&gt;</span><br><span class="line">     &lt;&#x2F;execution&gt;</span><br><span class="line">   &lt;&#x2F;executions&gt;</span><br><span class="line"> &lt;&#x2F;plugin&gt;</span><br></pre></td></tr></table></figure>
 
 <h3 id="添加自定义的编码规范配置文件checkstyle-xml"><a href="#添加自定义的编码规范配置文件checkstyle-xml" class="headerlink" title="添加自定义的编码规范配置文件checkstyle.xml"></a>添加自定义的编码规范配置文件checkstyle.xml</h3><p>由于目前也没有统一的编码规范，所以暂时使用google的checkstyle配置，之后在其基础上修改以适应实际情况。需要将eckstyle.xml放置在系统根目录下。当然也可以放在其他地方,对应修改pom配置文件中Checkstyle Plugin的<code>configLocation</code>参数即可</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Specifies the location of the XML configuration to use.</span><br><span class="line">Potential values are a filesystem path, a URL, or a classpath resource.</span><br><span class="line">This parameter expects that the contents of the location conform to the</span><br><span class="line">xml format configuration of rulesets.</span><br><span class="line"></span><br><span class="line">This parameter is resolved as resource, URL, then file. If successfully</span><br><span class="line">resolved, the contents of the configuration is copied into the</span><br><span class="line">$&#123;project.build.directory&#125;/checkstyle-configuration.xml</span><br><span class="line">file before being passed to Checkstyle as a configuration.</span><br><span class="line"></span><br><span class="line">There are 2 predefined rulesets.sun_checks.xml &amp; google_checks.xml</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Specifies the location of the XML configuration to use.</span><br><span class="line">Potential values are a filesystem path, a URL, or a classpath resource.</span><br><span class="line">This parameter expects that the contents of the location conform to the</span><br><span class="line">xml format configuration of rulesets.</span><br><span class="line"></span><br><span class="line">This parameter is resolved as resource, URL, then file. If successfully</span><br><span class="line">resolved, the contents of the configuration is copied into the</span><br><span class="line">$&#123;project.build.directory&#125;&#x2F;checkstyle-configuration.xml</span><br><span class="line">file before being passed to Checkstyle as a configuration.</span><br><span class="line"></span><br><span class="line">There are 2 predefined rulesets.sun_checks.xml &amp; google_checks.xml</span><br></pre></td></tr></table></figure>
 
 <h3 id="只校验变更的文件"><a href="#只校验变更的文件" class="headerlink" title="只校验变更的文件"></a>只校验变更的文件</h3><p>刚开始考虑是通过java方式来操作svn来获取托管在svn上的项目的相关信息，调查发现了SVNKIT这东西，但是简要看了下发现，使用svnkit都需要配置url,username,pwd这些。但是我只是想获取各变更列表而已，而且代码校验也只是本地校验而已，就觉得太麻烦了。于是决定通过java执行本地cmd来获取稳健变更列表。具体实现如下:
 参考步骤<a href="http://maven.apache.org/plugins/maven-checkstyle-plugin/examples/custom-developed-checkstyle.html" target="_blank" rel="noopener">Using Custom Developed Checkstyle Checks</a>,实现自定义的BeforeExecutionFileFilter
 此步骤实现Checkstyle执行时只校验新增加和修改的文件。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 只校验新增加的文件和新修改的文件</span><br><span class="line"> * Created by Vioao on 2017/11/23.</span><br><span class="line"> */</span><br><span class="line">public class CustomBeforeExecutionFileFilter extends AutomaticBean implements BeforeExecutionFileFilter &#123;</span><br><span class="line">    private static final Logger LOGGER = LoggerFactory.getLogger(PaicBeforeExecutionFileFilter.class);</span><br><span class="line"></span><br><span class="line">    private static final String CMD = &quot;svn diff --summarize&quot;;</span><br><span class="line">    private List&lt;String&gt; changedFiles = new ArrayList&lt;String&gt;();</span><br><span class="line">    private volatile boolean initialized = false;</span><br><span class="line"></span><br><span class="line">    private String ignoredSvnStatus = &quot;D&quot;;</span><br><span class="line"></span><br><span class="line">    public void setIgnoredSvnStatus(String ignoredSvnStatus) &#123;</span><br><span class="line">        this.ignoredSvnStatus = ignoredSvnStatus;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public boolean accept(String uri) &#123;</span><br><span class="line"></span><br><span class="line">        if (!initialized) &#123;</span><br><span class="line">            try &#123;</span><br><span class="line">                initChangedFileList();</span><br><span class="line">            &#125; catch (Exception e) &#123;</span><br><span class="line">                LOGGER.warn(&quot;获取SVN变更列表失败,跳过CHeckStyle&quot;, e);</span><br><span class="line">            &#125;</span><br><span class="line">            initialized = true;</span><br><span class="line">        &#125;</span><br><span class="line">        return changedFiles.contains(uri);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">   /**</span><br><span class="line">     * 获取svn文件变更列别</span><br><span class="line">     * @return 文件变更列表</span><br><span class="line">     * @throws IOException</span><br><span class="line">     */</span><br><span class="line">    private List&lt;String&gt; initChangedFileList() throws IOException &#123;</span><br><span class="line">        Process process = Runtime.getRuntime().exec(CMD);</span><br><span class="line">        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));</span><br><span class="line">        String line;</span><br><span class="line">        while ((line = bufferedReader.readLine()) != null) &#123;</span><br><span class="line">            if (!ignoredSvnStatus.contains(String.valueOf(line.charAt(0)))) &#123;</span><br><span class="line">                String fileName = line.substring(1, line.length()).trim();</span><br><span class="line">                fileName = (new File(fileName)).getAbsolutePath();</span><br><span class="line">                changedFiles.add(fileName);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return changedFiles;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * 只校验新增加的文件和新修改的文件</span><br><span class="line"> * Created by Vioao on 2017&#x2F;11&#x2F;23.</span><br><span class="line"> *&#x2F;</span><br><span class="line">public class CustomBeforeExecutionFileFilter extends AutomaticBean implements BeforeExecutionFileFilter &#123;</span><br><span class="line">    private static final Logger LOGGER &#x3D; LoggerFactory.getLogger(PaicBeforeExecutionFileFilter.class);</span><br><span class="line"></span><br><span class="line">    private static final String CMD &#x3D; &quot;svn diff --summarize&quot;;</span><br><span class="line">    private List&lt;String&gt; changedFiles &#x3D; new ArrayList&lt;String&gt;();</span><br><span class="line">    private volatile boolean initialized &#x3D; false;</span><br><span class="line"></span><br><span class="line">    private String ignoredSvnStatus &#x3D; &quot;D&quot;;</span><br><span class="line"></span><br><span class="line">    public void setIgnoredSvnStatus(String ignoredSvnStatus) &#123;</span><br><span class="line">        this.ignoredSvnStatus &#x3D; ignoredSvnStatus;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public boolean accept(String uri) &#123;</span><br><span class="line"></span><br><span class="line">        if (!initialized) &#123;</span><br><span class="line">            try &#123;</span><br><span class="line">                initChangedFileList();</span><br><span class="line">            &#125; catch (Exception e) &#123;</span><br><span class="line">                LOGGER.warn(&quot;获取SVN变更列表失败,跳过CHeckStyle&quot;, e);</span><br><span class="line">            &#125;</span><br><span class="line">            initialized &#x3D; true;</span><br><span class="line">        &#125;</span><br><span class="line">        return changedFiles.contains(uri);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">   &#x2F;**</span><br><span class="line">     * 获取svn文件变更列别</span><br><span class="line">     * @return 文件变更列表</span><br><span class="line">     * @throws IOException</span><br><span class="line">     *&#x2F;</span><br><span class="line">    private List&lt;String&gt; initChangedFileList() throws IOException &#123;</span><br><span class="line">        Process process &#x3D; Runtime.getRuntime().exec(CMD);</span><br><span class="line">        BufferedReader bufferedReader &#x3D; new BufferedReader(new InputStreamReader(process.getInputStream()));</span><br><span class="line">        String line;</span><br><span class="line">        while ((line &#x3D; bufferedReader.readLine()) !&#x3D; null) &#123;</span><br><span class="line">            if (!ignoredSvnStatus.contains(String.valueOf(line.charAt(0)))) &#123;</span><br><span class="line">                String fileName &#x3D; line.substring(1, line.length()).trim();</span><br><span class="line">                fileName &#x3D; (new File(fileName)).getAbsolutePath();</span><br><span class="line">                changedFiles.add(fileName);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return changedFiles;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>这个实现只支持svn托管代码的，如果是git托管代码，那么将对应的svn命令换成git的即可。</p>
 <h3 id="修改checkstyle-xml配置"><a href="#修改checkstyle-xml配置" class="headerlink" title="修改checkstyle.xml配置"></a>修改checkstyle.xml配置</h3><p>修改checkstyle.xml配置，添加自定义的文件过滤<code>CustomBeforeExecutionFileFilter</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE module PUBLIC</span><br><span class="line">        &quot;-//Puppy Crawl//DTD Check Configuration 1.3//EN&quot;</span><br><span class="line"></span><br><span class="line">&lt;module name = &quot;Checker&quot;&gt;</span><br><span class="line">    &lt;!-- 省略部分配置 --&gt;</span><br><span class="line">    &lt;property name=&quot;charset&quot; value=&quot;UTF-8&quot;/&gt;</span><br><span class="line"></span><br><span class="line">    &lt;property name=&quot;severity&quot; value=&quot;ERROR&quot;/&gt;</span><br><span class="line"></span><br><span class="line">    &lt;property name=&quot;fileExtensions&quot; value=&quot;java, properties, xml, jsp, json&quot;/&gt;</span><br><span class="line"></span><br><span class="line">    &lt;module name=&quot;com.vioao.checkstyle.CustomBeforeExecutionFileFilter&quot;/&gt;</span><br><span class="line"></span><br><span class="line">   &lt;!-- 省略部分配置 --&gt;</span><br><span class="line">&lt;/module&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version&#x3D;&quot;1.0&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE module PUBLIC</span><br><span class="line">        &quot;-&#x2F;&#x2F;Puppy Crawl&#x2F;&#x2F;DTD Check Configuration 1.3&#x2F;&#x2F;EN&quot;</span><br><span class="line"></span><br><span class="line">&lt;module name &#x3D; &quot;Checker&quot;&gt;</span><br><span class="line">    &lt;!-- 省略部分配置 --&gt;</span><br><span class="line">    &lt;property name&#x3D;&quot;charset&quot; value&#x3D;&quot;UTF-8&quot;&#x2F;&gt;</span><br><span class="line"></span><br><span class="line">    &lt;property name&#x3D;&quot;severity&quot; value&#x3D;&quot;ERROR&quot;&#x2F;&gt;</span><br><span class="line"></span><br><span class="line">    &lt;property name&#x3D;&quot;fileExtensions&quot; value&#x3D;&quot;java, properties, xml, jsp, json&quot;&#x2F;&gt;</span><br><span class="line"></span><br><span class="line">    &lt;module name&#x3D;&quot;com.vioao.checkstyle.CustomBeforeExecutionFileFilter&quot;&#x2F;&gt;</span><br><span class="line"></span><br><span class="line">   &lt;!-- 省略部分配置 --&gt;</span><br><span class="line">&lt;&#x2F;module&gt;</span><br></pre></td></tr></table></figure>
     </div>
 
     
@@ -306,7 +308,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://blog.vioao.site/posts/使用checkstyle校验代码/" title="使用checkstyle校验代码">http://blog.vioao.site/posts/使用checkstyle校验代码/</a>
+    <a href="http://blog.vioao.site/posts/%E4%BD%BF%E7%94%A8checkstyle%E6%A0%A1%E9%AA%8C%E4%BB%A3%E7%A0%81/" title="使用checkstyle校验代码">http://blog.vioao.site/posts/使用checkstyle校验代码/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -328,12 +330,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/posts/SpringBoot整合Mybatis-Druid-Quartz/" rel="prev" title="SpringBoot 整合Mybatis/Druid/Quartz">
-      <i class="fa fa-chevron-left"></i> SpringBoot 整合Mybatis/Druid/Quartz
+    <a href="/posts/%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%B9%B3%E5%8F%B0SDK-JAVA%E5%AE%9E%E7%8E%B0WeChat-SDK/" rel="prev" title="微信公众平台SDK JAVA实现WeChat-SDK">
+      <i class="fa fa-chevron-left"></i> 微信公众平台SDK JAVA实现WeChat-SDK
     </a></div>
       <div class="post-nav-item">
-    <a href="/posts/微信公众平台SDK-JAVA实现WeChat-SDK/" rel="next" title="微信公众平台SDK JAVA实现WeChat-SDK">
-      微信公众平台SDK JAVA实现WeChat-SDK <i class="fa fa-chevron-right"></i>
+    <a href="/posts/SpringBoot%E6%95%B4%E5%90%88Mybatis-Druid-Quartz/" rel="next" title="SpringBoot 整合Mybatis/Druid/Quartz">
+      SpringBoot 整合Mybatis/Druid/Quartz <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -434,9 +436,17 @@
   <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
 <script src="/js/schemes/muse.js"></script>
+
+
 <script src="/js/next-boot.js"></script>
+
   <script>
 var pjax = new Pjax({
   selectors: [
@@ -513,7 +523,9 @@ window.addEventListener('pjax:success', () => {
 
 
 
-  <script src="/js/local-search.js"></script>
+  
+<script src="/js/local-search.js"></script>
+
 
 
 
@@ -542,7 +554,7 @@ NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
       repo        : 'vioao.github.io',
       owner       : 'vioao',
       admin       : ['vioao'],
-      id          : '7fc48461fcfb2815ce667f20548c7943',
+      id          : 'd96c087784e525ce9d681c6cae46c38f',
         language: 'zh-CN',
       distractionFreeMode: true
     });

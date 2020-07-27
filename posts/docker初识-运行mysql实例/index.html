@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 3.9.0">
+<meta name="generator" content="Hexo 4.2.1">
   <link rel="icon" type="image/png" sizes="32x32" href="/uploads/favicon.ico">
   <link rel="icon" type="image/png" sizes="16x16" href="/uploads/favicon.ico">
 
@@ -21,19 +21,20 @@
   </script>
 
   <meta name="description" content="环境 CentOS 7.3 64bit  安装docker 移除旧版本Docker  yum remove docker docker-common docker-selinux docker-engine   设置Docker仓库  2.1 安装所需要的包  yum install -y yum-utils device-mapper-persistent-data lvm2   2.2 设置添">
-<meta name="keywords" content="MySQL,Docker">
 <meta property="og:type" content="article">
 <meta property="og:title" content="docker初识:运行mysql实例">
-<meta property="og:url" content="http://blog.vioao.site/posts/docker初识-运行mysql实例/index.html">
+<meta property="og:url" content="http://blog.vioao.site/posts/docker%E5%88%9D%E8%AF%86-%E8%BF%90%E8%A1%8Cmysql%E5%AE%9E%E4%BE%8B/index.html">
 <meta property="og:site_name" content="Vioao&#39;s Blog">
 <meta property="og:description" content="环境 CentOS 7.3 64bit  安装docker 移除旧版本Docker  yum remove docker docker-common docker-selinux docker-engine   设置Docker仓库  2.1 安装所需要的包  yum install -y yum-utils device-mapper-persistent-data lvm2   2.2 设置添">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-07-23T09:27:19.779Z">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-07-26T13:29:52.000Z">
+<meta property="article:modified_time" content="2020-07-27T02:23:53.566Z">
+<meta property="article:author" content="Vioao">
+<meta property="article:tag" content="MySQL">
+<meta property="article:tag" content="Docker">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="docker初识:运行mysql实例">
-<meta name="twitter:description" content="环境 CentOS 7.3 64bit  安装docker 移除旧版本Docker  yum remove docker docker-common docker-selinux docker-engine   设置Docker仓库  2.1 安装所需要的包  yum install -y yum-utils device-mapper-persistent-data lvm2   2.2 设置添">
 
-<link rel="canonical" href="http://blog.vioao.site/posts/docker初识-运行mysql实例/">
+<link rel="canonical" href="http://blog.vioao.site/posts/docker%E5%88%9D%E8%AF%86-%E8%BF%90%E8%A1%8Cmysql%E5%AE%9E%E4%BE%8B/">
 
 
 <script id="page-configurations">
@@ -95,6 +96,7 @@
   </style>
 </noscript>
 
+<link rel="alternate" href="/atom.xml" title="Vioao's Blog" type="application/atom+xml">
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
@@ -216,7 +218,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://blog.vioao.site/posts/docker初识-运行mysql实例/">
+    <link itemprop="mainEntityOfPage" href="http://blog.vioao.site/posts/docker%E5%88%9D%E8%AF%86-%E8%BF%90%E8%A1%8Cmysql%E5%AE%9E%E4%BE%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/uploads/avatar.png">
@@ -246,7 +248,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-23 17:27:19" itemprop="dateModified" datetime="2020-07-23T17:27:19+08:00">2020-07-23</time>
+                <time title="修改时间：2020-07-27 10:23:53" itemprop="dateModified" datetime="2020-07-27T10:23:53+08:00">2020-07-27</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -334,7 +336,7 @@
 <h1 id="安装Docker-compose"><a href="#安装Docker-compose" class="headerlink" title="安装Docker compose"></a>安装Docker compose</h1><ol>
 <li><p>下载安装1.14.0版本的Compose</p>
 <blockquote>
-<p>curl -L <a href="https://github.com/docker/compose/releases/download/1.14.0/docker-compose-`uname" target="_blank" rel="noopener">https://github.com/docker/compose/releases/download/1.14.0/docker-compose-`uname</a> -s<code>-</code>uname -m` &gt; /usr/local/bin/docker-compose</p>
+<p>curl -L <a href="https://github.com/docker/compose/releases/download/1.14.0/docker-compose-%60uname" target="_blank" rel="noopener">https://github.com/docker/compose/releases/download/1.14.0/docker-compose-`uname</a> -s<code>-</code>uname -m` &gt; /usr/local/bin/docker-compose</p>
 </blockquote>
 </li>
 <li><p>赋予可执行权限</p>
@@ -355,7 +357,7 @@
 </blockquote>
 </li>
 <li><p>启动mysql</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --name mysql_db -p 3306:3306  -v /home/docker/mysql/logs:/data/logs/mysql -v /home/docker/mysql/data:/var/lib/mysql -v /home/docker/mysql/conf/:/etc/mysql/conf.d -e MYSQL_DATABASE=opencart -e MYSQL_ROOT_PASSWORD=Ao@1234567890 -d mysql:5.7.18</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --name mysql_db -p 3306:3306  -v &#x2F;home&#x2F;docker&#x2F;mysql&#x2F;logs:&#x2F;data&#x2F;logs&#x2F;mysql -v &#x2F;home&#x2F;docker&#x2F;mysql&#x2F;data:&#x2F;var&#x2F;lib&#x2F;mysql -v &#x2F;home&#x2F;docker&#x2F;mysql&#x2F;conf&#x2F;:&#x2F;etc&#x2F;mysql&#x2F;conf.d -e MYSQL_DATABASE&#x3D;opencart -e MYSQL_ROOT_PASSWORD&#x3D;Ao@1234567890 -d mysql:5.7.18</span><br></pre></td></tr></table></figure>
 
 <p>参数说明:</p>
 <ul>
@@ -370,7 +372,7 @@
 </ul>
 <p>详细参数说明参考<a href="https://hub.docker.com/_/mysql/" target="_blank" rel="noopener">Mysql Docker镜像文档</a></p>
 <p>附上简短的my.cnf配置</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">######################### my.cnf #######################################</span><br><span class="line"># 对应日志文件需要手动创建,并赋予mysql可读写权限,否则container启动不成功</span><br><span class="line"># 错误日志</span><br><span class="line">log-error=/var/log/mysql/error.log</span><br><span class="line"></span><br><span class="line"># 打开全查询日志. 所有的由服务器接收到的查询 (甚至对于一个错误语法的查询)</span><br><span class="line"># 都会被记录下来. 这对于调试非常有用, 在生产环境中常常关闭此项.</span><br><span class="line">general_log=ON</span><br><span class="line">general_log_file=/var/log/mysql/mysql.log</span><br><span class="line"></span><br><span class="line"># 慢查询日志</span><br><span class="line">slow_query_log=on</span><br><span class="line">long_query_time=2 #2s</span><br><span class="line">slow_query_log_file=/var/log/mysql/slowquery.log</span><br><span class="line"></span><br><span class="line"># 打开二进制日志功能.</span><br><span class="line"># 在复制(replication)配置中,作为 MASTER 主服务器必须打开此项</span><br><span class="line"># 如果你需要从你最后的备份中做基于时间点的恢复,你也同样需要二进制日志.</span><br><span class="line">#log-bin=/usr/local/mysql/logs/mysql-bin</span><br></pre></td></tr></table></figure>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">######################### my.cnf #######################################</span><br><span class="line"># 对应日志文件需要手动创建,并赋予mysql可读写权限,否则container启动不成功</span><br><span class="line"># 错误日志</span><br><span class="line">log-error&#x3D;&#x2F;var&#x2F;log&#x2F;mysql&#x2F;error.log</span><br><span class="line"></span><br><span class="line"># 打开全查询日志. 所有的由服务器接收到的查询 (甚至对于一个错误语法的查询)</span><br><span class="line"># 都会被记录下来. 这对于调试非常有用, 在生产环境中常常关闭此项.</span><br><span class="line">general_log&#x3D;ON</span><br><span class="line">general_log_file&#x3D;&#x2F;var&#x2F;log&#x2F;mysql&#x2F;mysql.log</span><br><span class="line"></span><br><span class="line"># 慢查询日志</span><br><span class="line">slow_query_log&#x3D;on</span><br><span class="line">long_query_time&#x3D;2 #2s</span><br><span class="line">slow_query_log_file&#x3D;&#x2F;var&#x2F;log&#x2F;mysql&#x2F;slowquery.log</span><br><span class="line"></span><br><span class="line"># 打开二进制日志功能.</span><br><span class="line"># 在复制(replication)配置中,作为 MASTER 主服务器必须打开此项</span><br><span class="line"># 如果你需要从你最后的备份中做基于时间点的恢复,你也同样需要二进制日志.</span><br><span class="line">#log-bin&#x3D;&#x2F;usr&#x2F;local&#x2F;mysql&#x2F;logs&#x2F;mysql-bin</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>查看启动日志(启动时出错可以观察下是什么原因)</p>
 <blockquote>
@@ -427,7 +429,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://blog.vioao.site/posts/docker初识-运行mysql实例/" title="docker初识:运行mysql实例">http://blog.vioao.site/posts/docker初识-运行mysql实例/</a>
+    <a href="http://blog.vioao.site/posts/docker%E5%88%9D%E8%AF%86-%E8%BF%90%E8%A1%8Cmysql%E5%AE%9E%E4%BE%8B/" title="docker初识:运行mysql实例">http://blog.vioao.site/posts/docker初识-运行mysql实例/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -449,12 +451,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/posts/CentOS-7-3-搭建OpenCart/" rel="prev" title="CentOS 7.3 搭建OpenCart">
-      <i class="fa fa-chevron-left"></i> CentOS 7.3 搭建OpenCart
+    <a href="/posts/%E7%BA%BF%E4%B8%8A%E7%A8%8B%E5%BA%8FCPU%E8%BF%87%E9%AB%98%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/" rel="prev" title="线上程序CPU过高问题排查">
+      <i class="fa fa-chevron-left"></i> 线上程序CPU过高问题排查
     </a></div>
       <div class="post-nav-item">
-    <a href="/posts/线上程序CPU过高问题排查/" rel="next" title="线上程序CPU过高问题排查">
-      线上程序CPU过高问题排查 <i class="fa fa-chevron-right"></i>
+    <a href="/posts/CentOS-7-3-%E6%90%AD%E5%BB%BAOpenCart/" rel="next" title="CentOS 7.3 搭建OpenCart">
+      CentOS 7.3 搭建OpenCart <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -555,9 +557,17 @@
   <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
 <script src="/js/schemes/muse.js"></script>
+
+
 <script src="/js/next-boot.js"></script>
+
   <script>
 var pjax = new Pjax({
   selectors: [
@@ -634,7 +644,9 @@ window.addEventListener('pjax:success', () => {
 
 
 
-  <script src="/js/local-search.js"></script>
+  
+<script src="/js/local-search.js"></script>
+
 
 
 
@@ -663,7 +675,7 @@ NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
       repo        : 'vioao.github.io',
       owner       : 'vioao',
       admin       : ['vioao'],
-      id          : '1a7729612ef181fac4bb6169c890f80e',
+      id          : '9c6f15de02c72fe5233df1a39d4ba050',
         language: 'zh-CN',
       distractionFreeMode: true
     });

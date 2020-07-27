@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 3.9.0">
+<meta name="generator" content="Hexo 4.2.1">
   <link rel="icon" type="image/png" sizes="32x32" href="/uploads/favicon.ico">
   <link rel="icon" type="image/png" sizes="16x16" href="/uploads/favicon.ico">
 
@@ -21,19 +21,24 @@
   </script>
 
   <meta name="description" content="前言作为一个后端程序员，面试过程中难免会被问到缓存的一些问题，而目前来说，Redis 就是使用的最为广泛的一个缓存中间件了。下面我们就以 Redis 为例，说一说面试过程中会经常会被问到的一些面试题。并试着了解面试官所想，抓住重点，奋力一击，让面试不再烦恼。 Redis 简介首先，简单回顾下 Redis 的简介，并提供一个思路范式。  Redis 是一个开源（BSD许可），内存存储的数据结构服务器">
-<meta name="keywords" content="缓存,面试,Redis">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Redis 问答 PK">
-<meta property="og:url" content="http://blog.vioao.site/posts/Redis-问答PK/index.html">
+<meta property="og:url" content="http://blog.vioao.site/posts/Redis-%E9%97%AE%E7%AD%94PK/index.html">
 <meta property="og:site_name" content="Vioao&#39;s Blog">
 <meta property="og:description" content="前言作为一个后端程序员，面试过程中难免会被问到缓存的一些问题，而目前来说，Redis 就是使用的最为广泛的一个缓存中间件了。下面我们就以 Redis 为例，说一说面试过程中会经常会被问到的一些面试题。并试着了解面试官所想，抓住重点，奋力一击，让面试不再烦恼。 Redis 简介首先，简单回顾下 Redis 的简介，并提供一个思路范式。  Redis 是一个开源（BSD许可），内存存储的数据结构服务器">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-07-23T09:27:19.777Z">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://blog.vioao.site/posts/Redis-%E9%97%AE%E7%AD%94PK/xmind.png">
+<meta property="og:image" content="http://blog.vioao.site/posts/Redis-%E9%97%AE%E7%AD%94PK/fuck-and-copy.png">
+<meta property="article:published_time" content="2020-07-23T09:17:53.000Z">
+<meta property="article:modified_time" content="2020-07-27T02:23:53.563Z">
+<meta property="article:author" content="Vioao">
+<meta property="article:tag" content="缓存">
+<meta property="article:tag" content="面试">
+<meta property="article:tag" content="Redis">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Redis 问答 PK">
-<meta name="twitter:description" content="前言作为一个后端程序员，面试过程中难免会被问到缓存的一些问题，而目前来说，Redis 就是使用的最为广泛的一个缓存中间件了。下面我们就以 Redis 为例，说一说面试过程中会经常会被问到的一些面试题。并试着了解面试官所想，抓住重点，奋力一击，让面试不再烦恼。 Redis 简介首先，简单回顾下 Redis 的简介，并提供一个思路范式。  Redis 是一个开源（BSD许可），内存存储的数据结构服务器">
+<meta name="twitter:image" content="http://blog.vioao.site/posts/Redis-%E9%97%AE%E7%AD%94PK/xmind.png">
 
-<link rel="canonical" href="http://blog.vioao.site/posts/Redis-问答PK/">
+<link rel="canonical" href="http://blog.vioao.site/posts/Redis-%E9%97%AE%E7%AD%94PK/">
 
 
 <script id="page-configurations">
@@ -95,6 +100,7 @@
   </style>
 </noscript>
 
+<link rel="alternate" href="/atom.xml" title="Vioao's Blog" type="application/atom+xml">
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
@@ -216,7 +222,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://blog.vioao.site/posts/Redis-问答PK/">
+    <link itemprop="mainEntityOfPage" href="http://blog.vioao.site/posts/Redis-%E9%97%AE%E7%AD%94PK/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/uploads/avatar.png">
@@ -238,17 +244,23 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-07-23 17:17:53 / 修改时间：17:27:19" itemprop="dateCreated datePublished" datetime="2020-07-23T17:17:53+08:00">2020-07-23</time>
+              <time title="创建时间：2020-07-23 17:17:53" itemprop="dateCreated datePublished" datetime="2020-07-23T17:17:53+08:00">2020-07-23</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-07-27 10:23:53" itemprop="dateModified" datetime="2020-07-27T10:23:53+08:00">2020-07-27</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/中间件/" itemprop="url" rel="index"><span itemprop="name">中间件</span></a>
+                  <a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/" itemprop="url" rel="index"><span itemprop="name">中间件</span></a>
                 </span>
             </span>
 
@@ -290,11 +302,11 @@
 <p>例如，结束基本回答后接着说：其实 Redis 在内部对这些数据结构做了不少优化，提高了查询的性能。我想一般情况下面试官会接着问你 Redis 内部是怎么实现这些数据结构的。</p>
 </blockquote>
 <p>笔者简单整理了下 Redis 数据结构的一个思维脑图：</p>
-<img data-src="/posts/Redis-问答PK/xmind.png" title="Redis数据结构">
+<img data-src="/posts/Redis-%E9%97%AE%E7%AD%94PK/xmind.png" class="" title="Redis数据结构">
 
 
 <h4 id="为什么要使用-Redis-缓存？"><a href="#为什么要使用-Redis-缓存？" class="headerlink" title="为什么要使用 Redis 缓存？"></a>为什么要使用 Redis 缓存？</h4><p>解读：这个问题可回答空间比较广，属于 <strong>WHY</strong> 和 <strong>HOW</strong> 的一个结合体。面试官在这里其实更多的是一个基本考核，想知道这个应聘者是否会有自己思想，会对项目有个思考，而不是傻傻就只知道：</p>
-<img data-src="/posts/Redis-问答PK/fuck-and-copy.png" title="Fuck and copy">
+<img data-src="/posts/Redis-%E9%97%AE%E7%AD%94PK/fuck-and-copy.png" class="" title="Fuck and copy">
 
 <blockquote>
 <p>示例：这个最好结合实际使用场景来说，比较真切有代入感。</p>
@@ -397,10 +409,8 @@
 <p>RDB：通过 fork 一个子进程保存当前内存的一个快照实现备份. 适合大规模的数据恢复，但是数据的完整性和一致性不高，因为 RDB 可能在最后一次备份时宕机了。另外备份时会占用内存，因为 Redis 在备份时会独立创建一个子进程，将数据写入到一个临时文件（此时内存中的数据是原来的两倍哦），最后再将临时文件替换之前的备份文件。配置方法如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># save &lt;指定时间间隔&gt; &lt;执行指定次数更新操作&gt;，满足条件就将内存中的数据同步到硬盘中</span><br><span class="line">save &lt;seconds&gt; &lt;changes&gt;  </span><br><span class="line"># 指定本地数据库文件名，一般采用默认的 dump.rdb</span><br><span class="line">dbfilename dump.rdb </span><br><span class="line"># 默认开启数据压缩</span><br><span class="line">rdbcompression yes</span><br></pre></td></tr></table></figure>
 
-
 <p>AOF： 通过对每条写入命令以 append-only 的模式写入一个日志文件中，在 Redis 重启的时候，可以通过回放 AOF 日志中的写入指令来重新构建整个数据集。 AOF 对数据数据的完整性和一致性支持更好，但是其备份日志文件一般会比 RDB 方式的备份文件更大，恢复也更慢，同时由于 fsync 的频率方式，会影响 Redis 的性能。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># 打开aof</span><br><span class="line">appendonly yes     </span><br><span class="line"># 日志文件</span><br><span class="line">appendfilename &quot;appendonly.aof&quot;  </span><br><span class="line"># 更新条件</span><br><span class="line"># appendfsync always</span><br><span class="line">appendfsync everysec</span><br><span class="line"># appendfsync no</span><br><span class="line"># 触发重写的配置</span><br><span class="line"># 时间长了日志会特别大，此时需要触发重写</span><br><span class="line"># 重写的原理：Redis 会fork出一条新进程，读取内存中的数据，并重新写到一个临时文件中。</span><br><span class="line">#           最后替换旧的aof文件。</span><br><span class="line">auto-aof-rewrite-percentage 100</span><br><span class="line">auto-aof-rewrite-min-size 64mb</span><br></pre></td></tr></table></figure>
-
 
 <p>后续：Redis 4.0 之后，持久化增加了混合 RDB-AOF 持久化格式。具体可以参考</p>
 <blockquote>
@@ -469,7 +479,6 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// LRU实现，这里又可能会问你 LinkedHashMap 怎么实现的，哈哈哈，自己看看看源码吧</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LRUCache</span>&lt;<span class="title">K</span>, <span class="title">V</span>&gt; <span class="keyword">extends</span> <span class="title">LinkedHashMap</span>&lt;<span class="title">K</span>, <span class="title">V</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span>         maxSize;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">LRUCache</span><span class="params">(<span class="keyword">int</span> maxSize)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>(maxSize, <span class="number">16</span>, <span class="number">0.75f</span>, <span class="keyword">false</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">LRUCache</span><span class="params">(<span class="keyword">int</span> maxSize, <span class="keyword">int</span> initialCapacity, <span class="keyword">float</span> loadFactor, <span class="keyword">boolean</span> accessOrder)</span></span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(initialCapacity, loadFactor, accessOrder);</span><br><span class="line">         <span class="keyword">this</span>.maxSize = maxSize;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/** </span></span><br><span class="line"><span class="comment">    * 最重要就是重写该方法咯,就是说当map中的数据量大于指定的缓存个数的时候，</span></span><br><span class="line"><span class="comment">    * 就自动删除最老的数据</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">boolean</span> <span class="title">removeEldestEntry</span><span class="params">(Map.Entry eldest)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.size() &gt;<span class="keyword">this</span>.maxSize; </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
-
 <h4 id="使用-Redis-遇到过什么问题？"><a href="#使用-Redis-遇到过什么问题？" class="headerlink" title="使用 Redis 遇到过什么问题？"></a>使用 Redis 遇到过什么问题？</h4><p>解读：这个就是考察的实际使用场景的问题了，更多的可能是一个进阶，怎么都得憋出一点问题啊，主要是要体现出自己的思路，要证明自己可是有实际使用经验并且有做对应考虑的人啊。</p>
 <blockquote>
 <p>示例：比如这边遇到过一个热点问题。</p>
@@ -497,8 +506,7 @@
 <li><code>$trace xxx #cost</code>，trace 命令能主动搜索 class-pattern/method-pattern 对应的方法调用路径，渲染和统计整个调用链路上的所有性能开销和追踪调用链路。trace 能方便地帮助你定位和发现因 RT 高而导致的性能问题缺陷，但其每次只能跟踪一级方法的调用链路。</li>
 </ul>
 <p>结果如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">+---[0.001162ms] com.paic.ibcsapi.service.dto.ApplyResultDTO:setApplyPolicyNo()</span><br><span class="line">        +---[0.511972ms] com.xxx.service.apply.save.ApplySaveService:fillApplyPolicyNo()</span><br><span class="line">        +---[19.709352ms] com.xxx.service.apply.save.ApplySaveService:saveContractDTOInfo()</span><br><span class="line">        +---[1.313593ms] com.xxx.service.apply.save.ApplySaveService:saveApplyParameterInfo()</span><br><span class="line">        +---[min=4.35E-4ms,max=9.48E-4ms,total=0.002326ms,count=3] java.lang.StringBuilder:&lt;init&gt;()</span><br><span class="line">        +---[min=5.1E-4ms,max=0.00146ms,total=0.004705ms,count=6] java.lang.StringBuilder:append()</span><br><span class="line">        +---[0.001361ms] com.paic.icore.acss.base.dto.BaseInfoDTO:getTransactionNo()</span><br><span class="line">        +---[min=4.86E-4ms,max=6.61E-4ms,total=0.001777ms,count=3] java.lang.StringBuilder:toString()</span><br><span class="line">        +---[523.544075ms] com.xxx.common.service.redis.RedisService:stringSet()</span><br><span class="line">        +---[9.91E-4ms] com.xxx.common.util.StringUtils:isNotBlank()</span><br><span class="line">        +---[min=6.07E-4ms,max=7.75E-4ms,total=0.001382ms,count=2] java.lang.String:equals()</span><br><span class="line">        +---[min=5.03E-4ms,max=6.95E-4ms,total=0.001198ms,count=2] java.lang.Integer:intValue()</span><br><span class="line">        +---[min=592.763104ms,max=868.853641ms,total=1461.616745ms,count=2] com.xxx.common.service.redis.RedisService:ObjectSet()</span><br></pre></td></tr></table></figure>
-
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">+---[0.001162ms] com.paic.ibcsapi.service.dto.ApplyResultDTO:setApplyPolicyNo()</span><br><span class="line">        +---[0.511972ms] com.xxx.service.apply.save.ApplySaveService:fillApplyPolicyNo()</span><br><span class="line">        +---[19.709352ms] com.xxx.service.apply.save.ApplySaveService:saveContractDTOInfo()</span><br><span class="line">        +---[1.313593ms] com.xxx.service.apply.save.ApplySaveService:saveApplyParameterInfo()</span><br><span class="line">        +---[min&#x3D;4.35E-4ms,max&#x3D;9.48E-4ms,total&#x3D;0.002326ms,count&#x3D;3] java.lang.StringBuilder:&lt;init&gt;()</span><br><span class="line">        +---[min&#x3D;5.1E-4ms,max&#x3D;0.00146ms,total&#x3D;0.004705ms,count&#x3D;6] java.lang.StringBuilder:append()</span><br><span class="line">        +---[0.001361ms] com.paic.icore.acss.base.dto.BaseInfoDTO:getTransactionNo()</span><br><span class="line">        +---[min&#x3D;4.86E-4ms,max&#x3D;6.61E-4ms,total&#x3D;0.001777ms,count&#x3D;3] java.lang.StringBuilder:toString()</span><br><span class="line">        +---[523.544075ms] com.xxx.common.service.redis.RedisService:stringSet()</span><br><span class="line">        +---[9.91E-4ms] com.xxx.common.util.StringUtils:isNotBlank()</span><br><span class="line">        +---[min&#x3D;6.07E-4ms,max&#x3D;7.75E-4ms,total&#x3D;0.001382ms,count&#x3D;2] java.lang.String:equals()</span><br><span class="line">        +---[min&#x3D;5.03E-4ms,max&#x3D;6.95E-4ms,total&#x3D;0.001198ms,count&#x3D;2] java.lang.Integer:intValue()</span><br><span class="line">        +---[min&#x3D;592.763104ms,max&#x3D;868.853641ms,total&#x3D;1461.616745ms,count&#x3D;2] com.xxx.common.service.redis.RedisService:ObjectSet()</span><br></pre></td></tr></table></figure>
 <p><strong>4.</strong> 通过 trace 定位到是 Redis 耗时后，定位 Redis 问题：</p>
 <ul>
 <li>查看 Redis 服务器状态，发现压测时有台服务器的 查看 Redis 服务器状态，发现压测时有台服务器的 CPU 达到 70% 左右；</li>
@@ -545,7 +553,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://blog.vioao.site/posts/Redis-问答PK/" title="Redis 问答 PK">http://blog.vioao.site/posts/Redis-问答PK/</a>
+    <a href="http://blog.vioao.site/posts/Redis-%E9%97%AE%E7%AD%94PK/" title="Redis 问答 PK">http://blog.vioao.site/posts/Redis-问答PK/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -557,8 +565,8 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/缓存/" rel="tag"><i class="fa fa-tag"></i> 缓存</a>
-              <a href="/tags/面试/" rel="tag"><i class="fa fa-tag"></i> 面试</a>
+              <a href="/tags/%E7%BC%93%E5%AD%98/" rel="tag"><i class="fa fa-tag"></i> 缓存</a>
+              <a href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag"><i class="fa fa-tag"></i> 面试</a>
               <a href="/tags/Redis/" rel="tag"><i class="fa fa-tag"></i> Redis</a>
           </div>
 
@@ -567,11 +575,11 @@
 
         
     <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/posts/Java-多线程/" rel="prev" title="Java 多线程">
-      <i class="fa fa-chevron-left"></i> Java 多线程
-    </a></div>
       <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/posts/Java-%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="next" title="Java 多线程">
+      Java 多线程 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -671,9 +679,17 @@
   <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
 <script src="/js/schemes/muse.js"></script>
+
+
 <script src="/js/next-boot.js"></script>
+
   <script>
 var pjax = new Pjax({
   selectors: [
@@ -750,7 +766,9 @@ window.addEventListener('pjax:success', () => {
 
 
 
-  <script src="/js/local-search.js"></script>
+  
+<script src="/js/local-search.js"></script>
+
 
 
 
@@ -779,7 +797,7 @@ NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
       repo        : 'vioao.github.io',
       owner       : 'vioao',
       admin       : ['vioao'],
-      id          : '9a417ddfe94281037fc0c0d79cff2d1d',
+      id          : 'f626bc4314f6b780d480936ee55dfeba',
         language: 'zh-CN',
       distractionFreeMode: true
     });

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 3.9.0">
+<meta name="generator" content="Hexo 4.2.1">
   <link rel="icon" type="image/png" sizes="32x32" href="/uploads/favicon.ico">
   <link rel="icon" type="image/png" sizes="16x16" href="/uploads/favicon.ico">
 
@@ -20,18 +20,18 @@
     var CONFIG = {"hostname":"blog.vioao.site","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"remove","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":"disqusjs","storage":true,"lazyload":true,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="最近遇到的一个问题，有个项目使用的mysql升级到5.7后，发现项目中有些sql语句执行会报错。 报错类似如下: 12[SQL]select accountname,accounttype from weixin_account group by accountname;[Err] 1055 - &amp;apos;wcmgt.weixin_account.accounttype&amp;apos; isn&amp;ap">
-<meta name="keywords" content="MySQL">
+  <meta name="description" content="最近遇到的一个问题，有个项目使用的mysql升级到5.7后，发现项目中有些sql语句执行会报错。 报错类似如下: 12[SQL]select accountname,accounttype from weixin_account group by accountname;[Err] 1055 - &#39;wcmgt.weixin_account.accounttype&#39; isn&#39;">
 <meta property="og:type" content="article">
 <meta property="og:title" content="mysql 5.7 group by 1055">
 <meta property="og:url" content="http://blog.vioao.site/posts/mysql-5-7-group-by-1055/index.html">
 <meta property="og:site_name" content="Vioao&#39;s Blog">
-<meta property="og:description" content="最近遇到的一个问题，有个项目使用的mysql升级到5.7后，发现项目中有些sql语句执行会报错。 报错类似如下: 12[SQL]select accountname,accounttype from weixin_account group by accountname;[Err] 1055 - &amp;apos;wcmgt.weixin_account.accounttype&amp;apos; isn&amp;ap">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-07-23T09:27:19.780Z">
+<meta property="og:description" content="最近遇到的一个问题，有个项目使用的mysql升级到5.7后，发现项目中有些sql语句执行会报错。 报错类似如下: 12[SQL]select accountname,accounttype from weixin_account group by accountname;[Err] 1055 - &#39;wcmgt.weixin_account.accounttype&#39; isn&#39;">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-10-21T04:15:43.000Z">
+<meta property="article:modified_time" content="2020-07-27T02:23:53.566Z">
+<meta property="article:author" content="Vioao">
+<meta property="article:tag" content="MySQL">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="mysql 5.7 group by 1055">
-<meta name="twitter:description" content="最近遇到的一个问题，有个项目使用的mysql升级到5.7后，发现项目中有些sql语句执行会报错。 报错类似如下: 12[SQL]select accountname,accounttype from weixin_account group by accountname;[Err] 1055 - &amp;apos;wcmgt.weixin_account.accounttype&amp;apos; isn&amp;ap">
 
 <link rel="canonical" href="http://blog.vioao.site/posts/mysql-5-7-group-by-1055/">
 
@@ -95,6 +95,7 @@
   </style>
 </noscript>
 
+<link rel="alternate" href="/atom.xml" title="Vioao's Blog" type="application/atom+xml">
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
@@ -246,7 +247,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-23 17:27:19" itemprop="dateModified" datetime="2020-07-23T17:27:19+08:00">2020-07-23</time>
+                <time title="修改时间：2020-07-27 10:23:53" itemprop="dateModified" datetime="2020-07-27T10:23:53+08:00">2020-07-27</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -254,7 +255,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/工作记录/" itemprop="url" rel="index"><span itemprop="name">工作记录</span></a>
+                  <a href="/categories/%E5%B7%A5%E4%BD%9C%E8%AE%B0%E5%BD%95/" itemprop="url" rel="index"><span itemprop="name">工作记录</span></a>
                 </span>
             </span>
 
@@ -271,7 +272,7 @@
       
         <p>最近遇到的一个问题，有个项目使用的mysql升级到5.7后，发现项目中有些sql语句执行会报错。</p>
 <p>报错类似如下:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[SQL]select accountname,accounttype from weixin_account group by accountname;</span><br><span class="line">[Err] 1055 - &apos;wcmgt.weixin_account.accounttype&apos; isn&apos;t in GROUP BY</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[SQL]select accountname,accounttype from weixin_account group by accountname;</span><br><span class="line">[Err] 1055 - &#39;wcmgt.weixin_account.accounttype&#39; isn&#39;t in GROUP BY</span><br></pre></td></tr></table></figure>
 
 <p>于是便查阅资料了。随后发现，原来mysql5.7.5后，ONLY_FULL_GROUP_BY 默认为真，那么此时select中的字段必须出现在group by中。官方的说明文档如下：</p>
 <a id="more"></a>
@@ -324,16 +325,14 @@ system variable at server startup to <strong>not enable ONLY_FULL_GROUP_BY</stro
 </li>
 <li><ol>
 <li>查看sql_mode<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select @@global.sql_mode</span><br></pre></td></tr></table></figure>
-
-</li>
-</ol>
-<p>结果为：</p>
-<blockquote>
+结果为：<blockquote>
 <p>ONLY_FULL_GROUP_BY,NO_AUTO_VALUE_ON_ZERO,STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION</p>
 </blockquote>
 </li>
+</ol>
+</li>
 <li><ol start="2">
-<li>去掉ONLY_FULL_GROUP_BY，重新设置值<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set @@global.sql_mode        =&apos;NO_AUTO_VALUE_ON_ZERO,STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION&apos;;</span><br></pre></td></tr></table></figure>
+<li>去掉ONLY_FULL_GROUP_BY，重新设置值<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set @@global.sql_mode        &#x3D;&#39;NO_AUTO_VALUE_ON_ZERO,STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION&#39;;</span><br></pre></td></tr></table></figure>
 
 </li>
 </ol>
@@ -382,12 +381,12 @@ system variable at server startup to <strong>not enable ONLY_FULL_GROUP_BY</stro
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/posts/线上程序CPU过高问题排查/" rel="prev" title="线上程序CPU过高问题排查">
-      <i class="fa fa-chevron-left"></i> 线上程序CPU过高问题排查
+    <a href="/posts/SpringBoot%E6%95%B4%E5%90%88Mybatis-Druid-Quartz/" rel="prev" title="SpringBoot 整合Mybatis/Druid/Quartz">
+      <i class="fa fa-chevron-left"></i> SpringBoot 整合Mybatis/Druid/Quartz
     </a></div>
       <div class="post-nav-item">
-    <a href="/posts/SpringBoot整合Mybatis-Druid-Quartz/" rel="next" title="SpringBoot 整合Mybatis/Druid/Quartz">
-      SpringBoot 整合Mybatis/Druid/Quartz <i class="fa fa-chevron-right"></i>
+    <a href="/posts/%E7%BA%BF%E4%B8%8A%E7%A8%8B%E5%BA%8FCPU%E8%BF%87%E9%AB%98%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/" rel="next" title="线上程序CPU过高问题排查">
+      线上程序CPU过高问题排查 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -488,9 +487,17 @@ system variable at server startup to <strong>not enable ONLY_FULL_GROUP_BY</stro
   <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
 <script src="/js/schemes/muse.js"></script>
+
+
 <script src="/js/next-boot.js"></script>
+
   <script>
 var pjax = new Pjax({
   selectors: [
@@ -567,7 +574,9 @@ window.addEventListener('pjax:success', () => {
 
 
 
-  <script src="/js/local-search.js"></script>
+  
+<script src="/js/local-search.js"></script>
+
 
 
 

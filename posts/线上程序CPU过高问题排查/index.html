@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 3.9.0">
+<meta name="generator" content="Hexo 4.2.1">
   <link rel="icon" type="image/png" sizes="32x32" href="/uploads/favicon.ico">
   <link rel="icon" type="image/png" sizes="16x16" href="/uploads/favicon.ico">
 
@@ -21,19 +21,21 @@
   </script>
 
   <meta name="description" content="简要工作中负责的有一个项目是使用iReport+JasperReport实现的一个打印系统。最近这个线上程序经常无响应，重启后恢复正常，但是时不时还是会出现类似的问题。 最后发现是JasperReport的一个问题。有个JasperReport的转换任务内存占用特别高，当新对象需要分配内存时就会内存不够了，于是GC线程就不断GC，占用CPU。 导致系统CPU占用超高。 下面说下问题排查的一个思路步">
-<meta name="keywords" content="Java,CPU,线上问题排查">
 <meta property="og:type" content="article">
 <meta property="og:title" content="线上程序CPU过高问题排查">
-<meta property="og:url" content="http://blog.vioao.site/posts/线上程序CPU过高问题排查/index.html">
+<meta property="og:url" content="http://blog.vioao.site/posts/%E7%BA%BF%E4%B8%8A%E7%A8%8B%E5%BA%8FCPU%E8%BF%87%E9%AB%98%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/index.html">
 <meta property="og:site_name" content="Vioao&#39;s Blog">
 <meta property="og:description" content="简要工作中负责的有一个项目是使用iReport+JasperReport实现的一个打印系统。最近这个线上程序经常无响应，重启后恢复正常，但是时不时还是会出现类似的问题。 最后发现是JasperReport的一个问题。有个JasperReport的转换任务内存占用特别高，当新对象需要分配内存时就会内存不够了，于是GC线程就不断GC，占用CPU。 导致系统CPU占用超高。 下面说下问题排查的一个思路步">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-07-23T09:27:19.791Z">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-09-24T01:44:18.000Z">
+<meta property="article:modified_time" content="2020-07-27T02:23:53.578Z">
+<meta property="article:author" content="Vioao">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="CPU">
+<meta property="article:tag" content="线上问题排查">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="线上程序CPU过高问题排查">
-<meta name="twitter:description" content="简要工作中负责的有一个项目是使用iReport+JasperReport实现的一个打印系统。最近这个线上程序经常无响应，重启后恢复正常，但是时不时还是会出现类似的问题。 最后发现是JasperReport的一个问题。有个JasperReport的转换任务内存占用特别高，当新对象需要分配内存时就会内存不够了，于是GC线程就不断GC，占用CPU。 导致系统CPU占用超高。 下面说下问题排查的一个思路步">
 
-<link rel="canonical" href="http://blog.vioao.site/posts/线上程序CPU过高问题排查/">
+<link rel="canonical" href="http://blog.vioao.site/posts/%E7%BA%BF%E4%B8%8A%E7%A8%8B%E5%BA%8FCPU%E8%BF%87%E9%AB%98%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/">
 
 
 <script id="page-configurations">
@@ -95,6 +97,7 @@
   </style>
 </noscript>
 
+<link rel="alternate" href="/atom.xml" title="Vioao's Blog" type="application/atom+xml">
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
@@ -216,7 +219,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://blog.vioao.site/posts/线上程序CPU过高问题排查/">
+    <link itemprop="mainEntityOfPage" href="http://blog.vioao.site/posts/%E7%BA%BF%E4%B8%8A%E7%A8%8B%E5%BA%8FCPU%E8%BF%87%E9%AB%98%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/uploads/avatar.png">
@@ -246,7 +249,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-23 17:27:19" itemprop="dateModified" datetime="2020-07-23T17:27:19+08:00">2020-07-23</time>
+                <time title="修改时间：2020-07-27 10:23:53" itemprop="dateModified" datetime="2020-07-27T10:23:53+08:00">2020-07-27</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -254,7 +257,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/工作记录/" itemprop="url" rel="index"><span itemprop="name">工作记录</span></a>
+                  <a href="/categories/%E5%B7%A5%E4%BD%9C%E8%AE%B0%E5%BD%95/" itemprop="url" rel="index"><span itemprop="name">工作记录</span></a>
                 </span>
             </span>
 
@@ -281,7 +284,7 @@
 <li>Linux</li>
 </ul>
 <h1 id="问题定位"><a href="#问题定位" class="headerlink" title="问题定位"></a>问题定位</h1><h2 id="查看后台异常"><a href="#查看后台异常" class="headerlink" title="查看后台异常"></a>查看后台异常</h2><p>通过查看系统的后台日志，发现各个请求都正常，没有异常抛出。于是考虑系统状况</p>
-<h2 id="查看系统状况"><a href="#查看系统状况" class="headerlink" title="查看系统状况"></a>查看系统状况</h2><h3 id="top-命令查看CPU、内存等使用情况"><a href="#top-命令查看CPU、内存等使用情况" class="headerlink" title="top 命令查看CPU、内存等使用情况"></a>top 命令查看CPU、内存等使用情况</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[root@DEV-L002323 ~]# top</span><br><span class="line">top - 14:52:54 up 514 days,  7:00,  8 users,  load average: 2.85, 1.35, 1.62</span><br><span class="line">Tasks: 147 total,   1 running, 146 sleeping,   0 stopped,   0 zombie</span><br><span class="line">Cpu(s): 57.6%us,  6.3%sy,  0.0%ni,  9.2%id, 26.2%wa,  0.0%hi,  0.0%si,  0.7%st</span><br><span class="line">Mem:   3922928k total,  3794232k used,   128696k free,   403112k buffers</span><br><span class="line">Swap:  4194296k total,    65388k used,  4128908k free,  1492204k cached</span><br><span class="line"></span><br><span class="line">  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND</span><br><span class="line"> 6764 root      20   0 2428m 1.1g  11m S 190.0 28.3  36:38.55 java</span><br><span class="line"> 1161 root      20   0     0    0    0 D  0.3  0.0  32:43.06 flush-253:0</span><br><span class="line"> 1512 root      20   0 14684 4188  488 S  0.3  0.1   0:16.12 sec_agent</span><br><span class="line">    1 root      20   0 19356  652  436 S  0.0  0.0   0:16.64 init</span><br><span class="line">    2 root      20   0     0    0    0 S  0.0  0.0   0:00.05 kthreadd</span><br><span class="line">    3 root      RT   0     0    0    0 S  0.0  0.0   1:49.34 migration/0</span><br><span class="line">    4 root      20   0     0    0    0 S  0.0  0.0  17:46.61 ksoftirqd/0</span><br><span class="line">    5 root      RT   0     0    0    0 S  0.0  0.0   0:00.00 migration/0</span><br><span class="line">    6 root      RT   0     0    0    0 S  0.0  0.0   2:02.78 watchdog/0</span><br><span class="line">    7 root      RT   0     0    0    0 S  0.0  0.0   1:46.79 migration/1</span><br></pre></td></tr></table></figure>
+<h2 id="查看系统状况"><a href="#查看系统状况" class="headerlink" title="查看系统状况"></a>查看系统状况</h2><h3 id="top-命令查看CPU、内存等使用情况"><a href="#top-命令查看CPU、内存等使用情况" class="headerlink" title="top 命令查看CPU、内存等使用情况"></a>top 命令查看CPU、内存等使用情况</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[root@DEV-L002323 ~]# top</span><br><span class="line">top - 14:52:54 up 514 days,  7:00,  8 users,  load average: 2.85, 1.35, 1.62</span><br><span class="line">Tasks: 147 total,   1 running, 146 sleeping,   0 stopped,   0 zombie</span><br><span class="line">Cpu(s): 57.6%us,  6.3%sy,  0.0%ni,  9.2%id, 26.2%wa,  0.0%hi,  0.0%si,  0.7%st</span><br><span class="line">Mem:   3922928k total,  3794232k used,   128696k free,   403112k buffers</span><br><span class="line">Swap:  4194296k total,    65388k used,  4128908k free,  1492204k cached</span><br><span class="line"></span><br><span class="line">  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND</span><br><span class="line"> 6764 root      20   0 2428m 1.1g  11m S 190.0 28.3  36:38.55 java</span><br><span class="line"> 1161 root      20   0     0    0    0 D  0.3  0.0  32:43.06 flush-253:0</span><br><span class="line"> 1512 root      20   0 14684 4188  488 S  0.3  0.1   0:16.12 sec_agent</span><br><span class="line">    1 root      20   0 19356  652  436 S  0.0  0.0   0:16.64 init</span><br><span class="line">    2 root      20   0     0    0    0 S  0.0  0.0   0:00.05 kthreadd</span><br><span class="line">    3 root      RT   0     0    0    0 S  0.0  0.0   1:49.34 migration&#x2F;0</span><br><span class="line">    4 root      20   0     0    0    0 S  0.0  0.0  17:46.61 ksoftirqd&#x2F;0</span><br><span class="line">    5 root      RT   0     0    0    0 S  0.0  0.0   0:00.00 migration&#x2F;0</span><br><span class="line">    6 root      RT   0     0    0    0 S  0.0  0.0   2:02.78 watchdog&#x2F;0</span><br><span class="line">    7 root      RT   0     0    0    0 S  0.0  0.0   1:46.79 migration&#x2F;1</span><br></pre></td></tr></table></figure>
 
 <p>从top命令的结果发现。pid为6764的java进程CPU利用持续占用过高,达到了190%。内存占用率为28.3%。</p>
 <h3 id="定位问题线程"><a href="#定位问题线程" class="headerlink" title="定位问题线程"></a>定位问题线程</h3><p>使用<code>ps -mp pid -o THREAD,tid,time</code>命令查看该进程的线程情况，发现该进程的两个线程占用率很高</p>
@@ -292,7 +295,7 @@
 <h3 id="查看问题线程堆栈"><a href="#查看问题线程堆栈" class="headerlink" title="查看问题线程堆栈"></a>查看问题线程堆栈</h3><h4 id="将线程id转换为16进制"><a href="#将线程id转换为16进制" class="headerlink" title="将线程id转换为16进制"></a>将线程id转换为16进制</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@DEV-L002323 ~]#  printf &quot;%x\n&quot; 6766</span><br><span class="line">1a6e</span><br></pre></td></tr></table></figure>
 
 <h4 id="jstack查看线程堆栈信息"><a href="#jstack查看线程堆栈信息" class="headerlink" title="jstack查看线程堆栈信息"></a>jstack查看线程堆栈信息</h4><p>jstack命令打印线程堆栈信息，命令格式：<code>jstack pid |grep tid</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@DEV-L002323 ~]# jstack 6764 | grep 1a6e</span><br><span class="line">&quot;GC task thread#0 (ParallelGC)&quot; prio=10 tid=0x00007ffeb8016800 nid=0x1a6e runnable</span><br><span class="line">&quot;GC task thread#0 (ParallelGC)&quot; prio=10 tid=0x00007ffeb8016800 nid=0x1a6e runnable</span><br><span class="line">&quot;GC task thread#1 (ParallelGC)&quot; prio=10 tid=0x00007ffeb8016800 nid=0x1a6e runnable</span><br><span class="line">&quot;VM Periodic Task Thread&quot; prio=10 tid=0x00007ffeb8016800 nid=0x3700 waiting on condition</span><br><span class="line"></span><br><span class="line">JNI global references: 496</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@DEV-L002323 ~]# jstack 6764 | grep 1a6e</span><br><span class="line">&quot;GC task thread#0 (ParallelGC)&quot; prio&#x3D;10 tid&#x3D;0x00007ffeb8016800 nid&#x3D;0x1a6e runnable</span><br><span class="line">&quot;GC task thread#0 (ParallelGC)&quot; prio&#x3D;10 tid&#x3D;0x00007ffeb8016800 nid&#x3D;0x1a6e runnable</span><br><span class="line">&quot;GC task thread#1 (ParallelGC)&quot; prio&#x3D;10 tid&#x3D;0x00007ffeb8016800 nid&#x3D;0x1a6e runnable</span><br><span class="line">&quot;VM Periodic Task Thread&quot; prio&#x3D;10 tid&#x3D;0x00007ffeb8016800 nid&#x3D;0x3700 waiting on condition</span><br><span class="line"></span><br><span class="line">JNI global references: 496</span><br></pre></td></tr></table></figure>
 
 <p>从上面可以看书，这些都是GC的线程。那么可以推断，很有可能就是内存不够导致GC不断执行。接下来我们就需要查看
 gc 内存的情况</p>
@@ -308,7 +311,7 @@ jmap -dump:format=b,file=dump.bin 6764</p>
 jstack -l 6764 &gt;&gt; jstack.out</p>
 <p>从heapdump文件中定位到程序中的工作现场，和内存状况，如下：
 线程:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">&quot;Thread-21&quot; daemon prio=5 tid=85 WAITING</span><br><span class="line">	at java.lang.Object.wait(Native Method)</span><br><span class="line">	at java.lang.Object.wait(Object.java:503)</span><br><span class="line">	at net.sf.jasperreports.engine.fill.AbstractThreadSubreportRunner.waitResult(AbstractThreadSubreportRunner.java:81)</span><br><span class="line">	   Local Variable: net.sf.jasperreports.engine.fill.ThreadExecutorSubreportRunner#2</span><br><span class="line">	at net.sf.jasperreports.engine.fill.AbstractThreadSubreportRunner.start(AbstractThreadSubreportRunner.java:53)</span><br><span class="line">	at net.sf.jasperreports.engine.fill.JRFillSubreport.prepare(JRFillSubreport.java:758)</span><br><span class="line">	at net.sf.jasperreports.engine.fill.JRFillElementContainer.prepareElements(JRFillElementContainer.java:331)</span><br><span class="line">	   Local Variable: net.sf.jasperreports.engine.fill.JRFillSubreport#3</span><br><span class="line">	at net.sf.jasperreports.engine.fill.JRFillBand.fill(JRFillBand.java:384)</span><br><span class="line">	at net.sf.jasperreports.engine.fill.JRFillBand.fill(JRFillBand.java:358)</span><br><span class="line">	at net.sf.jasperreports.engine.fill.JRVerticalFiller.fillBandNoOverflow(JRVerticalFiller.java:458)</span><br><span class="line">	   Local Variable: net.sf.jasperreports.engine.fill.JRFillBand#3</span><br><span class="line">	at net.sf.jasperreports.engine.fill.JRVerticalFiller.fillPageHeader(JRVerticalFiller.java:421)</span><br><span class="line">	at net.sf.jasperreports.engine.fill.JRVerticalFiller.fillPageBreak(JRVerticalFiller.java:1954)</span><br><span class="line">	at net.sf.jasperreports.engine.fill.JRVerticalFiller.fillColumnBreak(JRVerticalFiller.java:1981)</span><br><span class="line">	at net.sf.jasperreports.engine.fill.JRVerticalFiller.fillDetail(JRVerticalFiller.java:754)</span><br><span class="line">	   Local Variable: net.sf.jasperreports.engine.fill.JRFillBand[]#1</span><br><span class="line">	   Local Variable: net.sf.jasperreports.engine.fill.JRFillBand#2</span><br><span class="line">	at net.sf.jasperreports.engine.fill.JRVerticalFiller.fillReportStart(JRVerticalFiller.java:288)</span><br><span class="line">	at net.sf.jasperreports.engine.fill.JRVerticalFiller.fillReport(JRVerticalFiller.java:151)</span><br><span class="line">	at net.sf.jasperreports.engine.fill.JRBaseFiller.fill(JRBaseFiller.java:939)</span><br><span class="line">	at net.sf.jasperreports.engine.fill.JRFiller.fill(JRFiller.java:152)</span><br><span class="line">	   Local Variable: net.sf.jasperreports.engine.util.LocalJasperReportsContext#1</span><br><span class="line">	   Local Variable: net.sf.jasperreports.engine.fill.JRVerticalFiller#1</span><br><span class="line">	at net.sf.jasperreports.engine.JasperFillManager.fill(JasperFillManager.java:464)</span><br><span class="line">	at net.sf.jasperreports.engine.JasperFillManager.fill(JasperFillManager.java:300)</span><br><span class="line">	   Local Variable: java.io.File#135</span><br><span class="line">	   Local Variable: net.sf.jasperreports.engine.JasperFillManager#1</span><br><span class="line">	   Local Variable: net.sf.jasperreports.engine.JasperReport#1</span><br><span class="line">	at net.sf.jasperreports.engine.JasperFillManager.fillReport(JasperFillManager.java:757)</span><br><span class="line">	at com.pingan.icore.print.asyntask.jasper.AysnJasPdfConvertorThread.fill(AysnJasPdfConvertorThread.java:110)</span><br><span class="line">	   Local Variable: java.lang.String#57815</span><br><span class="line">	   Local Variable: java.lang.String#55498</span><br><span class="line">	   Local Variable: java.util.HashMap#1682</span><br><span class="line">	   Local Variable: java.lang.String#57807</span><br><span class="line">	   Local Variable: java.lang.String#57809</span><br><span class="line">	at com.pingan.icore.print.asyntask.jasper.AysnJasPdfConvertorThread.run(AysnJasPdfConvertorThread.java:223)</span><br><span class="line">	   Local Variable: java.io.File#139</span><br><span class="line">	   Local Variable: java.io.File#138</span><br><span class="line">	   Local Variable: java.io.File#137</span><br><span class="line">	   Local Variable: java.io.File#136</span><br><span class="line">	   Local Variable: com.pingan.icore.print.asyntask.jasper.AysnJasPdfConvertorThread#1</span><br><span class="line">	at java.lang.Thread.run(Thread.java:722)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">&quot;Thread-21&quot; daemon prio&#x3D;5 tid&#x3D;85 WAITING</span><br><span class="line">	at java.lang.Object.wait(Native Method)</span><br><span class="line">	at java.lang.Object.wait(Object.java:503)</span><br><span class="line">	at net.sf.jasperreports.engine.fill.AbstractThreadSubreportRunner.waitResult(AbstractThreadSubreportRunner.java:81)</span><br><span class="line">	   Local Variable: net.sf.jasperreports.engine.fill.ThreadExecutorSubreportRunner#2</span><br><span class="line">	at net.sf.jasperreports.engine.fill.AbstractThreadSubreportRunner.start(AbstractThreadSubreportRunner.java:53)</span><br><span class="line">	at net.sf.jasperreports.engine.fill.JRFillSubreport.prepare(JRFillSubreport.java:758)</span><br><span class="line">	at net.sf.jasperreports.engine.fill.JRFillElementContainer.prepareElements(JRFillElementContainer.java:331)</span><br><span class="line">	   Local Variable: net.sf.jasperreports.engine.fill.JRFillSubreport#3</span><br><span class="line">	at net.sf.jasperreports.engine.fill.JRFillBand.fill(JRFillBand.java:384)</span><br><span class="line">	at net.sf.jasperreports.engine.fill.JRFillBand.fill(JRFillBand.java:358)</span><br><span class="line">	at net.sf.jasperreports.engine.fill.JRVerticalFiller.fillBandNoOverflow(JRVerticalFiller.java:458)</span><br><span class="line">	   Local Variable: net.sf.jasperreports.engine.fill.JRFillBand#3</span><br><span class="line">	at net.sf.jasperreports.engine.fill.JRVerticalFiller.fillPageHeader(JRVerticalFiller.java:421)</span><br><span class="line">	at net.sf.jasperreports.engine.fill.JRVerticalFiller.fillPageBreak(JRVerticalFiller.java:1954)</span><br><span class="line">	at net.sf.jasperreports.engine.fill.JRVerticalFiller.fillColumnBreak(JRVerticalFiller.java:1981)</span><br><span class="line">	at net.sf.jasperreports.engine.fill.JRVerticalFiller.fillDetail(JRVerticalFiller.java:754)</span><br><span class="line">	   Local Variable: net.sf.jasperreports.engine.fill.JRFillBand[]#1</span><br><span class="line">	   Local Variable: net.sf.jasperreports.engine.fill.JRFillBand#2</span><br><span class="line">	at net.sf.jasperreports.engine.fill.JRVerticalFiller.fillReportStart(JRVerticalFiller.java:288)</span><br><span class="line">	at net.sf.jasperreports.engine.fill.JRVerticalFiller.fillReport(JRVerticalFiller.java:151)</span><br><span class="line">	at net.sf.jasperreports.engine.fill.JRBaseFiller.fill(JRBaseFiller.java:939)</span><br><span class="line">	at net.sf.jasperreports.engine.fill.JRFiller.fill(JRFiller.java:152)</span><br><span class="line">	   Local Variable: net.sf.jasperreports.engine.util.LocalJasperReportsContext#1</span><br><span class="line">	   Local Variable: net.sf.jasperreports.engine.fill.JRVerticalFiller#1</span><br><span class="line">	at net.sf.jasperreports.engine.JasperFillManager.fill(JasperFillManager.java:464)</span><br><span class="line">	at net.sf.jasperreports.engine.JasperFillManager.fill(JasperFillManager.java:300)</span><br><span class="line">	   Local Variable: java.io.File#135</span><br><span class="line">	   Local Variable: net.sf.jasperreports.engine.JasperFillManager#1</span><br><span class="line">	   Local Variable: net.sf.jasperreports.engine.JasperReport#1</span><br><span class="line">	at net.sf.jasperreports.engine.JasperFillManager.fillReport(JasperFillManager.java:757)</span><br><span class="line">	at com.pingan.icore.print.asyntask.jasper.AysnJasPdfConvertorThread.fill(AysnJasPdfConvertorThread.java:110)</span><br><span class="line">	   Local Variable: java.lang.String#57815</span><br><span class="line">	   Local Variable: java.lang.String#55498</span><br><span class="line">	   Local Variable: java.util.HashMap#1682</span><br><span class="line">	   Local Variable: java.lang.String#57807</span><br><span class="line">	   Local Variable: java.lang.String#57809</span><br><span class="line">	at com.pingan.icore.print.asyntask.jasper.AysnJasPdfConvertorThread.run(AysnJasPdfConvertorThread.java:223)</span><br><span class="line">	   Local Variable: java.io.File#139</span><br><span class="line">	   Local Variable: java.io.File#138</span><br><span class="line">	   Local Variable: java.io.File#137</span><br><span class="line">	   Local Variable: java.io.File#136</span><br><span class="line">	   Local Variable: com.pingan.icore.print.asyntask.jasper.AysnJasPdfConvertorThread#1</span><br><span class="line">	at java.lang.Thread.run(Thread.java:722)</span><br></pre></td></tr></table></figure>
 
 <p>内存:
 发现这个net.sf.jasperreports.engine.fill.JRTemplatePrintText类的实例特别多，实例占了33.2%，大小占了58.1%</p>
@@ -342,7 +345,7 @@ jstack -l 6764 &gt;&gt; jstack.out</p>
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://blog.vioao.site/posts/线上程序CPU过高问题排查/" title="线上程序CPU过高问题排查">http://blog.vioao.site/posts/线上程序CPU过高问题排查/</a>
+    <a href="http://blog.vioao.site/posts/%E7%BA%BF%E4%B8%8A%E7%A8%8B%E5%BA%8FCPU%E8%BF%87%E9%AB%98%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/" title="线上程序CPU过高问题排查">http://blog.vioao.site/posts/线上程序CPU过高问题排查/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -356,7 +359,7 @@ jstack -l 6764 &gt;&gt; jstack.out</p>
           <div class="post-tags">
               <a href="/tags/Java/" rel="tag"><i class="fa fa-tag"></i> Java</a>
               <a href="/tags/CPU/" rel="tag"><i class="fa fa-tag"></i> CPU</a>
-              <a href="/tags/线上问题排查/" rel="tag"><i class="fa fa-tag"></i> 线上问题排查</a>
+              <a href="/tags/%E7%BA%BF%E4%B8%8A%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/" rel="tag"><i class="fa fa-tag"></i> 线上问题排查</a>
           </div>
 
         
@@ -365,12 +368,12 @@ jstack -l 6764 &gt;&gt; jstack.out</p>
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/posts/docker初识-运行mysql实例/" rel="prev" title="docker初识:运行mysql实例">
-      <i class="fa fa-chevron-left"></i> docker初识:运行mysql实例
+    <a href="/posts/mysql-5-7-group-by-1055/" rel="prev" title="mysql 5.7 group by 1055">
+      <i class="fa fa-chevron-left"></i> mysql 5.7 group by 1055
     </a></div>
       <div class="post-nav-item">
-    <a href="/posts/mysql-5-7-group-by-1055/" rel="next" title="mysql 5.7 group by 1055">
-      mysql 5.7 group by 1055 <i class="fa fa-chevron-right"></i>
+    <a href="/posts/docker%E5%88%9D%E8%AF%86-%E8%BF%90%E8%A1%8Cmysql%E5%AE%9E%E4%BE%8B/" rel="next" title="docker初识:运行mysql实例">
+      docker初识:运行mysql实例 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -471,9 +474,17 @@ jstack -l 6764 &gt;&gt; jstack.out</p>
   <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
 <script src="/js/schemes/muse.js"></script>
+
+
 <script src="/js/next-boot.js"></script>
+
   <script>
 var pjax = new Pjax({
   selectors: [
@@ -550,7 +561,9 @@ window.addEventListener('pjax:success', () => {
 
 
 
-  <script src="/js/local-search.js"></script>
+  
+<script src="/js/local-search.js"></script>
+
 
 
 
@@ -579,7 +592,7 @@ NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
       repo        : 'vioao.github.io',
       owner       : 'vioao',
       admin       : ['vioao'],
-      id          : '3460778e7980e4c4f13ccbb5ba0e4546',
+      id          : 'c41d5bbe8305ff8461c7bb64a6e788ae',
         language: 'zh-CN',
       distractionFreeMode: true
     });

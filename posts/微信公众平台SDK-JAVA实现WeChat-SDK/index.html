@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 3.9.0">
+<meta name="generator" content="Hexo 4.2.1">
   <link rel="icon" type="image/png" sizes="32x32" href="/uploads/favicon.ico">
   <link rel="icon" type="image/png" sizes="16x16" href="/uploads/favicon.ico">
 
@@ -21,19 +21,22 @@
   </script>
 
   <meta name="description" content="前言最近有做一些涉及到微信公众平台和第三方平台开发的工作。需要使用微信提供的接口。然而微信只提供了基于基本的HTTP接口，并没有对应各语言的SDK实现。所以如果自己开发的话需要封装一套SDK。不过，微信公众平台出来几年了，市面上早就有不少JAVA实现的微信SDK了。于是便收集了一些开源的JAVA实现的微信SDK，但是最后都不是特别合适。最终决定自己写一个。下面给出各开源SDK的实现对比和自己的写的">
-<meta name="keywords" content="Java,WeChat,公众平台,开放平台">
 <meta property="og:type" content="article">
 <meta property="og:title" content="微信公众平台SDK JAVA实现WeChat-SDK">
-<meta property="og:url" content="http://blog.vioao.site/posts/微信公众平台SDK-JAVA实现WeChat-SDK/index.html">
+<meta property="og:url" content="http://blog.vioao.site/posts/%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%B9%B3%E5%8F%B0SDK-JAVA%E5%AE%9E%E7%8E%B0WeChat-SDK/index.html">
 <meta property="og:site_name" content="Vioao&#39;s Blog">
 <meta property="og:description" content="前言最近有做一些涉及到微信公众平台和第三方平台开发的工作。需要使用微信提供的接口。然而微信只提供了基于基本的HTTP接口，并没有对应各语言的SDK实现。所以如果自己开发的话需要封装一套SDK。不过，微信公众平台出来几年了，市面上早就有不少JAVA实现的微信SDK了。于是便收集了一些开源的JAVA实现的微信SDK，但是最后都不是特别合适。最终决定自己写一个。下面给出各开源SDK的实现对比和自己的写的">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-07-23T09:27:19.790Z">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-01-21T02:31:13.000Z">
+<meta property="article:modified_time" content="2020-07-27T02:23:53.578Z">
+<meta property="article:author" content="Vioao">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="WeChat">
+<meta property="article:tag" content="公众平台">
+<meta property="article:tag" content="开放平台">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="微信公众平台SDK JAVA实现WeChat-SDK">
-<meta name="twitter:description" content="前言最近有做一些涉及到微信公众平台和第三方平台开发的工作。需要使用微信提供的接口。然而微信只提供了基于基本的HTTP接口，并没有对应各语言的SDK实现。所以如果自己开发的话需要封装一套SDK。不过，微信公众平台出来几年了，市面上早就有不少JAVA实现的微信SDK了。于是便收集了一些开源的JAVA实现的微信SDK，但是最后都不是特别合适。最终决定自己写一个。下面给出各开源SDK的实现对比和自己的写的">
 
-<link rel="canonical" href="http://blog.vioao.site/posts/微信公众平台SDK-JAVA实现WeChat-SDK/">
+<link rel="canonical" href="http://blog.vioao.site/posts/%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%B9%B3%E5%8F%B0SDK-JAVA%E5%AE%9E%E7%8E%B0WeChat-SDK/">
 
 
 <script id="page-configurations">
@@ -95,6 +98,7 @@
   </style>
 </noscript>
 
+<link rel="alternate" href="/atom.xml" title="Vioao's Blog" type="application/atom+xml">
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
@@ -216,7 +220,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://blog.vioao.site/posts/微信公众平台SDK-JAVA实现WeChat-SDK/">
+    <link itemprop="mainEntityOfPage" href="http://blog.vioao.site/posts/%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%B9%B3%E5%8F%B0SDK-JAVA%E5%AE%9E%E7%8E%B0WeChat-SDK/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/uploads/avatar.png">
@@ -246,7 +250,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-23 17:27:19" itemprop="dateModified" datetime="2020-07-23T17:27:19+08:00">2020-07-23</time>
+                <time title="修改时间：2020-07-27 10:23:53" itemprop="dateModified" datetime="2020-07-27T10:23:53+08:00">2020-07-27</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -364,8 +368,7 @@
 <p>除了实现对应的微信功能接口。还提供了一些支持类的接口和默认实现。可以根据自己的需要使用默认的实现或使用自定义的实现。如消息查重接口、token缓存管理接口、消息推送处理接口、消息处理器管理接口。
 目前只实现了上述功能。对应的测试用例也只写了一部分。需要后面慢慢的完善。</p>
 <h1 id="WeChat-SDK使用"><a href="#WeChat-SDK使用" class="headerlink" title="WeChat-SDK使用"></a>WeChat-SDK使用</h1><p><strong>maven依赖:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">  &lt;groupId&gt;com.github.vioao&lt;/groupId&gt;</span><br><span class="line">  &lt;artifactId&gt;wechat-sdk&lt;/artifactId&gt;</span><br><span class="line">  &lt;version&gt;1.1.0&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
-
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">  &lt;groupId&gt;com.github.vioao&lt;&#x2F;groupId&gt;</span><br><span class="line">  &lt;artifactId&gt;wechat-sdk&lt;&#x2F;artifactId&gt;</span><br><span class="line">  &lt;version&gt;1.1.0&lt;&#x2F;version&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br></pre></td></tr></table></figure>
 <p>目前是版本1.0.0，接下来会不断完善代码。使得代码功能更全，使用更方便。</p>
 <p><strong>接口使用示例:</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 用户标签接口</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testAboutTagUsers</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    TagsResponse result1 = UserApi.getTags(TOKEN);</span><br><span class="line">    System.out.println(<span class="string">"Get tags: "</span> + result1);</span><br><span class="line">    Assert.assertEquals(<span class="keyword">true</span>, result1.isSuccess());</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (result1.getTags().size() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        Integer tagId = result1.getTags().get(<span class="number">0</span>).getId();</span><br><span class="line"></span><br><span class="line">        BaseResponse result2 = UserApi.batchTagUsers(TOKEN, Arrays.asList(OPENID), tagId);</span><br><span class="line">        System.out.println(<span class="string">"Batch tag users: "</span> + result2);</span><br><span class="line">        Assert.assertEquals(<span class="keyword">true</span>, result2.isSuccess());</span><br><span class="line"></span><br><span class="line">        FollowResponse result3 = UserApi.getTagUserIds(TOKEN, tagId, <span class="keyword">null</span>);</span><br><span class="line">        System.out.println(<span class="string">"Get tag users: "</span> + result3);</span><br><span class="line">        Assert.assertEquals(<span class="keyword">true</span>, result3.isSuccess());</span><br><span class="line"></span><br><span class="line">        BaseResponse result4 = UserApi.batchUnTagUsers(TOKEN, Arrays.asList(OPENID), tagId);</span><br><span class="line">        System.out.println(<span class="string">"Batch tag users: "</span> + result4);</span><br><span class="line">        Assert.assertEquals(<span class="keyword">true</span>, result4.isSuccess());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 菜单接口</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testCreate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Button click = <span class="keyword">new</span> Button();</span><br><span class="line">    click.setType(<span class="string">"click"</span>);</span><br><span class="line">    click.setName(<span class="string">"今日歌曲"</span>);</span><br><span class="line">    click.setKey(<span class="string">"V1001_TODAY_MUSIC"</span>);</span><br><span class="line"></span><br><span class="line">    Button view = <span class="keyword">new</span> Button();</span><br><span class="line">    view.setType(<span class="string">"view"</span>);</span><br><span class="line">    view.setName(<span class="string">"搜索"</span>);</span><br><span class="line">    view.setUrl(<span class="string">"http://www.soso.com/"</span>);</span><br><span class="line">    Button click2 = <span class="keyword">new</span> Button();</span><br><span class="line">    click2.setType(<span class="string">"click"</span>);</span><br><span class="line">    click2.setName(<span class="string">"赞一下我们"</span>);</span><br><span class="line">    click2.setKey(<span class="string">"V1001_GOOD"</span>);</span><br><span class="line">    Button complex = <span class="keyword">new</span> Button();</span><br><span class="line">    complex.setName(<span class="string">"菜单"</span>);</span><br><span class="line">    complex.setSubButton(Arrays.asList(view, click2));</span><br><span class="line"></span><br><span class="line">    MenuButtons menuButtons = <span class="keyword">new</span> MenuButtons();</span><br><span class="line">    menuButtons.setButton(Arrays.asList(click, complex));</span><br><span class="line">    BaseResponse result = MenuApi.create(TOKEN, menuButtons);</span><br><span class="line"></span><br><span class="line">    System.out.println(<span class="string">"Create Menu: "</span> + result);</span><br><span class="line">    Assert.assertEquals(<span class="keyword">true</span>, result.isSuccess());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -375,15 +378,16 @@
 <h1 id="更新日志"><a href="#更新日志" class="headerlink" title="更新日志"></a>更新日志</h1><h2 id="2018-02-28"><a href="#2018-02-28" class="headerlink" title="2018-02-28"></a>2018-02-28</h2><p>Done:</p>
 <blockquote>
 <p><strong>完善以下功能模块的实现:</strong></p>
+</blockquote>
 <ul>
 <li>微信门店功能</li>
 <li>微信卡券功能</li>
 </ul>
-</blockquote>
 <hr>
 <h2 id="2018-03-11"><a href="#2018-03-11" class="headerlink" title="2018-03-11"></a>2018-03-11</h2><p>Done:</p>
 <blockquote>
 <p><strong>第三方平台对小程序的管理:</strong></p>
+</blockquote>
 <ul>
 <li>小程序服务器域名设置</li>
 <li>小程序成员管理</li>
@@ -391,46 +395,46 @@
 <li>小程序基础信息设置</li>
 <li>微信开放平台帐号管理</li>
 </ul>
-</blockquote>
 <p>ToDo:</p>
 <blockquote>
 <p><strong>第三方平台对小程序的管理</strong></p>
+</blockquote>
 <ul>
 <li>代码管理</li>
 <li>小程序模版库管理</li>
 <li>小程序代码模版库管理</li>
 </ul>
-</blockquote>
 <hr>
 <h2 id="2018-03-24"><a href="#2018-03-24" class="headerlink" title="2018-03-24"></a>2018-03-24</h2><p>Done:</p>
 <blockquote>
 <p><strong>第三方平台对小程序的管理:</strong></p>
+</blockquote>
 <ul>
 <li>小程序代码管理</li>
 <li>小程序代码模版库管理</li>
 <li>小程序模版设置</li>
 <li>小程序插件管理权限集</li>
 </ul>
-</blockquote>
 <blockquote>
 <p><strong>发布1.1.0版本</strong></p>
+</blockquote>
 <ul>
 <li>本次版本主要是完善了第三方平台相关的接口支持。可以基于wechat-sdk方便实现自己的第三方平台。管理平台下的小程序和公众号。</li>
 </ul>
-</blockquote>
 <p><strong>maven依赖:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">  &lt;groupId&gt;com.github.vioao&lt;/groupId&gt;</span><br><span class="line">  &lt;artifactId&gt;wechat-sdk&lt;/artifactId&gt;</span><br><span class="line">  &lt;version&gt;1.1.0&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">  &lt;groupId&gt;com.github.vioao&lt;&#x2F;groupId&gt;</span><br><span class="line">  &lt;artifactId&gt;wechat-sdk&lt;&#x2F;artifactId&gt;</span><br><span class="line">  &lt;version&gt;1.1.0&lt;&#x2F;version&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br></pre></td></tr></table></figure>
 
 <p>ToDo:</p>
 <blockquote>
 <p><strong>第三方平台相关:</strong></p>
+</blockquote>
 <ul>
 <li>卡券强授权</li>
 <li>微信广告接口</li>
 </ul>
-</blockquote>
 <blockquote>
 <p><strong>公众号相关:</strong></p>
+</blockquote>
 <ul>
 <li>微信摇一摇周边</li>
 <li>微信卡券</li>
@@ -441,7 +445,6 @@
 <li>微信设备功能</li>
 <li>微信发票</li>
 </ul>
-</blockquote>
 
     </div>
 
@@ -457,7 +460,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://blog.vioao.site/posts/微信公众平台SDK-JAVA实现WeChat-SDK/" title="微信公众平台SDK JAVA实现WeChat-SDK">http://blog.vioao.site/posts/微信公众平台SDK-JAVA实现WeChat-SDK/</a>
+    <a href="http://blog.vioao.site/posts/%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%B9%B3%E5%8F%B0SDK-JAVA%E5%AE%9E%E7%8E%B0WeChat-SDK/" title="微信公众平台SDK JAVA实现WeChat-SDK">http://blog.vioao.site/posts/微信公众平台SDK-JAVA实现WeChat-SDK/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -471,8 +474,8 @@
           <div class="post-tags">
               <a href="/tags/Java/" rel="tag"><i class="fa fa-tag"></i> Java</a>
               <a href="/tags/WeChat/" rel="tag"><i class="fa fa-tag"></i> WeChat</a>
-              <a href="/tags/公众平台/" rel="tag"><i class="fa fa-tag"></i> 公众平台</a>
-              <a href="/tags/开放平台/" rel="tag"><i class="fa fa-tag"></i> 开放平台</a>
+              <a href="/tags/%E5%85%AC%E4%BC%97%E5%B9%B3%E5%8F%B0/" rel="tag"><i class="fa fa-tag"></i> 公众平台</a>
+              <a href="/tags/%E5%BC%80%E6%94%BE%E5%B9%B3%E5%8F%B0/" rel="tag"><i class="fa fa-tag"></i> 开放平台</a>
           </div>
 
         
@@ -481,12 +484,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/posts/使用checkstyle校验代码/" rel="prev" title="使用checkstyle校验代码">
-      <i class="fa fa-chevron-left"></i> 使用checkstyle校验代码
+    <a href="/posts/Jasperreports-OOM%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86/" rel="prev" title="Jasperreports OOM问题处理">
+      <i class="fa fa-chevron-left"></i> Jasperreports OOM问题处理
     </a></div>
       <div class="post-nav-item">
-    <a href="/posts/Jasperreports-OOM问题处理/" rel="next" title="Jasperreports OOM问题处理">
-      Jasperreports OOM问题处理 <i class="fa fa-chevron-right"></i>
+    <a href="/posts/%E4%BD%BF%E7%94%A8checkstyle%E6%A0%A1%E9%AA%8C%E4%BB%A3%E7%A0%81/" rel="next" title="使用checkstyle校验代码">
+      使用checkstyle校验代码 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -587,9 +590,17 @@
   <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
 <script src="/js/schemes/muse.js"></script>
+
+
 <script src="/js/next-boot.js"></script>
+
   <script>
 var pjax = new Pjax({
   selectors: [
@@ -666,7 +677,9 @@ window.addEventListener('pjax:success', () => {
 
 
 
-  <script src="/js/local-search.js"></script>
+  
+<script src="/js/local-search.js"></script>
+
 
 
 
@@ -695,7 +708,7 @@ NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
       repo        : 'vioao.github.io',
       owner       : 'vioao',
       admin       : ['vioao'],
-      id          : 'ec5298e98f5bd42fee212b4a783436c0',
+      id          : '952162920b077b8e8f8c74abad655901',
         language: 'zh-CN',
       distractionFreeMode: true
     });
