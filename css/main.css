@@ -1287,7 +1287,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #04ffb9;
+  background: #c1ffde;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2674,7 +2674,7 @@ hr {
   border-bottom: unset;
 }
 .github-corner svg {
-  fill: #1f405d;
+  fill: #428bca;
 }
 .pagination {
   text-align: center;
