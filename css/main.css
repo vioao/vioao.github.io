@@ -1287,7 +1287,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #030413;
+  background: #09520b;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2733,4 +2733,14 @@ span.exturl:hover {
 }
 .post-nav-item a:hover {
   border-bottom: unset;
+}
+.posts-expand .post-tags a {
+  background: #87daff;
+}
+.posts-expand .post-tags a:hover {
+  background: #428bca;
+}
+.links-of-author a::before,
+.links-of-author span.exturl::before {
+  background: #87daff;
 }
