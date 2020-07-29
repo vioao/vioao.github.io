@@ -3,7 +3,7 @@ name: default
 
 steps:
   - name: build
-    image: node:10
+    image: node:10-alpine
     volumes:
       - name: target
         path: /drone/target/vioao.github.io
