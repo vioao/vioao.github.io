@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/uploads/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/uploads/favicon.ico">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/themes/blue/pace-theme-minimal.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.vioao.site","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"hide","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":null,"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="简介Apache Kakfa 是一个分布式流处理平台，既可以当做普通的消息中间件用于消息发布订阅，也可以存储并处理流式数据，其分布式设计使得其有较好的容错性，水平拓展性等。 通常可以用于当做消息订阅发布用于业务系统中，或者用于大数据方向，接受存储大量的流式数据并和对应的大数据处理框架结合使用，eg. Kafka + Samza 从物理部署层面来讲，其主要有如下几个模块：  ZooKeeper  用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kafka 概览">
+<meta property="og:url" content="http://blog.vioao.site/posts/Kafka%20%E6%A6%82%E8%A7%88/index.html">
+<meta property="og:site_name" content="Vioao&#39;s Blog">
+<meta property="og:description" content="简介Apache Kakfa 是一个分布式流处理平台，既可以当做普通的消息中间件用于消息发布订阅，也可以存储并处理流式数据，其分布式设计使得其有较好的容错性，水平拓展性等。 通常可以用于当做消息订阅发布用于业务系统中，或者用于大数据方向，接受存储大量的流式数据并和对应的大数据处理框架结合使用，eg. Kafka + Samza 从物理部署层面来讲，其主要有如下几个模块：  ZooKeeper  用">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20191217164639495.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTA4NjI3OTQ=,size_16,color_FFFFFF,t_70">
+<meta property="article:published_time" content="2019-12-19T02:27:39.000Z">
+<meta property="article:modified_time" content="2020-08-03T06:24:00.127Z">
+<meta property="article:author" content="Vioao">
+<meta property="article:tag" content="大数据">
+<meta property="article:tag" content="RocketMQ">
+<meta property="article:tag" content="JAVA">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20191217164639495.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTA4NjI3OTQ=,size_16,color_FFFFFF,t_70">
+
+<link rel="canonical" href="http://blog.vioao.site/posts/Kafka%20%E6%A6%82%E8%A7%88/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Kafka 概览 | Vioao's Blog</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-100038035-1"></script>
+    <script data-pjax>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-100038035-1');
+      }
+    </script>
+
+
+  <script data-pjax>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?e10442447b2587d6a6580d90a763ecc6";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Vioao's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Vioao's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Record a little bit</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-fa fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories" rel="section"><i class="fa fa-fw fa-fa fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about" rel="section"><i class="fa fa-fw fa-fa fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives" rel="section"><i class="fa fa-fw fa-fa fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags" rel="section"><i class="fa fa-fw fa-fa fa-tags"></i>标签</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/vioao" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.vioao.site/posts/Kafka%20%E6%A6%82%E8%A7%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.png">
+      <meta itemprop="name" content="Vioao">
+      <meta itemprop="description" content="记录JAVA相关工作和阅读生活点滴">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Vioao's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Kafka 概览
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-12-19 10:27:39" itemprop="dateCreated datePublished" datetime="2019-12-19T10:27:39+08:00">2019-12-19</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/" itemprop="url" rel="index"><span itemprop="name">中间件</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p><a href="http://kafka.apachecn.org/intro.html" target="_blank" rel="noopener">Apache Kakfa</a> 是一个分布式流处理平台，既可以当做普通的消息中间件用于消息发布订阅，也可以存储并处理流式数据，其分布式设计使得其有较好的容错性，水平拓展性等。
+通常可以用于当做消息订阅发布用于业务系统中，或者用于大数据方向，接受存储大量的流式数据并和对应的大数据处理框架结合使用，eg. Kafka + Samza</p>
+<p>从物理部署层面来讲，其主要有如下几个模块：</p>
+<ol>
+<li>ZooKeeper
+ 用于元数据保存以及事件通知</li>
+<li>Broker
+ Kafka 的核心部分，用 scala 实现，负责处理客户端请求，持久化消息数据等</li>
+<li>Client（Consumer &amp; Producer）
+ 客户端，Java 实现。生产者消费者实现</li>
+</ol>
+<p>下面分别从这几个模块来讲解 Kafka 相关的实现[<strong>基于 Kafka 2.4</strong>]。</p>
+<a id="more"></a>
+
+<h4 id="相关概念"><a href="#相关概念" class="headerlink" title="相关概念"></a>相关概念</h4><ul>
+<li>Broker</li>
+<li>Consumer</li>
+<li>Producer</li>
+<li>Controller</li>
+<li>GroupCoordinator</li>
+<li>TransactionCoordinator</li>
+<li>Topic</li>
+<li>Partition</li>
+<li>Replicas</li>
+</ul>
+<h3 id="ZooKeeper"><a href="#ZooKeeper" class="headerlink" title="ZooKeeper"></a>ZooKeeper</h3><p><a href="https://zookeeper.apache.org/" target="_blank" rel="noopener">Apache ZooKeeper</a> 在 Kafka 的作用中类似于元数据的存储以及元数据改变的的一个通知器的作用。看清楚其内部存储了哪些数据就可以知道其具体的一个作用。存储的主要数据如下</p>
+<ul>
+<li><p>集群相关元数据</p>
+<ul>
+<li>/cluster/id <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> &#123;</span><br><span class="line">     <span class="attr">"version"</span>: <span class="number">4</span>,</span><br><span class="line">     <span class="attr">"id"</span>: <span class="number">1</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>Broker 节点相关元数据</p>
+<ul>
+<li>/controller，存储中央控制器的 Id 等信息 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> &#123;</span><br><span class="line">     <span class="attr">"version"</span>: <span class="number">4</span>,</span><br><span class="line">     <span class="attr">"brokerId"</span>: <span class="number">1</span>,</span><br><span class="line">     <span class="attr">"timestamp"</span>: <span class="string">"2233345666"</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>/controller_epoch，存储集群中中央控制器的选举次数</li>
+<li>/brokers/ids/{id}，存储每个 Broker 的基本信息 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"> &#123;</span><br><span class="line">     <span class="attr">"version"</span>: <span class="number">4</span>,</span><br><span class="line">     <span class="attr">"host"</span>: <span class="string">"localhost"</span>,</span><br><span class="line">     <span class="attr">"port"</span>: <span class="number">9092</span>,</span><br><span class="line">     <span class="attr">"jmx_port"</span>: <span class="number">9999</span>,</span><br><span class="line">     <span class="attr">"timestamp"</span>: <span class="string">"2233345666"</span>,</span><br><span class="line">     <span class="attr">"endpoints"</span>: [<span class="string">"CLIENT://host1:9092"</span>, <span class="string">"REPLICATION://host1:9093"</span>],</span><br><span class="line">     <span class="attr">"listener_security_protocol_map"</span>: &#123;<span class="attr">"CLIENT"</span>:<span class="string">"SSL"</span>, <span class="attr">"REPLICATION"</span>:<span class="string">"PLAINTEXT"</span>&#125;,</span><br><span class="line">     <span class="attr">"rack"</span>: <span class="string">"dc1"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>/brokers/seqid，用来生成 BrokerId 的，每次递增 1</li>
+</ul>
+</li>
+<li><p>Topic Partition 相关元数据</p>
+<ul>
+<li>/brokers/topics/{topic}，存储 topic 的分区和副本相关信息 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"> &#123;</span><br><span class="line">     <span class="attr">"version"</span>: <span class="number">2</span>,</span><br><span class="line">     <span class="attr">"partitions"</span>: [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>],      <span class="comment">// ReplicaAssignment</span></span><br><span class="line">     <span class="attr">"adding_replicas"</span>: [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>],       <span class="comment">// Adding ReplicaAssignment</span></span><br><span class="line">     <span class="attr">"removing_replicas"</span>: [<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>],     <span class="comment">// Removing ReplicaAssignment</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>/brokers/topics/{topic}/partitions/{partition}/state，分区的状态元数据 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"> &#123;</span><br><span class="line">     <span class="attr">"version"</span>: <span class="number">1</span>,</span><br><span class="line">     <span class="attr">"leader"</span>: <span class="number">1</span>,</span><br><span class="line">     <span class="attr">"leader_epoch"</span>: <span class="number">1</span>,</span><br><span class="line">     <span class="attr">"controller_epoch"</span>: <span class="number">1</span>,</span><br><span class="line">     <span class="attr">"isr"</span>: [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>],  <span class="comment">// In Sync Replicas</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>Consumer 相关元数据</p>
+<ul>
+<li>/consumers/{group}/offsets/{topic}/{partition}，存储 consumer 消费的 offset 记录，旧版本需要</li>
+</ul>
+</li>
+<li><p>其他类型节点</p>
+<ul>
+<li>/admin/delete_topics/{topic}，存储需要删除的 Topic Name</li>
+<li>/admin/preferred_replica_election   <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"> &#123;</span><br><span class="line">     <span class="attr">"version"</span>: <span class="number">1</span>,</span><br><span class="line">     <span class="attr">"partitions"</span>: [</span><br><span class="line">            &#123; </span><br><span class="line">              <span class="attr">"topic"</span>: <span class="string">"topic_name"</span>, </span><br><span class="line">              <span class="attr">"partition"</span>: <span class="number">1</span>  <span class="comment">//  partition number</span></span><br><span class="line">            &#125;</span><br><span class="line">      ],</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>/isr_change_notification/isr_change_{sequenceNumber}，isr变动信息事件通知；数据结构同上</li>
+</ul>
+</li>
+</ul>
+<h3 id="Broker"><a href="#Broker" class="headerlink" title="Broker"></a>Broker</h3><h4 id="启动流程"><a href="#启动流程" class="headerlink" title="启动流程"></a>启动流程</h4><p>首先主要看看 Kafka Broker 启动的一个流程，大致做了如下这些工作：</p>
+<ol>
+<li>初始化 ZooKeeper 客户端并创建最顶层的持久化节点<ul>
+<li>/consumers</li>
+<li>/brokers/ids</li>
+<li>/brokers/topics</li>
+<li>/brokers/seqid</li>
+<li>/config/changes</li>
+<li>/admin/delete_topics</li>
+<li>/isr_change_notification</li>
+<li>/latest_producer_id_block</li>
+<li>/log_dir_event_notification</li>
+</ul>
+</li>
+<li>从 ZK 创建或获取 ClusterId （base64 处理的 uuid）</li>
+<li>加载本地 log.dirs 下 meta.properties 中的 Broker’s Metadata(version、broker.id、cluster.id 等)</li>
+<li>创建 BrokerId （从配置文件中读取，或者利用 ZK 的 /brokers/seqid 节点来获取）</li>
+<li>启动 replica manager<ul>
+<li>添加 isr-expiration 周期任务，周期: replicaLagTimeMaxMs/2；用于将超过 replicaLagTimeMaxMs 的同步时间的 replica 从 ISR 中移除</li>
+<li>添加 isr-change-propagation 周期任务，周期: 2500ms；传播 ISR 变动，即创建持久 ZK 节点：/isr_change_notification/isr_change_{sequenceNumber}<blockquote>
+<p>如下情况会出发传播行为：</p>
+<ol>
+<li>isrChangeSet 不为空 &amp; 且经过了 5s </li>
+<li>超过 60s 没有进行传播行为</li>
+</ol>
+</blockquote>
+</li>
+<li>添加 shutdown-idle-replica-alter-log-dirs-thread 周期任务，周期 10s；关闭多余的线程任务</li>
+<li>LogDirFailureHandler</li>
+</ul>
+</li>
+<li>向 ZK 节点 /brokers/ids/{id} 注册 Broker 信息</li>
+<li>创建 BrokerMetadata 的 checkpoint</li>
+<li>启动 Kafka controller，监听 ControllerEvent [ Startup、IsrChangeNotification、Reelect、BrokerChange、ControllerChange、TopicChange 等] 并启动 controller 选举<blockquote>
+<p>一个集群只有一个 broker 能成为 controller，主要负责如下内容(就是监听的上述的一些事件来触发的)：</p>
+<ol>
+<li>Broker 的上线、下线处理</li>
+<li>新创建的 topic 或已有 topic 的分区扩容，处理分区副本的分配、leader 选举</li>
+<li>管理所有副本的状态机和分区的状态机，处理状态机的变化事件</li>
+<li>topic 删除、副本迁移、leader 切换等处理</li>
+</ol>
+</blockquote>
+</li>
+<li>启动 GroupCoordinator ；启动 delete-expired-group-metadata 周期任务，默认 60s 一次 清除 group 的 offsets <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">* Group contains the following metadata:</span><br><span class="line">*</span><br><span class="line">*  Membership metadata:</span><br><span class="line">*  <span class="number">1</span>. Members registered in <span class="keyword">this</span> group</span><br><span class="line">*  <span class="number">2</span>. <span class="function">Current protocol assigned to the <span class="title">group</span> <span class="params">(e.g. partition assignment strategy <span class="keyword">for</span> consumers)</span></span></span><br><span class="line"><span class="function">*  3. Protocol metadata associated with group members</span></span><br><span class="line"><span class="function">*</span></span><br><span class="line"><span class="function">*  State metadata:</span></span><br><span class="line"><span class="function">*  1. group state</span></span><br><span class="line"><span class="function">*  2. generation id</span></span><br><span class="line"><span class="function">*  3. leader id</span></span><br><span class="line"><span class="function">*/</span></span><br></pre></td></tr></table></figure></li>
+<li>启动事务协调者 transactionCoordinator<ul>
+<li>启动周期任务 transaction-abort ，放弃超时了（默认 1min）的事务</li>
+<li>启动周期任务 transactionalId-expiration（默认开启），移除过期的（默认 1min） transactionalId</li>
+</ul>
+</li>
+<li>启动动态配置管理</li>
+<li>启动 Request 处理服务</li>
+</ol>
+<p>由于 Broker 集群中很多重要事件的处理都是由 Controller 来处理的，我们下面重点来看看 Controller 的选举和其事件处理机制（以删除 Topic 为例）。</p>
+<h4 id="Controller-选举"><a href="#Controller-选举" class="headerlink" title="Controller 选举"></a>Controller 选举</h4><p>大致流程如下：</p>
+<ol>
+<li>Broker 启动时启动 KafkaController</li>
+<li>KafkaController 启动时启动发布 Startup 事件，并启动 ControllerEventManager 来监听事件 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * KafkaController.scala</span></span><br><span class="line"><span class="comment"> * KafkaController 启动。</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * Invoked when the controller module of a Kafka server is started up. This does not assume that the current broker</span></span><br><span class="line"><span class="comment"> * is the controller. It merely registers the session expiration listener and starts the controller leader</span></span><br><span class="line"><span class="comment"> * elector</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function">def <span class="title">startup</span><span class="params">()</span> </span>= &#123;</span><br><span class="line">  zkClient.registerStateChangeHandler(<span class="keyword">new</span> StateChangeHandler &#123;</span><br><span class="line">    override val name: String = StateChangeHandlers.ControllerHandler</span><br><span class="line">    <span class="function">override def <span class="title">afterInitializingSession</span><span class="params">()</span>: Unit </span>= &#123;</span><br><span class="line">      eventManager.put(RegisterBrokerAndReelect)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function">override def <span class="title">beforeInitializingSession</span><span class="params">()</span>: Unit </span>= &#123;</span><br><span class="line">      val queuedEvent = eventManager.clearAndPut(Expire)</span><br><span class="line">	</span><br><span class="line">      <span class="comment">// Block initialization of the new session until the expiration event is being handled,</span></span><br><span class="line">      <span class="comment">// which ensures that all pending events have been processed before creating the new session</span></span><br><span class="line">      queuedEvent.awaitProcessing()</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">  <span class="comment">// 将 Startuo 事件加入到 event queue 中</span></span><br><span class="line">  eventManager.put(Startup)</span><br><span class="line">  <span class="comment">// 启动 eventmanager 来处理 event queue 中的任务</span></span><br><span class="line">  eventManager.start()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * ControllerEventManager.scala</span></span><br><span class="line"><span class="comment"> * eventManager 启动后台线程处理 event queue（ LinkedBlockingQueue[QueuedEvent] ） 中的事件。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">class ControllerEventThread(name: String) extends ShutdownableThread(name = name, isInterruptible = false) &#123;</span><br><span class="line">  logIdent = s<span class="string">"[ControllerEventThread controllerId=$controllerId] "</span></span><br><span class="line">	</span><br><span class="line">  <span class="function">override def <span class="title">doWork</span><span class="params">()</span>: Unit </span>= &#123;</span><br><span class="line">    val dequeued = queue.take()</span><br><span class="line">    dequeued.event match &#123;</span><br><span class="line">      <span class="keyword">case</span> ShutdownEventThread =&gt; <span class="comment">// The shutting down of the thread has been initiated at this point. Ignore this event.</span></span><br><span class="line">      <span class="keyword">case</span> controllerEvent =&gt;</span><br><span class="line">        _state = controllerEvent.state</span><br><span class="line">	</span><br><span class="line">        eventQueueTimeHist.update(time.milliseconds() - dequeued.enqueueTimeMs)</span><br><span class="line">	</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">          rateAndTimeMetrics(state).time &#123;</span><br><span class="line">            dequeued.process(processor)</span><br><span class="line">          &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> &#123;</span><br><span class="line">          <span class="keyword">case</span> e: Throwable =&gt; error(s<span class="string">"Uncaught error processing event $controllerEvent"</span>, e)</span><br><span class="line">        &#125;</span><br><span class="line">	</span><br><span class="line">        _state = ControllerState.Idle</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>ControllerEventManager Handle Startup 事件，交给 KafkaController 处理，触发了 Controller 的选举 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * KafkaControkker.scala</span></span><br><span class="line"><span class="comment"> * 这是 controller 需要处理的所有事件类型。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function">override def <span class="title">process</span><span class="params">(event: ControllerEvent)</span>: Unit </span>= &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      event match &#123;</span><br><span class="line">        <span class="keyword">case</span> event: MockEvent =&gt;</span><br><span class="line">          <span class="comment">// Used only in test cases</span></span><br><span class="line">          event.process()</span><br><span class="line">        <span class="keyword">case</span> ShutdownEventThread =&gt;</span><br><span class="line">          error(<span class="string">"Received a ShutdownEventThread event. This type of event is supposed to be handle by ControllerEventThread"</span>)</span><br><span class="line">        <span class="keyword">case</span> AutoPreferredReplicaLeaderElection =&gt;</span><br><span class="line">          processAutoPreferredReplicaLeaderElection()</span><br><span class="line">        <span class="function"><span class="keyword">case</span> <span class="title">ReplicaLeaderElection</span><span class="params">(partitions, electionType, electionTrigger, callback)</span> </span>=&gt;</span><br><span class="line">          processReplicaLeaderElection(partitions, electionType, electionTrigger, callback)</span><br><span class="line">        <span class="keyword">case</span> UncleanLeaderElectionEnable =&gt;</span><br><span class="line">          processUncleanLeaderElectionEnable()</span><br><span class="line">        <span class="function"><span class="keyword">case</span> <span class="title">TopicUncleanLeaderElectionEnable</span><span class="params">(topic)</span> </span>=&gt;</span><br><span class="line">          processTopicUncleanLeaderElectionEnable(topic)</span><br><span class="line">        <span class="function"><span class="keyword">case</span> <span class="title">ControlledShutdown</span><span class="params">(id, brokerEpoch, callback)</span> </span>=&gt;</span><br><span class="line">          processControlledShutdown(id, brokerEpoch, callback)</span><br><span class="line">        <span class="function"><span class="keyword">case</span> <span class="title">LeaderAndIsrResponseReceived</span><span class="params">(response, brokerId)</span> </span>=&gt;</span><br><span class="line">          processLeaderAndIsrResponseReceived(response, brokerId)</span><br><span class="line">        <span class="function"><span class="keyword">case</span> <span class="title">TopicDeletionStopReplicaResponseReceived</span><span class="params">(replicaId, requestError, partitionErrors)</span> </span>=&gt;</span><br><span class="line">          processTopicDeletionStopReplicaResponseReceived(replicaId, requestError, partitionErrors)</span><br><span class="line">        <span class="keyword">case</span> BrokerChange =&gt;</span><br><span class="line">          processBrokerChange()</span><br><span class="line">        <span class="function"><span class="keyword">case</span> <span class="title">BrokerModifications</span><span class="params">(brokerId)</span> </span>=&gt;</span><br><span class="line">          processBrokerModification(brokerId)</span><br><span class="line">        <span class="keyword">case</span> ControllerChange =&gt;</span><br><span class="line">          processControllerChange()</span><br><span class="line">        <span class="keyword">case</span> Reelect =&gt;</span><br><span class="line">          processReelect()</span><br><span class="line">        <span class="keyword">case</span> RegisterBrokerAndReelect =&gt;</span><br><span class="line">          processRegisterBrokerAndReelect()</span><br><span class="line">        <span class="keyword">case</span> Expire =&gt;</span><br><span class="line">          processExpire()</span><br><span class="line">        <span class="keyword">case</span> TopicChange =&gt;</span><br><span class="line">          processTopicChange()</span><br><span class="line">        <span class="keyword">case</span> LogDirEventNotification =&gt;</span><br><span class="line">          processLogDirEventNotification()</span><br><span class="line">        <span class="function"><span class="keyword">case</span> <span class="title">PartitionModifications</span><span class="params">(topic)</span> </span>=&gt;</span><br><span class="line">          processPartitionModifications(topic)</span><br><span class="line">        <span class="keyword">case</span> TopicDeletion =&gt;</span><br><span class="line">          processTopicDeletion()</span><br><span class="line">        <span class="function"><span class="keyword">case</span> <span class="title">ApiPartitionReassignment</span><span class="params">(reassignments, callback)</span> </span>=&gt;</span><br><span class="line">          processApiPartitionReassignment(reassignments, callback)</span><br><span class="line">        <span class="keyword">case</span> ZkPartitionReassignment =&gt;</span><br><span class="line">          processZkPartitionReassignment()</span><br><span class="line">        <span class="function"><span class="keyword">case</span> <span class="title">ListPartitionReassignments</span><span class="params">(partitions, callback)</span> </span>=&gt;</span><br><span class="line">          processListPartitionReassignments(partitions, callback)</span><br><span class="line">        <span class="function"><span class="keyword">case</span> <span class="title">PartitionReassignmentIsrChange</span><span class="params">(partition)</span> </span>=&gt;</span><br><span class="line">          processPartitionReassignmentIsrChange(partition)</span><br><span class="line">        <span class="keyword">case</span> IsrChangeNotification =&gt;</span><br><span class="line">          processIsrChangeNotification()</span><br><span class="line">        <span class="keyword">case</span> Startup =&gt;</span><br><span class="line">          processStartup()</span><br><span class="line">      &#125;</span><br><span class="line">    &#125; <span class="keyword">catch</span> &#123;</span><br><span class="line">      <span class="keyword">case</span> e: ControllerMovedException =&gt;</span><br><span class="line">        info(s<span class="string">"Controller moved to another broker when processing $event."</span>, e)</span><br><span class="line">        maybeResign()</span><br><span class="line">      <span class="keyword">case</span> e: Throwable =&gt;</span><br><span class="line">        error(s<span class="string">"Error processing event $event"</span>, e)</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">      updateMetrics()</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * KafkaControkker.scala</span></span><br><span class="line"><span class="comment">   * 处理 Startup 事件</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="function"><span class="keyword">private</span> def <span class="title">processStartup</span><span class="params">()</span>: Unit </span>= &#123;</span><br><span class="line">    <span class="comment">// 注册监听 Znode 节点: /controller 事件：Creation、Deletion、DataChange</span></span><br><span class="line">    zkClient.registerZNodeChangeHandlerAndCheckExistence(controllerChangeHandler)</span><br><span class="line">    <span class="comment">// 执行选举行为</span></span><br><span class="line">    elect()</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * KafkaControkker.scala</span></span><br><span class="line"><span class="comment">   * 进行 Controller 的选举。</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="function"><span class="keyword">private</span> def <span class="title">elect</span><span class="params">()</span>: Unit </span>= &#123;</span><br><span class="line">    activeControllerId = zkClient.getControllerId.getOrElse(-<span class="number">1</span>)</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * We can get here during the initial startup and the handleDeleted ZK callback. Because of the potential race condition,</span></span><br><span class="line"><span class="comment">     * it's possible that the controller has already been elected when we get here. This check will prevent the following</span></span><br><span class="line"><span class="comment">     * createEphemeralPath method from getting into an infinite loop if this broker is already the controller.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="comment">// 如果已经是作为 controller 运行了，就不在进行后面的选举行为</span></span><br><span class="line">    <span class="keyword">if</span> (activeControllerId != -<span class="number">1</span>) &#123;</span><br><span class="line">      debug(s<span class="string">"Broker $activeControllerId has been elected as the controller, so stopping the election process."</span>)</span><br><span class="line">      <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="comment">// Registers a given broker in zookeeper as the controller and increments controller epoch：</span></span><br><span class="line">      <span class="comment">// 1. 首先创建初始化或获取节点 /controller_epoch 的值</span></span><br><span class="line">      <span class="comment">// 2. 然后将 epoch + 1 后，同时设置 /controller_epoch 和 /controller</span></span><br><span class="line">      <span class="comment">// 3. 成功的话则返回新的 epoch 和 zkVersion</span></span><br><span class="line">      <span class="comment">// 4. 如果结果显示节点已存在则判断当前的 brokerId &amp; epoch 和 zk 节点 /controller 和 /controller_epoch 上存储的是否一致，一致的话返回对应的数据，</span></span><br><span class="line">      <span class="comment">//    不一致的话则抛出 ControllerMovedException 异常放弃该选举操作，后面的步骤就不执行了</span></span><br><span class="line">      val (epoch, epochZkVersion) = zkClient.registerControllerAndIncrementControllerEpoch(config.brokerId)</span><br><span class="line">      controllerContext.epoch = epoch</span><br><span class="line">      controllerContext.epochZkVersion = epochZkVersion</span><br><span class="line">      activeControllerId = config.brokerId</span><br><span class="line"></span><br><span class="line">      info(s<span class="string">"$&#123;config.brokerId&#125; successfully elected as the controller. Epoch incremented to $&#123;controllerContext.epoch&#125; "</span> +</span><br><span class="line">        s<span class="string">"and epoch zk version is now $&#123;controllerContext.epochZkVersion&#125;"</span>)</span><br><span class="line">      </span><br><span class="line">	  <span class="comment">/**</span></span><br><span class="line"><span class="comment">	   * This callback is invoked by the zookeeper leader elector on electing the current broker as the new controller.</span></span><br><span class="line"><span class="comment">	   * It does the following things on the become-controller state change -</span></span><br><span class="line"><span class="comment">	   * 1. Initializes the controller's context object that holds cache objects for current topics, live brokers and</span></span><br><span class="line"><span class="comment">	   *    leaders for all existing partitions.</span></span><br><span class="line"><span class="comment">	   * 2. Starts the controller's channel manager</span></span><br><span class="line"><span class="comment">	   * 3. Starts the replica state machine</span></span><br><span class="line"><span class="comment">	   * 4. Starts the partition state machine</span></span><br><span class="line"><span class="comment">	   * If it encounters any unexpected exception/error while becoming controller, it resigns as the current controller.</span></span><br><span class="line"><span class="comment">	   * This ensures another controller election will be triggered and there will always be an actively serving controller</span></span><br><span class="line"><span class="comment">	   */</span>          </span><br><span class="line">      onControllerFailover()</span><br><span class="line">    &#125; <span class="keyword">catch</span> &#123;</span><br><span class="line">      <span class="keyword">case</span> e: ControllerMovedException =&gt;</span><br><span class="line">        maybeResign()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (activeControllerId != -<span class="number">1</span>)</span><br><span class="line">          debug(s<span class="string">"Broker $activeControllerId was elected as controller instead of broker $&#123;config.brokerId&#125;"</span>, e)</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">          warn(<span class="string">"A controller has been elected but just resigned, this will result in another round of election"</span>, e)</span><br><span class="line"></span><br><span class="line">      <span class="keyword">case</span> t: Throwable =&gt;</span><br><span class="line">        error(s<span class="string">"Error while electing or becoming controller on broker $&#123;config.brokerId&#125;. "</span> +</span><br><span class="line">          s<span class="string">"Trigger controller movement immediately"</span>, t)</span><br><span class="line">        triggerControllerMove()</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h4 id="删除-Topic"><a href="#删除-Topic" class="headerlink" title="删除 Topic"></a>删除 Topic</h4><p>从上面可以看出，是 KakaController 在处理 TopicDeletion 事件。那么 TopicDeletion 事件是如何触发的呢？其实在上文的 ZooKeeper 栏目已经有相关说明</p>
+<ol>
+<li><p>TopicDeletionHandler 监听 /admin/delete_topics 节点的子节点变动，如果子节点有任何改变，则 eventManager 会将 TopicDeletion 事件假如到 event queue 中交给后台线程去触发对应的 Processor</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ZkData.scala</span></span><br><span class="line">object DeleteTopicsZNode &#123;</span><br><span class="line">  def path = s<span class="string">"$&#123;AdminZNode.path&#125;/delete_topics"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// KafkaController.scala</span></span><br><span class="line">class TopicDeletionHandler(eventManager: ControllerEventManager) extends ZNodeChildChangeHandler &#123;</span><br><span class="line">  override val path: String = DeleteTopicsZNode.path</span><br><span class="line"></span><br><span class="line">  <span class="function">override def <span class="title">handleChildChange</span><span class="params">()</span>: Unit </span>= eventManager.put(TopicDeletion)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>controller 处理 Topic 删除</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * KakaController.scala</span></span><br><span class="line"><span class="comment"> * 处理 Topic 删除事件：</span></span><br><span class="line"><span class="comment"> * 1. 如果该 Broker 不是 Controller 则直接返回不处理</span></span><br><span class="line"><span class="comment"> * 2. 从 zk 获取需要删除的 topic</span></span><br><span class="line"><span class="comment"> * 3. 判断这些 topic 是否实际存在，更新 zk 节点 s"$&#123;AdminZNode.path&#125;/delete_topics" 删除实际不存在的节点数据</span></span><br><span class="line"><span class="comment"> * 4. 对于实际存在且要删除的节点 topicsToBeDeleted，并触发删除行为：</span></span><br><span class="line"><span class="comment"> *    4.1 判断 topic 是否有分区正在 BeingReassigned</span></span><br><span class="line"><span class="comment"> *        如果有：将 topic 加入 ControllerContext 中的 topicsIneligibleForDeletion 集合</span></span><br><span class="line"><span class="comment"> *        如果没有：将 topic 加入 ControllerContext 中的 topicsToBeDeleted Set 集合；</span></span><br><span class="line"><span class="comment"> * 5. 遍历 topicsToBeDeleted 执行删除</span></span><br><span class="line"><span class="comment"> *    5.1 所有副本完成了删除：删除 controller 缓存的和 zk 上该 topic 的相关数据</span></span><br><span class="line"><span class="comment"> *    5.2 部分副本删除未完成：最终调用</span></span><br><span class="line"><span class="comment"> *    5.3 试删除未开始删除流程且不在 topicsIneligibleForDeletion 中的 topic：</span></span><br><span class="line"><span class="comment"> *        5.3.1 找到对应的 Partition，发送 UpdateMetadata 请求，让所有存活的 broker 更新信息已拒绝该被删除 Topic 的请求</span></span><br><span class="line"><span class="comment"> *        5.3.2 给 replicas 发送 StopReplicaRequest 和 给 leader 发送 LeaderAndIsrRequest，让所有 replicas 变成 OfflineReplica 状态</span></span><br><span class="line"><span class="comment"> *        5.3.3 给所有 replicas 发送 StopReplicaRequest with deletePartition=true，以让他们开始删除对应的持久化数据</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> def <span class="title">processTopicDeletion</span><span class="params">()</span>: Unit </span>= &#123;</span><br><span class="line">   <span class="keyword">if</span> (!isActive) <span class="keyword">return</span></span><br><span class="line">   <span class="keyword">var</span> topicsToBeDeleted = zkClient.getTopicDeletions.toSet</span><br><span class="line">   debug(s<span class="string">"Delete topics listener fired for topics $&#123;topicsToBeDeleted.mkString("</span>,<span class="string">")&#125; to be deleted"</span>)</span><br><span class="line">   val nonExistentTopics = topicsToBeDeleted -- controllerContext.allTopics</span><br><span class="line">   <span class="keyword">if</span> (nonExistentTopics.nonEmpty) &#123;</span><br><span class="line">     warn(s<span class="string">"Ignoring request to delete non-existing topics $&#123;nonExistentTopics.mkString("</span>,<span class="string">")&#125;"</span>)</span><br><span class="line">     zkClient.deleteTopicDeletions(nonExistentTopics.toSeq, controllerContext.epochZkVersion)</span><br><span class="line">   &#125;</span><br><span class="line">   topicsToBeDeleted --= nonExistentTopics</span><br><span class="line">   <span class="keyword">if</span> (config.deleteTopicEnable) &#123;</span><br><span class="line">     <span class="keyword">if</span> (topicsToBeDeleted.nonEmpty) &#123;</span><br><span class="line">       info(s<span class="string">"Starting topic deletion for topics $&#123;topicsToBeDeleted.mkString("</span>,<span class="string">")&#125;"</span>)</span><br><span class="line">       <span class="comment">// mark topic ineligible for deletion if other state changes are in progress</span></span><br><span class="line">       topicsToBeDeleted.foreach &#123; topic =&gt;</span><br><span class="line">         val partitionReassignmentInProgress =</span><br><span class="line">           controllerContext.partitionsBeingReassigned.map(_.topic).contains(topic)</span><br><span class="line">         <span class="keyword">if</span> (partitionReassignmentInProgress)</span><br><span class="line">           topicDeletionManager.markTopicIneligibleForDeletion(Set(topic),</span><br><span class="line">             reason = <span class="string">"topic reassignment in progress"</span>)</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="comment">// add topic to deletion list</span></span><br><span class="line">       topicDeletionManager.enqueueTopicsForDeletion(topicsToBeDeleted)</span><br><span class="line">     &#125;</span><br><span class="line">   &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">     <span class="comment">// If delete topic is disabled remove entries under zookeeper path : /admin/delete_topics</span></span><br><span class="line">     info(s<span class="string">"Removing $topicsToBeDeleted since delete topic is disabled"</span>)</span><br><span class="line">     zkClient.deleteTopicDeletions(topicsToBeDeleted.toSeq, controllerContext.epochZkVersion)</span><br><span class="line">   &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h3 id="Client"><a href="#Client" class="headerlink" title="Client"></a>Client</h3><p>Client 端包括生产者和消费者，都是 Java 语言实现的。</p>
+<h4 id="Producer"><a href="#Producer" class="headerlink" title="Producer"></a>Producer</h4><h5 id="示例代码"><a href="#示例代码" class="headerlink" title="示例代码"></a>示例代码</h5><p>先直接上一个 Producer 的发送实例，让大家有个直观的了解。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Properties props = <span class="keyword">new</span> Properties();</span><br><span class="line">props.put(<span class="string">"bootstrap.servers"</span>, <span class="string">"localhost:9092"</span>);</span><br><span class="line">props.put(<span class="string">"acks"</span>, <span class="string">"all"</span>);</span><br><span class="line">props.put(<span class="string">"key.serializer"</span>, <span class="string">"org.apache.kafka.common.serialization.StringSerializer"</span>);</span><br><span class="line">props.put(<span class="string">"value.serializer"</span>, <span class="string">"org.apache.kafka.common.serialization.StringSerializer"</span>);</span><br><span class="line"></span><br><span class="line">Producer&lt;String, String&gt; producer = <span class="keyword">new</span> KafkaProducer&lt;&gt;(props);</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++)</span><br><span class="line">    producer.send(<span class="keyword">new</span> ProducerRecord&lt;String, String&gt;(<span class="string">"my-topic"</span>, Integer.toString(i), Integer.toString(i)));</span><br><span class="line"></span><br><span class="line">producer.close();</span><br></pre></td></tr></table></figure>
+
+<h5 id="简介-1"><a href="#简介-1" class="headerlink" title="简介"></a>简介</h5><p>Kafka 的生产者有如下特点：</p>
+<ul>
+<li>KafkaProducer 是线程安全的，通常来说，只有一个 Producer 实例会好过使用多个 Producer 实例。</li>
+<li>Producer 包含一个 buffer 空间，用来保存待发送消息；所以调用 send 方法的时候，实际是将消息 append 到对应的 buffer 上，然后立即返回。消息是由后台线程一起批量发送的</li>
+<li>Producer 为每一个 partition 都维护了这么一个 buffer，可通过 <code>batch.size</code> 属性设置其大小</li>
+<li>生产者有自动重发机制，这取决于你的 <code>retries</code> 属性设置，但是自动重发可能导致消息重复</li>
+<li>发送行为同样依赖于 <code>acks</code> 配置<ul>
+<li>acks=0， 不需要等待服务器的确认. 这时retries设置无效. Producer 只管发不管发送成功与否。延迟低，容易丢失数据。</li>
+<li>acks=1， 表示 leader 写入成功（但是并没有刷新到磁盘）后即向 producer 响应。一旦leader副本挂了，就会丢失数据。</li>
+<li>acks=all，等待数据完成副本的复制, 保证消息不丢失。</li>
+</ul>
+</li>
+<li>支持幂等和事务消息（事务消息后文说）</li>
+</ul>
+<h5 id="初始化流程"><a href="#初始化流程" class="headerlink" title="初始化流程"></a>初始化流程</h5><p>即 KafkaProducer 实例创建的行为： </p>
+<ol>
+<li>设置 ClientId (由参数传递或原子递增）</li>
+<li>配置 Metric 和 Serializer 等</li>
+<li>配置 interceptors</li>
+<li>初始化 RecordAccumulator</li>
+<li>初始化 metadata（此时还没有数据）</li>
+<li>初始化并启动 Sender 线程</li>
+</ol>
+<h5 id="发送流程"><a href="#发送流程" class="headerlink" title="发送流程"></a>发送流程</h5><p>发送代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Future&lt;RecordMetadata&gt; <span class="title">send</span><span class="params">(ProducerRecord&lt;K, V&gt; record, Callback callback)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// intercept the record, which can be potentially modified; this method does not throw exceptions</span></span><br><span class="line">    ProducerRecord&lt;K, V&gt; interceptedRecord = <span class="keyword">this</span>.interceptors.onSend(record);</span><br><span class="line">    <span class="keyword">return</span> doSend(interceptedRecord, callback);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>具体发送逻辑由 doSend 完成，流程如下：</p>
+<ol>
+<li><p>获取或等待直到 metadata 可用</p>
+<p> 主要逻辑在 <code>waitOnMetadata</code> : Wait for cluster metadata including partitions for the given topic to be available.  类似 NIO 的一个数据交互流程</p>
+<ol>
+<li><p>本地对应的 metadata 会唤醒 Sender -&gt; 唤醒 kafkaClient -&gt; 唤醒 Selector(封装了 NIO 的 Selector，最终会调用其 wakeup),  解除 NetworkClient 的阻塞，方便后面的 IO 操作</p>
+</li>
+<li><p>后台 Sender run 方法, 触发 NetworkClient 的 poll 操作：</p>
+<ul>
+<li>发送 MetadataRequest 请求</li>
+<li>selector.poll 从 socket 中获取数据 </li>
+<li>metadataUpdater.handleCompletedMetadataResponse 更新 metadata</li>
+</ul>
+<p>对应的 metadata 结构如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ProducerMetadata</span> <span class="keyword">extends</span> <span class="title">Metadata</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> TOPIC_EXPIRY_NEEDS_UPDATE = -<span class="number">1L</span>;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> TOPIC_EXPIRY_MS = <span class="number">5</span> * <span class="number">60</span> * <span class="number">1000</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* Topics with expiry time */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, Long&gt; topics = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Logger log;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Time time;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Metadata</span> <span class="keyword">implements</span> <span class="title">Closeable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Logger log;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">long</span> refreshBackoffMs;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">long</span> metadataExpireMs;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> updateVersion;  <span class="comment">// bumped on every metadata response</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> requestVersion; <span class="comment">// bumped on every new topic addition</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">long</span> lastRefreshMs;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">long</span> lastSuccessfulRefreshMs;</span><br><span class="line">    <span class="keyword">private</span> KafkaException fatalException;</span><br><span class="line">    <span class="keyword">private</span> Set&lt;String&gt; invalidTopics;</span><br><span class="line">    <span class="keyword">private</span> Set&lt;String&gt; unauthorizedTopics;</span><br><span class="line">    <span class="keyword">private</span> MetadataCache cache = MetadataCache.empty();</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> needUpdate;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> ClusterResourceListeners clusterResourceListeners;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> isClosed;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Map&lt;TopicPartition, Integer&gt; lastSeenLeaderEpochs;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+<li><p>序列化 record 的 key 和 value</p>
+</li>
+<li><p>根据 record 和 metadata 选择 partition</p>
+<p> partition 可以手动指定，没有指定的就使用系统的 Partitioner 来决定：</p>
+<ul>
+<li>DefaultPartitioner：如果 <code>key!=null</code>，根据 key hash 选择 partition，否则按照 UniformStickyPartitioner 的逻辑来；可保证 key 相同的 record 发送到同一 partition</li>
+<li>RoundRobinPartitioner：”Round-Robin” 算法，均衡的将消息发送到所有 partition</li>
+<li>UniformStickyPartitioner：根据 topic 选择 partition</li>
+</ul>
+</li>
+<li><p>将记录 append 到 RecordAccumulator 中</p>
+</li>
+<li><p>获取 append 结果，有新的 batch 创建或有 batch 满了的时候调用 sender.wakeup 解除 NetworkClient 的阻塞，使得后台 run 方法能 sendProducerData</p>
+</li>
+</ol>
+<h5 id="事务消息"><a href="#事务消息" class="headerlink" title="事务消息"></a>事务消息</h5><p>先看看事务消息如何使用</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">Properties props = <span class="keyword">new</span> Properties();</span><br><span class="line">props.put(<span class="string">"bootstrap.servers"</span>, <span class="string">"localhost:9092"</span>);</span><br><span class="line">props.put(<span class="string">"transactional.id"</span>, <span class="string">"my-transactional-id"</span>);</span><br><span class="line">Producer&lt;String, String&gt; producer = <span class="keyword">new</span> KafkaProducer&lt;&gt;(props, <span class="keyword">new</span> StringSerializer(), <span class="keyword">new</span> StringSerializer());</span><br><span class="line"></span><br><span class="line">producer.initTransactions();</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    producer.beginTransaction();</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++)</span><br><span class="line">        producer.send(<span class="keyword">new</span> ProducerRecord&lt;&gt;(<span class="string">"my-topic"</span>, Integer.toString(i), Integer.toString(i)));</span><br><span class="line">    producer.commitTransaction();</span><br><span class="line">&#125; <span class="keyword">catch</span> (ProducerFencedException | OutOfOrderSequenceException | AuthorizationException e) &#123;</span><br><span class="line">    <span class="comment">// We can't recover from these exceptions, so our only option is to close the producer and exit.</span></span><br><span class="line">    producer.close();</span><br><span class="line">&#125; <span class="keyword">catch</span> (KafkaException e) &#123;</span><br><span class="line">    <span class="comment">// For all other exceptions, just abort the transaction and try again.</span></span><br><span class="line">    producer.abortTransaction();</span><br><span class="line">&#125;</span><br><span class="line">producer.close();</span><br></pre></td></tr></table></figure>
+<h5 id="事务整体流程"><a href="#事务整体流程" class="headerlink" title="事务整体流程"></a>事务整体流程</h5><p><img data-src="https://img-blog.csdnimg.cn/20191217164639495.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTA4NjI3OTQ=,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>图片引用自 <a href="https://zhmin.github.io/2019/05/20/kafka-transaction/" target="_blank" rel="noopener">Kafka 事务实现原理</a></p>
+</blockquote>
+<h5 id="事务协调"><a href="#事务协调" class="headerlink" title="事务协调"></a>事务协调</h5><p>TODO:</p>
+<h5 id="发送流程-1"><a href="#发送流程-1" class="headerlink" title="发送流程"></a>发送流程</h5><p>TODO:</p>
+<h4 id="Consumer"><a href="#Consumer" class="headerlink" title="Consumer"></a>Consumer</h4><h5 id="示例代码-1"><a href="#示例代码-1" class="headerlink" title="示例代码"></a>示例代码</h5><p>先直接上一个 Consumer 的消费实例，让大家有个直观的了解。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Properties props = <span class="keyword">new</span> Properties();</span><br><span class="line">props.setProperty(<span class="string">"bootstrap.servers"</span>, <span class="string">"localhost:9092"</span>);</span><br><span class="line">props.setProperty(<span class="string">"group.id"</span>, <span class="string">"test"</span>);</span><br><span class="line">props.setProperty(<span class="string">"enable.auto.commit"</span>, <span class="string">"true"</span>);</span><br><span class="line">props.setProperty(<span class="string">"auto.commit.interval.ms"</span>, <span class="string">"1000"</span>);</span><br><span class="line">props.setProperty(<span class="string">"key.deserializer"</span>, <span class="string">"org.apache.kafka.common.serialization.StringDeserializer"</span>);</span><br><span class="line">props.setProperty(<span class="string">"value.deserializer"</span>, <span class="string">"org.apache.kafka.common.serialization.StringDeserializer"</span>);</span><br><span class="line">KafkaConsumer&lt;String, String&gt; consumer = <span class="keyword">new</span> KafkaConsumer&lt;&gt;(props);</span><br><span class="line">consumer.subscribe(Arrays.asList(<span class="string">"foo"</span>, <span class="string">"bar"</span>));</span><br><span class="line"><span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">    ConsumerRecords&lt;String, String&gt; records = consumer.poll(Duration.ofMillis(<span class="number">100</span>));</span><br><span class="line">    <span class="keyword">for</span> (ConsumerRecord&lt;String, String&gt; record : records)</span><br><span class="line">        System.out.printf(<span class="string">"offset = %d, key = %s, value = %s%n"</span>, record.offset(), record.key(), record.value());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="简介-2"><a href="#简介-2" class="headerlink" title="简介"></a>简介</h5><p>大致特点：</p>
+<ul>
+<li><p>KafkaConsumer 是非线程安全的</p>
+</li>
+<li><p>consumer 只与必要的 broker 建立 TCP 连接来获取数据</p>
+</li>
+<li><p>consumer 有 consumerGroup 的概念，groupId 相同的 consumer 在同一个 group，同一消息只会被 group 中的一个实例消费。</p>
+</li>
+<li><p>consumer group 中的成员是变动的，当成员变动或订阅的 topic 变动时，就需要 rebalance，分配给成员的 topic partition 就会重新调整。</p>
+<ul>
+<li><p>成员超过 session.timeout.ms 没有发送心跳 ，leave group</p>
+</li>
+<li><p>成员超过 max.poll.interval.ms 没有 poll，leave group</p>
+</li>
+<li><p>成员关闭，leave group</p>
+</li>
+<li><p>订阅的 Topic 的 partition 数量变动</p>
+</li>
+<li><p>订阅的 Topic 被删除或新建</p>
+</li>
+<li><p>新成员加入 group</p>
+<p>重分配时，ConsumerRebalanceListener 能被通知到，可以使用其做应用级别的事情。eg. 手动 offsets 提交等</p>
+</li>
+</ul>
+</li>
+<li><p>Kafka 消费的情况保存在一个内部 topic 中: <code>__consumer_offsets</code>。其专门用来存储 group 消费的情况，默认情况下有 50 个 partition，每个 partition 三个副本。</p>
+</li>
+</ul>
+<h5 id="消费流程"><a href="#消费流程" class="headerlink" title="消费流程"></a>消费流程</h5><ol>
+<li>订阅 topic <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">consumer.subscribe(Arrays.asList(<span class="string">"foo"</span>, <span class="string">"bar"</span>));</span><br></pre></td></tr></table></figure></li>
+<li>poll 拉取消息，有消息则立即返回，没消息则等到 timeout <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ConsumerRecords&lt;String, String&gt; records = consumer.poll(Duration.ofMillis(<span class="number">100</span>));</span><br></pre></td></tr></table></figure>
+<ol>
+<li>pollHeartbeat: 检查 heartbeat 线程的状态，确保即使 coordinator 没准备好也不至于被 leave group</li>
+<li>lookupCoordinator: 找一个连接最少的 Node 来发送 FindCoordinatorRequest，收到结果后填充 coordinator 节点信息</li>
+<li>rejoinNeededOrPending: join group, join 完成后会根据是不是 leader 来执行不同的操作; 在此会设置对应的 assignment 等信息。为 leader 时，需要执行分配策略分配 topicpartition 并 同步到 followers，策略有<ul>
+<li>RangeAssignor</li>
+<li>RoundRobinAssignor</li>
+<li>StickyAssignor</li>
+<li>CooperativeStickyAssignor
+具体说明参考文章 <a href="https://blog.csdn.net/u013256816/article/details/81123600" target="_blank" rel="noopener">Kafka分区分配策略</a></li>
+</ul>
+</li>
+<li>触发异步提交 offset 信息</li>
+<li>设置 fetch 的 postition（手动指定或获取的最新的提交的 offset）</li>
+<li>pollForFetches: 拉取记录，已有记录的话则直接返回；否则，发送 FetchRequest 请求，并等待可用记录并返回，但是如果正在 reblance 的话，则返回空集合。</li>
+</ol>
+</li>
+</ol>
+<hr>
+<p>更详细的，可以阅读这个系列的博客: <a href="http://matt33.com/tags/kafka/" target="_blank" rel="noopener">Kafka</a> ，写的很棒</p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/posts/RocketMQ 概览/" rel="bookmark">RocketMQ 概览</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/posts/Flink 入门教程/" rel="bookmark">Flink 入门教程</a></div>
+    </li>
+  </ul>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Vioao
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.vioao.site/posts/Kafka%20%E6%A6%82%E8%A7%88/" title="Kafka 概览">http://blog.vioao.site/posts/Kafka 概览/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag"><i class="fa fa-tag"></i> 大数据</a>
+              <a href="/tags/RocketMQ/" rel="tag"><i class="fa fa-tag"></i> RocketMQ</a>
+              <a href="/tags/JAVA/" rel="tag"><i class="fa fa-tag"></i> JAVA</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/%E5%8E%8B%E6%B5%8B%E5%AF%B9%E6%AF%94:%20Spring%20WebFlux%20VS.%20Spring%20MVC/" rel="prev" title="压测对比: Spring WebFlux VS. Spring MVC">
+      <i class="fa fa-chevron-left"></i> 压测对比: Spring WebFlux VS. Spring MVC
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/RocketMQ%20%E6%A6%82%E8%A7%88/" rel="next" title="RocketMQ 概览">
+      RocketMQ 概览 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#相关概念"><span class="nav-number">1.1.</span> <span class="nav-text">相关概念</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ZooKeeper"><span class="nav-number">2.</span> <span class="nav-text">ZooKeeper</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Broker"><span class="nav-number">3.</span> <span class="nav-text">Broker</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#启动流程"><span class="nav-number">3.1.</span> <span class="nav-text">启动流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Controller-选举"><span class="nav-number">3.2.</span> <span class="nav-text">Controller 选举</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除-Topic"><span class="nav-number">3.3.</span> <span class="nav-text">删除 Topic</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Client"><span class="nav-number">4.</span> <span class="nav-text">Client</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Producer"><span class="nav-number">4.1.</span> <span class="nav-text">Producer</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#示例代码"><span class="nav-number">4.1.1.</span> <span class="nav-text">示例代码</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#简介-1"><span class="nav-number">4.1.2.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#初始化流程"><span class="nav-number">4.1.3.</span> <span class="nav-text">初始化流程</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#发送流程"><span class="nav-number">4.1.4.</span> <span class="nav-text">发送流程</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#事务消息"><span class="nav-number">4.1.5.</span> <span class="nav-text">事务消息</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#事务整体流程"><span class="nav-number">4.1.6.</span> <span class="nav-text">事务整体流程</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#事务协调"><span class="nav-number">4.1.7.</span> <span class="nav-text">事务协调</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#发送流程-1"><span class="nav-number">4.1.8.</span> <span class="nav-text">发送流程</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Consumer"><span class="nav-number">4.2.</span> <span class="nav-text">Consumer</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#示例代码-1"><span class="nav-number">4.2.1.</span> <span class="nav-text">示例代码</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#简介-2"><span class="nav-number">4.2.2.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#消费流程"><span class="nav-number">4.2.3.</span> <span class="nav-text">消费流程</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Vioao"
+      src="/uploads/avatar.png">
+  <p class="site-author-name" itemprop="name">Vioao</p>
+  <div class="site-description" itemprop="description">记录JAVA相关工作和阅读生活点滴</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+        
+          <span class="site-state-item-count">40</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags">
+          
+        <span class="site-state-item-count">71</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/vioao" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;vioao" rel="noopener" target="_blank"><i class="fa fa-fw fa-fab fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://blog.csdn.net/u010862794" title="CSDN → http:&#x2F;&#x2F;blog.csdn.net&#x2F;u010862794" rel="noopener" target="_blank"><i class="fa fa-fw fa-far fa-copyright"></i>CSDN</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Vioao</span>
+</div>
+  <div class="powered-by">CI/CD by
+    <a class="theme-link theme-link-bottom" target="_blank" href="http://drone.vioao.site">Vioao's Drone</a>
+  </div>
+
+
+
+  <span> | </span>
+  <div class="powered-by">Social:
+    
+        <a class="theme-link theme-link-bottom" href="https://github.com/vioao || fab fa-github" target="_blank" title="GitHub" >
+          GitHub
+        </a>
+        <div style="margin-left: 5px; display: inline-block"> </div>
+    
+        <a class="theme-link theme-link-bottom" href="http://blog.csdn.net/u010862794 || far fa-copyright" target="_blank" title="CSDN" >
+          CSDN
+        </a>
+        <div style="margin-left: 5px; display: inline-block"> </div>
+    
+  </div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-pjax@0/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/lozad.js/1.14.0/lozad.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+  <script data-pjax>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '65b1300922a4c2c8c9bb',
+      clientSecret: '4aa4b5ad38beb0385acbfb85ba840337969581d4',
+      repo        : 'vioao.github.io',
+      owner       : 'vioao',
+      admin       : ['vioao'],
+      id          : '463a54af63e95ca588b0af1bd9a90eb3',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+    </div>
+</body>
+</html>
