@@ -20,9 +20,21 @@ Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运
 以及 Servlet 3.1+ 容器上的。Spring WebFlux 可以让你使用更少的线程去处理并发请求，同时能够让你使用更少的硬件资源来拓展
 你的应用。
 
+下图是他们的一个区别。
+
 {% asset_img springboot2.png WebFlux %}
 
 <!-- more -->
+
+Spring MVC
+- 构建于 Servlet API 之上
+- 同步阻塞 I/O 模型, 认为应用汇阻塞当前线程，所以一个 Request 对应一个 Thread，需要有一个含有大量线程的线程池
+
+Spring WebFlux
+- 构建于 Reactive Streams Adapters 之上
+- 异步非阻塞 I/O 模型，认为应用不会阻塞当前线程，所以只是需要一个包含少数固定线程数的线程池 (event loop workers) 来处理请求
+
+> 关于 I/O 模型，可以看看这篇 [Java进阶（五）Java I/O 模型从 BIO 到 NIO 和 Reactor 模式](http://www.jasongj.com/java/nio_reactor/)
 
 ### Spring MVC or WebFlux?
 WebFlux 并不是 Spring MVC 替代，它主要应用还是在异步非阻塞编程模型上。如果你的项目并不是该模型
