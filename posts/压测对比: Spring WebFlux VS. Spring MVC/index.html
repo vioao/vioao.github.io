@@ -36,7 +36,7 @@
 <meta property="og:image" content="http://blog.vioao.site/posts/%E5%8E%8B%E6%B5%8B%E5%AF%B9%E6%AF%94:%20Spring%20WebFlux%20VS.%20Spring%20MVC/flux-monitor.png">
 <meta property="og:image" content="http://blog.vioao.site/posts/%E5%8E%8B%E6%B5%8B%E5%AF%B9%E6%AF%94:%20Spring%20WebFlux%20VS.%20Spring%20MVC/mvc-vs-flux-1000threads-20ms.png">
 <meta property="article:published_time" content="2020-07-10T10:05:20.000Z">
-<meta property="article:modified_time" content="2020-08-05T02:54:51.019Z">
+<meta property="article:modified_time" content="2020-08-17T09:20:50.844Z">
 <meta property="article:author" content="Vioao">
 <meta property="article:tag" content="Reactor">
 <meta property="article:tag" content="SpringBoot">
@@ -290,10 +290,24 @@ on Reactive Stack: Spring WebFlux.</p>
 Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运行在诸如 Netty, Undertow,
 以及 Servlet 3.1+ 容器上的。Spring WebFlux 可以让你使用更少的线程去处理并发请求，同时能够让你使用更少的硬件资源来拓展
 你的应用。</p>
+<p>下图是他们的一个区别。</p>
 <img data-src="/posts/%E5%8E%8B%E6%B5%8B%E5%AF%B9%E6%AF%94:%20Spring%20WebFlux%20VS.%20Spring%20MVC/springboot2.png" class="" title="WebFlux">
 
 <a id="more"></a>
 
+<p>Spring MVC</p>
+<ul>
+<li>构建于 Servlet API 之上</li>
+<li>同步阻塞 I/O 模型, 认为应用汇阻塞当前线程，所以一个 Request 对应一个 Thread，需要有一个含有大量线程的线程池</li>
+</ul>
+<p>Spring WebFlux</p>
+<ul>
+<li>构建于 Reactive Streams Adapters 之上</li>
+<li>异步非阻塞 I/O 模型，认为应用不会阻塞当前线程，所以只是需要一个包含少数固定线程数的线程池 (event loop workers) 来处理请求</li>
+</ul>
+<blockquote>
+<p>关于 I/O 模型，可以看看这篇 <a href="http://www.jasongj.com/java/nio_reactor/" target="_blank" rel="noopener">Java进阶（五）Java I/O 模型从 BIO 到 NIO 和 Reactor 模式</a></p>
+</blockquote>
 <h3 id="Spring-MVC-or-WebFlux"><a href="#Spring-MVC-or-WebFlux" class="headerlink" title="Spring MVC or WebFlux?"></a>Spring MVC or WebFlux?</h3><p>WebFlux 并不是 Spring MVC 替代，它主要应用还是在异步非阻塞编程模型上。如果你的项目并不是该模型
 或者你的应用目前本身已经足够应付当前情况，是不需要去切换成 WebFlux 的。官方在这个选择上也有给出
 几条注意点：</p>
