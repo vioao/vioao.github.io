@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/uploads/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/uploads/favicon.ico">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/themes/blue/pace-theme-minimal.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.vioao.site","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"hide","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":null,"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="场景延时任务的需求是非常常见的，在我们的开发生涯中，我相信大部分研发人员是会有接触到这一块的。其中，我们在现实生活中比较常接触到的场景有  下单后未付款通知 订单延迟生成短信通知 红包未领取退款通知 用户行程将近通知 微信公众号的文章延时发布推送等  常规模块 存储主要负责存储任务的相关信息，比如任务执行所需要的相关信息，执行时间，重试次数等  调度负责时间的调度，判断任务是否到达可执行  执行负">
+<meta property="og:type" content="article">
+<meta property="og:title" content="延时任务一锅端">
+<meta property="og:url" content="http://blog.vioao.site/posts/figure-out-delay-task/index.html">
+<meta property="og:site_name" content="Vioao&#39;s Blog">
+<meta property="og:description" content="场景延时任务的需求是非常常见的，在我们的开发生涯中，我相信大部分研发人员是会有接触到这一块的。其中，我们在现实生活中比较常接触到的场景有  下单后未付款通知 订单延迟生成短信通知 红包未领取退款通知 用户行程将近通知 微信公众号的文章延时发布推送等  常规模块 存储主要负责存储任务的相关信息，比如任务执行所需要的相关信息，执行时间，重试次数等  调度负责时间的调度，判断任务是否到达可执行  执行负">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://blog.vioao.site/posts/figure-out-delay-task/leader_follower.png">
+<meta property="og:image" content="http://blog.vioao.site/posts/figure-out-delay-task/time_round_1.png">
+<meta property="og:image" content="http://blog.vioao.site/posts/figure-out-delay-task/time_round_2.png">
+<meta property="og:image" content="http://blog.vioao.site/posts/figure-out-delay-task/time_round_3.png">
+<meta property="og:image" content="http://blog.vioao.site/posts/figure-out-delay-task/qmq_arch.png">
+<meta property="og:image" content="http://blog.vioao.site/posts/figure-out-delay-task/qmq_delay.png">
+<meta property="og:image" content="http://blog.vioao.site/posts/figure-out-delay-task/qmq_delay_fllow.png">
+<meta property="article:published_time" content="2020-09-14T08:01:57.000Z">
+<meta property="article:modified_time" content="2020-09-18T03:22:02.750Z">
+<meta property="article:author" content="Vioao">
+<meta property="article:tag" content="延时任务">
+<meta property="article:tag" content="Netty">
+<meta property="article:tag" content="QMQ">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://blog.vioao.site/posts/figure-out-delay-task/leader_follower.png">
+
+<link rel="canonical" href="http://blog.vioao.site/posts/figure-out-delay-task/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>延时任务一锅端 | Vioao's Blog</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-100038035-1"></script>
+    <script data-pjax>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-100038035-1');
+      }
+    </script>
+
+
+  <script data-pjax>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?e10442447b2587d6a6580d90a763ecc6";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Vioao's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Vioao's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Record a little bit</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-fa fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories" rel="section"><i class="fa fa-fw fa-fa fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about" rel="section"><i class="fa fa-fw fa-fa fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives" rel="section"><i class="fa fa-fw fa-fa fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags" rel="section"><i class="fa fa-fw fa-fa fa-tags"></i>标签</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/vioao" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.vioao.site/posts/figure-out-delay-task/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.png">
+      <meta itemprop="name" content="Vioao">
+      <meta itemprop="description" content="记录JAVA相关工作和阅读生活点滴">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Vioao's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          延时任务一锅端
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-09-14 16:01:57" itemprop="dateCreated datePublished" datetime="2020-09-14T16:01:57+08:00">2020-09-14</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h3><p>延时任务的需求是非常常见的，在我们的开发生涯中，我相信大部分研发人员是会有接触到这一块的。其中，我们在现实生活中比较常接触到的场景有</p>
+<ul>
+<li>下单后未付款通知</li>
+<li>订单延迟生成短信通知</li>
+<li>红包未领取退款通知</li>
+<li>用户行程将近通知</li>
+<li>微信公众号的文章延时发布推送等</li>
+</ul>
+<h3 id="常规模块"><a href="#常规模块" class="headerlink" title="常规模块"></a>常规模块</h3><ul>
+<li><p>存储<br>主要负责存储任务的相关信息，比如任务执行所需要的相关信息，执行时间，重试次数等</p>
+</li>
+<li><p>调度<br>负责时间的调度，判断任务是否到达可执行</p>
+</li>
+<li><p>执行<br>负责任务的实际执行</p>
+</li>
+</ul>
+<p>在非分布式的情况下，通常这三者是出现在同一个应用内部的；但如果是在分布式系统架构中，那么存储、执行和调度通常是分开的，并且一个任务还可能分割成多个
+子任务分别在不同的服务上运行。分布式情况下，每一个模块可选的方案都不少，多样且复杂；但是最终都需要单体内实现的支持，我们这里就只讨论单体模式下的延
+时任务方案。</p>
+<a id="more"></a>
+
+
+
+<h3 id="常规解决方案"><a href="#常规解决方案" class="headerlink" title="常规解决方案"></a>常规解决方案</h3><ul>
+<li>进程内的<ul>
+<li>ScheduledThreadPoolExecutor</li>
+<li>时间轮(HashedWheelTimer)</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>进程外的<ul>
+<li>通过定时任务框架(Quartz/Elastic-Job/Elastic-Job/QSchedule 等)</li>
+<li>通过延时消息(Kafka/RocketMQ/QMQ 等)</li>
+<li>依托于外部存储的自定义实现(Redis/MySQL 等)</li>
+</ul>
+</li>
+</ul>
+<p>下面主要讲讲进程内的两种方案，以及基于 QMQ 延时消息实现方案中 QMQ 延时消息的实现。</p>
+<p>ScheduledThreadPoolExecutor vs. HashedWheelTimer</p>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">添加任务</th>
+<th align="center">删除任务</th>
+<th align="center">获取</th>
+<th align="center">精度</th>
+<th align="center">线程模型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">ScheduledThreadPoolExecutor</td>
+<td align="center">O(logN)</td>
+<td align="center">O(logN)</td>
+<td align="center">O(1)</td>
+<td align="center">per tick</td>
+<td align="center">多线程</td>
+</tr>
+<tr>
+<td align="center">HashedWheelTimer</td>
+<td align="center">O(1)</td>
+<td align="center">O(1)</td>
+<td align="center">O(1)</td>
+<td align="center">取决于每个 tick 的 duration</td>
+<td align="center">单线程</td>
+</tr>
+</tbody></table>
+<h3 id="ScheduledThreadPoolExecutor"><a href="#ScheduledThreadPoolExecutor" class="headerlink" title="ScheduledThreadPoolExecutor"></a>ScheduledThreadPoolExecutor</h3><ul>
+<li>核心功能<ul>
+<li>schedule(Runnable command, long delay, TimeUnit unit)  </li>
+<li>scheduleAtFixedRate(Runnable command, long initialDelay, long period, TimeUnit unit)</li>
+<li>scheduleWithFixedDelay(Runnable command, long initialDelay, long delay, TimeUnit unit) </li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>核心实现点<ul>
+<li>继承 ThreadPoolExecutor</li>
+<li>自定义的 DelayedWorkQueue, 堆结构的无界阻塞队列</li>
+<li>Leader-follower 线程模型</li>
+</ul>
+</li>
+</ul>
+<h4 id="Leader-follower-线程模型"><a href="#Leader-follower-线程模型" class="headerlink" title="Leader-follower 线程模型"></a>Leader-follower 线程模型</h4><blockquote>
+<p>Leader/Follower设计避免了动态线程创建和销毁的额外开销。将线程放在一个自组织的池中，而且无需交换数据，这种方式将上下文切换、同步、数据移动和
+动态内存管理的开销都降到了最低</p>
+</blockquote>
+<img data-src="/posts/figure-out-delay-task/leader_follower.png" class="" title="Leader-follower 线程模型">
+
+<p>上图就是L/F多线程模型的状态变迁图，共6个关键点</p>
+<ul>
+<li>线程有3种状态：领导 leader，处理 processor，追随 follower</li>
+<li>假设共N个线程，其中只有1个 leader 线程（等待任务），x 个 processor 线程（处理），余下有 N-1-x 个 follower 线程（空闲）</li>
+<li>有一把锁，谁抢到就是 leader</li>
+<li>事件/任务来到时，leader 线程会对其进行处理，从而转化为 processor 状态，处理完成之后，又转变为 follower</li>
+<li>丢失 leader 后，follower 会尝试抢锁，抢到则变为 leader，否则保持 follower</li>
+<li>follower 不干事，就是抢锁，力图成为 leader</li>
+</ul>
+<p>通俗解释: <a href="https://stackoverflow.com/questions/3058272/explain-leader-follower-pattern" target="_blank" rel="noopener">Explain “Leader/Follower” Pattern</a></p>
+<h4 id="添加任务"><a href="#添加任务" class="headerlink" title="添加任务"></a>添加任务</h4><p>其和 ThreadPoolExecutor 的不同主要在它会按照过期时间的长短构造一个类小顶堆</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// DelayedWorkQueue</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">offer</span><span class="params">(Runnable x)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (x == <span class="keyword">null</span>)</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> NullPointerException();</span><br><span class="line">    RunnableScheduledFuture&lt;?&gt; e = (RunnableScheduledFuture&lt;?&gt;)x;</span><br><span class="line">    <span class="keyword">final</span> ReentrantLock lock = <span class="keyword">this</span>.lock;</span><br><span class="line">    lock.lock();</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">int</span> i = size;</span><br><span class="line">        <span class="keyword">if</span> (i &gt;= queue.length)</span><br><span class="line">            grow();</span><br><span class="line">        size = i + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span> (i == <span class="number">0</span>) &#123;</span><br><span class="line">            queue[<span class="number">0</span>] = e;</span><br><span class="line">            setIndex(e, <span class="number">0</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// 构建堆</span></span><br><span class="line">            siftUp(i, e);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 堆顶有变动则触发重新选 leader</span></span><br><span class="line">        <span class="keyword">if</span> (queue[<span class="number">0</span>] == e) &#123;</span><br><span class="line">            leader = <span class="keyword">null</span>;</span><br><span class="line">            available.signal();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        lock.unlock();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="取出任务"><a href="#取出任务" class="headerlink" title="取出任务"></a>取出任务</h4><p>已有 leader，则无线等待；否则做 leader 等待 delay 时间后执行任务</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// </span></span><br><span class="line"><span class="keyword">public</span> RunnableScheduledFuture&lt;?&gt; take() <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">    <span class="keyword">final</span> ReentrantLock lock = <span class="keyword">this</span>.lock;</span><br><span class="line">    lock.lockInterruptibly();</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">for</span> (;;) &#123;</span><br><span class="line">            RunnableScheduledFuture&lt;?&gt; first = queue[<span class="number">0</span>];</span><br><span class="line">            <span class="keyword">if</span> (first == <span class="keyword">null</span>)</span><br><span class="line">                <span class="comment">// 没有任务则无线等待</span></span><br><span class="line">                available.await();</span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">long</span> delay = first.getDelay(NANOSECONDS);</span><br><span class="line">                <span class="keyword">if</span> (delay &lt;= <span class="number">0L</span>)</span><br><span class="line">                    <span class="comment">// 延时任务已到时则取出并重新维护堆</span></span><br><span class="line">                    <span class="keyword">return</span> finishPoll(first);</span><br><span class="line">                first = <span class="keyword">null</span>; <span class="comment">// don't retain ref while waiting</span></span><br><span class="line">                <span class="keyword">if</span> (leader != <span class="keyword">null</span>)</span><br><span class="line">                    <span class="comment">// 不是 leader 也无线等待</span></span><br><span class="line">                    available.await();</span><br><span class="line">                <span class="keyword">else</span> &#123;</span><br><span class="line">                    Thread thisThread = Thread.currentThread();</span><br><span class="line">                    leader = thisThread;</span><br><span class="line">                    <span class="keyword">try</span> &#123;</span><br><span class="line">                        available.awaitNanos(delay);</span><br><span class="line">                    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">                        <span class="keyword">if</span> (leader == thisThread)</span><br><span class="line">                            leader = <span class="keyword">null</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (leader == <span class="keyword">null</span> &amp;&amp; queue[<span class="number">0</span>] != <span class="keyword">null</span>)</span><br><span class="line">            available.signal();</span><br><span class="line">        lock.unlock();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<blockquote>
+<p>问题：ScheduledThreadPoolExecutor 的延时任务是基于堆结构的，其添加和删除任务所需时间复杂度都为 O(logN), 对于超大量延时任务的情况来说，会
+不会有更好的解决方案呢？ Netty 中的 delay 重试机制？</p>
+</blockquote>
+<h3 id="时间轮"><a href="#时间轮" class="headerlink" title="时间轮"></a>时间轮</h3><p>大量的调度任务如果每一个都使用自己的调度器来管理任务的生命周期的话，浪费 cpu 的资源并且很低效。时间轮是一种高效来利用线程资源来进行批量化调度的一种
+调度模型。把大批量的调度任务全部都绑定到同一个的调度器上面，使用这一个调度器来进行所有任务的管理、触发、以及运行。能够高效的管理各种延时任务，周期
+任务，通知任务等等。但是，时间轮调度器的时间精度可能不是很高，对于精度要求特别高的调度任务可能不太适合。因为时间轮算法的精度取决于，时间段“指针”单元
+的最小粒度大小，比如时间轮的格子是一秒跳一次，那么调度精度小于一秒的任务就无法被时间轮所调度。而且时间轮算法没有做宕机备份，因此无法再宕机之后恢复
+任务重新调度。</p>
+<h4 id="简易时间轮"><a href="#简易时间轮" class="headerlink" title="简易时间轮"></a>简易时间轮</h4><img data-src="/posts/figure-out-delay-task/time_round_1.png" class="" title="简易时间轮">
+
+<p>概念：</p>
+<ul>
+<li>tickDuration：时间轮由多个时间格组成，每个时间格就是 tickDuration，它代表当前时间轮的基本时间跨度。</li>
+<li>wheelSize：代表每一层时间轮的格数</li>
+<li>interval：当前时间轮的总体时间跨度，interval=tickMs × wheelSize</li>
+</ul>
+<p>总的来说就是由数组 + 链表的形式来存储延时任务，但是需要将数组想象成是一个首尾相连的环形结构，有点类似一致性 hash 中结构的意思。那么添加任务的时候
+就根据任务的延迟时间对数组取模运算这样来确定放在哪一个槽位，槽位中存储的是任务链表。那么不管是添加任务，还是移除任务，其时间复杂度都是 O(1)，相对于
+ScheduledThreadPoolExecutor 要更加效率。</p>
+<blockquote>
+<p>问题：如果需要的 interval 很大，那么槽位不断增加，会急剧增加内存的消耗
+(eg. tickDuration=1ms, interval=1d -&gt; wheelSize = 1000 * 60 * 60 * 24 = 86400000)，如何解决？</p>
+</blockquote>
+<h4 id="含轮次的时间轮"><a href="#含轮次的时间轮" class="headerlink" title="含轮次的时间轮"></a>含轮次的时间轮</h4><img data-src="/posts/figure-out-delay-task/time_round_2.png" class="" title="多轮次时间轮">
+
+<p>和简易时间轮相比，其引入了“轮次”的概念，那么在指针指向到对应的槽位的时候，我们就需要判断槽位中的延时任务列表，哪些任务的的轮次是属于当前轮次的，只有
+当前轮次的任务才是真的到达了延时时间需要执行的任务。那么在 take 任务的时候，其复杂度就变成了 O(n) 了。或者说，每个槽位的存储结构由链表调整成堆，
+这样的话，take 任务就是 O(1) 的复杂度，但是相应的插入复杂度就变成了 O(logN)。</p>
+<blockquote>
+<p>Netty 的 <a href="https://github.com/netty/netty/blob/4.1/common/src/main/java/io/netty/util/HashedWheelTimer.java" target="_blank" rel="noopener">HashedWheelTimer</a></p>
+</blockquote>
+<blockquote>
+<p>问题：添加 or 获取任务的时间增加了，有没有更好的解决方案？</p>
+</blockquote>
+<h4 id="层级时间轮"><a href="#层级时间轮" class="headerlink" title="层级时间轮"></a>层级时间轮</h4><img data-src="/posts/figure-out-delay-task/time_round_3.png" class="" title="层级时间轮">
+
+<p>该设计其实类似于手表，我们将使用多个轮盘，每个轮盘的 tickDuration 为上一个轮盘的 interval。就好比手表上的秒针，分针，时针。秒针转一圈，分针才
+移动一个槽位。就是这么一种进阶关系。那么对应上面那个 tickDuration=1ms, interval=1d 的问题，新的层级时间轮的设计方式总共就只需要
+1000 + 60 + 60 + 24 = 1144 个槽位即可。</p>
+<blockquote>
+<p>Kafka 的 <a href="https://github.com/apache/kafka/blob/trunk/core/src/main/scala/kafka/utils/timer/TimingWheel.scala" target="_blank" rel="noopener">TimingWheel</a></p>
+</blockquote>
+<blockquote>
+<p>如果需要一个星期、一个月，甚至一年的更长跨度的延时任务，如何解决？</p>
+</blockquote>
+<h3 id="携程-QMQ-的延时实现"><a href="#携程-QMQ-的延时实现" class="headerlink" title="携程 QMQ 的延时实现"></a>携程 QMQ 的延时实现</h3><p>了解 QMQ 的延时消息实现之前，需要先大致了解下 QMQ 的基本构成组件。如图</p>
+<img data-src="/posts/figure-out-delay-task/qmq_arch.png" class="" title="QMQ 整体架构">
+
+<ul>
+<li>Meta Server：提供集群管理和集群发现的作用</li>
+<li>Server：提供实时消息服务</li>
+<li>Delay Server：提供延时/定时消息服务，延时消息先在delay server排队，时间到之后再发送给server</li>
+<li>Producer：消息生产者</li>
+<li>Consumer：消息消费者</li>
+</ul>
+<p>我们这次主要关注 Delay Server 的实现。 如果想更多的了解 QMQ，可以自行去看其 Github 上的<a href="https://github.com/qunarcorp/qmq/blob/master/README.md" target="_blank" rel="noopener"><strong>文档</strong></a>。</p>
+<p>相比于 RocketMQ 的只支持固定 level 的延时消息来说，QMQ 更加灵活，支持的延时范围更大，默认能支持两年的时间跨度，精确度为秒级。因为其内部是基于时间轮
+来实现的，而其时间轮的 tickDuration=500ms，如图</p>
+<img data-src="/posts/figure-out-delay-task/qmq_delay.png" class="" title="QMQ 延迟消息实现">
+
+<ul>
+<li>message log：和实时消息里的 message log 类似，收到消息后 append 到该 log 就返回给 producer，相当于 WAL。</li>
+<li>schedule log：按照投递时间组织，每个小时一个。该 log 是回放 message log 后根据延时时间放置对应的log上，这是上面描述的两层 hash wheel 的
+第一层，位于磁盘上。schedule log 里是包含完整的消息内容的，因为消息内容从 message log 同步到了 schedule log，所以历史 message log 都
+可以删除(所以 message log 只需要占用极小的存储空间，所以我们可以使用低容量高性能的 ssd 来获取极高的吞吐量)。另外，schedule log 是按照延时
+时间组织的，所以延时时间已过的 schedule log 文件也可以删除。</li>
+<li>dispatch log：延时/定时消息投递成功后写入，主要用于在应用重启后能够确定哪些消息已经投递，dispatch log 里写入的是消息的 offset，不包含消息
+内容。当延时 server 中途重启时，我们需要判断出当前这个刻度(比如一个小时)里的消息有哪些已经投递了则不重复投递。</li>
+</ul>
+<blockquote>
+<p>QMQ <a href="https://github.com/qunarcorp/qmq/blob/master/qmq-delay-server/src/main/java/qunar/tc/qmq/delay/wheel/HashedWheelTimer.java" target="_blank" rel="noopener">HashedWheelTimer</a></p>
+</blockquote>
+<img data-src="/posts/figure-out-delay-task/qmq_delay_fllow.png" class="" title="QMQ 延迟消息流程">
+
+<p>大体流程如上图，大体说明如下，主要主要了解下列几个任务即可。</p>
+<ol>
+<li>Delay Server 中包含的几个周期定时任务</li>
+</ol>
+<ul>
+<li>messageLogFlushService：负责 delay server 接受消息后，将 messagelog 刷盘</li>
+<li>dispatchLogFlushService：delay message 到期发送后，写 offset 到 dispatchlog，其主要负责将 dispatchlog 刷盘 </li>
+<li>iterateOffsetFlushService：主要负责回放 messagelog，并管理回放进度，进度保存在 message_log_iterate_checkpoint.json</li>
+</ul>
+<ol start="2">
+<li>WheelTickManager 主要工作</li>
+</ol>
+<ul>
+<li>start timer: 初始化并启动时间轮</li>
+<li>recover：根据 dispatchlog 和 回放进度恢复时间轮数据</li>
+<li>load schedulelog：周期加载 schedulelog 数据来填充时间轮数据</li>
+<li>监听 messagelog 的回放事件，回放添加 schedulelog 的时候判断(改延时消息是否属于当前延迟刻度,eg. 1h 内)是否需要将其添加到时间轮中</li>
+</ul>
+<blockquote>
+<p>note: QMQ 中的时间轮和 Netty 大体是一致的，都是先将任务添加到 Queue<HashedWheelTimeout> timeouts 中，然后周期从这个列表中获取 100000
+个来添加到 HashedWheel 中对应的 HashedWheelBucket 中。</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+      
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Vioao
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.vioao.site/posts/figure-out-delay-task/" title="延时任务一锅端">http://blog.vioao.site/posts/figure-out-delay-task/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E5%BB%B6%E6%97%B6%E4%BB%BB%E5%8A%A1/" rel="tag"><i class="fa fa-tag"></i> 延时任务</a>
+              <a href="/tags/Netty/" rel="tag"><i class="fa fa-tag"></i> Netty</a>
+              <a href="/tags/QMQ/" rel="tag"><i class="fa fa-tag"></i> QMQ</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/posts/Redis%20%E9%97%AE%E7%AD%94%20PK/" rel="next" title="Redis 问答 PK">
+      Redis 问答 PK <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#场景"><span class="nav-number">1.</span> <span class="nav-text">场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常规模块"><span class="nav-number">2.</span> <span class="nav-text">常规模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常规解决方案"><span class="nav-number">3.</span> <span class="nav-text">常规解决方案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ScheduledThreadPoolExecutor"><span class="nav-number">4.</span> <span class="nav-text">ScheduledThreadPoolExecutor</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Leader-follower-线程模型"><span class="nav-number">4.1.</span> <span class="nav-text">Leader-follower 线程模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#添加任务"><span class="nav-number">4.2.</span> <span class="nav-text">添加任务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#取出任务"><span class="nav-number">4.3.</span> <span class="nav-text">取出任务</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#时间轮"><span class="nav-number">5.</span> <span class="nav-text">时间轮</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#简易时间轮"><span class="nav-number">5.1.</span> <span class="nav-text">简易时间轮</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#含轮次的时间轮"><span class="nav-number">5.2.</span> <span class="nav-text">含轮次的时间轮</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#层级时间轮"><span class="nav-number">5.3.</span> <span class="nav-text">层级时间轮</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#携程-QMQ-的延时实现"><span class="nav-number">6.</span> <span class="nav-text">携程 QMQ 的延时实现</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Vioao"
+      src="/uploads/avatar.png">
+  <p class="site-author-name" itemprop="name">Vioao</p>
+  <div class="site-description" itemprop="description">记录JAVA相关工作和阅读生活点滴</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+        
+          <span class="site-state-item-count">41</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags">
+          
+        <span class="site-state-item-count">74</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/vioao" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;vioao" rel="noopener" target="_blank"><i class="fa fa-fw fa-fab fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://blog.csdn.net/u010862794" title="CSDN → http:&#x2F;&#x2F;blog.csdn.net&#x2F;u010862794" rel="noopener" target="_blank"><i class="fa fa-fw fa-far fa-copyright"></i>CSDN</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Vioao</span>
+</div>
+  <div class="powered-by">CI/CD by
+    <a class="theme-link theme-link-bottom" target="_blank" href="http://drone.vioao.site">Vioao's Drone</a>
+  </div>
+
+
+
+  <span> | </span>
+  <div class="powered-by">Social:
+    
+        <a class="theme-link theme-link-bottom" href="https://github.com/vioao || fab fa-github" target="_blank" title="GitHub" >
+          GitHub
+        </a>
+        <div style="margin-left: 5px; display: inline-block"> </div>
+    
+        <a class="theme-link theme-link-bottom" href="http://blog.csdn.net/u010862794 || far fa-copyright" target="_blank" title="CSDN" >
+          CSDN
+        </a>
+        <div style="margin-left: 5px; display: inline-block"> </div>
+    
+  </div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-pjax@0/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/lozad.js/1.14.0/lozad.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+  <script data-pjax>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '65b1300922a4c2c8c9bb',
+      clientSecret: '4aa4b5ad38beb0385acbfb85ba840337969581d4',
+      repo        : 'vioao.github.io',
+      owner       : 'vioao',
+      admin       : ['vioao'],
+      id          : '7ca57200b8c6a074c1334bd6c868c49a',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+    </div>
+</body>
+</html>

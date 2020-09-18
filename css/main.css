@@ -1287,7 +1287,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #c2ff96;
+  background: #ff6290;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2739,6 +2739,9 @@ span.exturl:hover {
 }
 .posts-expand .post-tags a:hover {
   background: #428bca;
+}
+.posts-expand .post-body img {
+  margin-left: auto;
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
