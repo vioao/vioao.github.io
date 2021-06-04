@@ -1,6 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>程序员的副业: 微信小程序</title>
+    <url>/posts/%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E5%89%AF%E4%B8%9A/</url>
+    <content><![CDATA[<h2 id="准备-amp-开发"><a href="#准备-amp-开发" class="headerlink" title="准备 &amp; 开发"></a>准备 &amp; 开发</h2><p>打工仔谁不想整点副业，整点睡后收入呢？ 虽然很早之前就知道淘宝客的模式，但是懒并且知道主要是推广难。所以一直也没有去弄，最近时间比较多，就还是决定整它一整。做好决定后我就开始准备相关的东西了。其实事情不多，主要有如下一些准备工作</p>
+<ul>
+<li>成为淘宝客<ul>
+<li>去淘宝开放平台申请<a href="https://aff-open.taobao.com/developer/index.htm" target="_blank" rel="noopener">成为淘宝客</a>，淘宝客分三个等级 低级 - 中级 - 高级。 对应的佣金会不一样。可以直接花钱找人刷到高级</li>
+</ul>
+</li>
+<li>服务器<ul>
+<li>整它一个服务器，这边用的是腾讯云。因为还有新用户资格。省不少钱！！ 三年才三百！<a href="https://cloud.tencent.com/act/cps/redirect?redirect=1040&cps_key=91eac497af6847051b9c2bd4d3ff2fa5&from=console" target="_blank" rel="noopener">腾讯云活动</a></li>
+</ul>
+</li>
+<li>营业执照<ul>
+<li>因为要对接微信支付,所以需要企业资质。但是个体户也 OK。所以要提前准备好。如果在深圳的话，全程线上办理就 OK。不要在网上找什么代办！！！！ <a href="https://www.gdzwfw.gov.cn/portal/guide/11440300398538336H344012501600104" target="_blank" rel="noopener">个体工商户办理流程</a></li>
+</ul>
+</li>
+<li>申请公众号/小程序<ul>
+<li>直接上 <a href="https://mp.weixin.qq.com/wxamp/index/index" target="_blank" rel="noopener">开放平台</a> 整就行了</li>
+</ul>
+</li>
+</ul>
+<p>相关技术调研。直接从简，使用的是如下技术/开源组件:</p>
+<ul>
+<li><a href="https://vant-contrib.gitee.io/vant-weapp/#/home" target="_blank" rel="noopener">Vant</a></li>
+<li>Spring Boot</li>
+<li>Spring JPA</li>
+<li>MySQL</li>
+</ul>
+<a id="more"></a>
+
+<h2 id="上线了"><a href="#上线了" class="headerlink" title="上线了"></a>上线了</h2><p>经过一段时间的开发，我的小程序<strong>笔笔省</strong>现在已经上线了。微信搜索 <strong>笔笔省</strong> 就可以找到。这个小程序可以方便自己平时买东西领优惠和返现，以及日常点外卖啊，买菜啊，看电影啊这些都能省不少钱。另外，顺便还配套申请了一个公众号。也叫<strong>笔笔省</strong>。</p>
+<p>整体来说，我做的小程序整体盈利模式为 淘宝客 + 各类 CPS。目前这个小程序已经上线。主要的功能如下</p>
+<ul>
+<li><strong>淘宝客模块</strong><ul>
+<li>根据淘宝商品链接/淘口令查询优惠并预估返现</li>
+</ul>
+</li>
+<li><strong>CPS 模块</strong><ul>
+<li>美团/饿了么外卖红包, 每顿至少省 4 块！</li>
+<li>美团/饿了么商超生鲜红包</li>
+<li>话费充值 94 折</li>
+<li>电影票 9 折购买</li>
+<li>最低 5 折吃 KFC</li>
+<li>火车票/酒店红包折扣</li>
+</ul>
+</li>
+<li><strong>用户模块</strong><ul>
+<li>查看返现订单记录</li>
+<li>提现</li>
+</ul>
+</li>
+</ul>
+<p>产品功能缺失:</p>
+<ul>
+<li>缺少自有的功能模块</li>
+<li>缺少增加用户粘性的功能/活动设计</li>
+<li>缺少对应的管理后台</li>
+</ul>
+<p>当前这个产品还在调整中，但是未能有方向还。这边建了一个群。大家可以加进来一起给点意见，一起讨论下。
+<img data-src="https://pic.iask.cn/fimg/496454148896.jpg#pic_center" alt="笔笔省产品讨论群">
+另外，制作一个宣传海报
+<img data-src="https://pic.iask.cn/fimg/804934148898.jpg#pic_center" alt="笔笔省海报"></p>
+<h2 id="遇到的坑-难点"><a href="#遇到的坑-难点" class="headerlink" title="遇到的坑/难点"></a>遇到的坑/难点</h2><p>在这整个过程中遇到了一些坑，这里给大家分享一下:</p>
+<ul>
+<li>微信认证，请一定先认证公众号<ul>
+<li>我是先申请的微信小程序，再申请的公众号。此时公众号如果要认证就要再交一次钱……很坑！但是如果是先申请微信公众号，然后再申请小程序的话，就只需要出一次认证费即可，后续申请企业微信也能复用。</li>
+</ul>
+</li>
+<li>营业执照的办理走了弯路。谨记一点！自己办理即可，很容易，不花冤枉钱！</li>
+<li>微信支付中实用功能的申请需要满足条件 (创建满 90 天，且 30 内连续有交易记录)。所以一定要提前申请，不然就会延迟你的上线时间。</li>
+<li>淘口令解析 &amp; 订单获取等高级淘宝接口新入门的肯定是没有这个权限的！需要寻找第三方的支持。<ul>
+<li>大部分是需要收费的，还挺难找的 emmm</li>
+<li>淘口令网是一个可用的</li>
+</ul>
+</li>
+<li>如何确定淘宝订单和用户之间的关联关系！<ul>
+<li>emm, 有个会员体系可以用，但是很难引导用户。</li>
+<li>还有其他诸如使用 pid 的解决方案</li>
+</ul>
+</li>
+<li>最后，<strong>推广真的很难！很难！很难！</strong> 做出来的东西没人用也是挺难过的</li>
+</ul>
+]]></content>
+      <categories>
+        <category>副业</category>
+      </categories>
+      <tags>
+        <tag>副业</tag>
+        <tag>微信小程序</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>延时任务一锅端</title>
     <url>/posts/figure-out-delay-task/</url>
     <content><![CDATA[<h3 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h3><p>延时任务的需求是非常常见的，在我们的开发生涯中，我相信大部分研发人员是会有接触到这一块的。其中，我们在现实生活中比较常接触到的场景有</p>

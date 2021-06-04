@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.vioao.site/"/>
-  <updated>2020-09-18T05:25:46.817Z</updated>
+  <updated>2021-06-04T05:04:53.729Z</updated>
   <id>http://blog.vioao.site/</id>
   
   <author>
@@ -17,11 +17,59 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>程序员的副业: 微信小程序</title>
+    <link href="http://blog.vioao.site/posts/%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E5%89%AF%E4%B8%9A/"/>
+    <id>http://blog.vioao.site/posts/%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E5%89%AF%E4%B8%9A/</id>
+    <published>2021-06-04T02:08:17.000Z</published>
+    <updated>2021-06-04T05:04:53.729Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;准备-amp-开发&quot;&gt;&lt;a href=&quot;#准备-amp-开发&quot; class=&quot;headerlink&quot; title=&quot;准备 &amp;amp; 开发&quot;&gt;&lt;/a&gt;准备 &amp;amp; 开发&lt;/h2&gt;&lt;p&gt;打工仔谁不想整点副业，整点睡后收入呢？ 虽然很早之前就知道淘宝客的模式，但是懒并且知道主要是推广难。所以一直也没有去弄，最近时间比较多，就还是决定整它一整。做好决定后我就开始准备相关的东西了。其实事情不多，主要有如下一些准备工作&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;成为淘宝客&lt;ul&gt;
+&lt;li&gt;去淘宝开放平台申请&lt;a href=&quot;https://aff-open.taobao.com/developer/index.htm&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;成为淘宝客&lt;/a&gt;，淘宝客分三个等级 低级 - 中级 - 高级。 对应的佣金会不一样。可以直接花钱找人刷到高级&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;服务器&lt;ul&gt;
+&lt;li&gt;整它一个服务器，这边用的是腾讯云。因为还有新用户资格。省不少钱！！ 三年才三百！&lt;a href=&quot;https://cloud.tencent.com/act/cps/redirect?redirect=1040&amp;cps_key=91eac497af6847051b9c2bd4d3ff2fa5&amp;from=console&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;腾讯云活动&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;营业执照&lt;ul&gt;
+&lt;li&gt;因为要对接微信支付,所以需要企业资质。但是个体户也 OK。所以要提前准备好。如果在深圳的话，全程线上办理就 OK。不要在网上找什么代办！！！！ &lt;a href=&quot;https://www.gdzwfw.gov.cn/portal/guide/11440300398538336H344012501600104&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;个体工商户办理流程&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;申请公众号/小程序&lt;ul&gt;
+&lt;li&gt;直接上 &lt;a href=&quot;https://mp.weixin.qq.com/wxamp/index/index&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;开放平台&lt;/a&gt; 整就行了&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;相关技术调研。直接从简，使用的是如下技术/开源组件:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://vant-contrib.gitee.io/vant-weapp/#/home&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Vant&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Spring Boot&lt;/li&gt;
+&lt;li&gt;Spring JPA&lt;/li&gt;
+&lt;li&gt;MySQL&lt;/li&gt;
+&lt;/ul&gt;
+    
+    </summary>
+    
+    
+      <category term="副业" scheme="http://blog.vioao.site/categories/%E5%89%AF%E4%B8%9A/"/>
+    
+    
+      <category term="副业" scheme="http://blog.vioao.site/tags/%E5%89%AF%E4%B8%9A/"/>
+    
+      <category term="微信小程序" scheme="http://blog.vioao.site/tags/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/"/>
+    
+  </entry>
+  
+  <entry>
     <title>延时任务一锅端</title>
     <link href="http://blog.vioao.site/posts/figure-out-delay-task/"/>
     <id>http://blog.vioao.site/posts/figure-out-delay-task/</id>
     <published>2020-09-14T08:01:57.000Z</published>
-    <updated>2020-09-18T05:25:46.817Z</updated>
+    <updated>2021-06-04T05:04:53.727Z</updated>
     
     <summary type="html">
     
@@ -64,7 +112,7 @@
     <link href="http://blog.vioao.site/posts/Redis%20%E9%97%AE%E7%AD%94%20PK/"/>
     <id>http://blog.vioao.site/posts/Redis%20%E9%97%AE%E7%AD%94%20PK/</id>
     <published>2020-07-23T09:17:53.000Z</published>
-    <updated>2020-09-18T05:25:46.802Z</updated>
+    <updated>2021-06-04T05:04:53.712Z</updated>
     
     <summary type="html">
     
@@ -101,7 +149,7 @@
     <link href="http://blog.vioao.site/posts/Java%20%E5%A4%9A%E7%BA%BF%E7%A8%8B/"/>
     <id>http://blog.vioao.site/posts/Java%20%E5%A4%9A%E7%BA%BF%E7%A8%8B/</id>
     <published>2020-07-23T09:12:38.000Z</published>
-    <updated>2020-09-18T05:25:46.800Z</updated>
+    <updated>2021-06-04T05:04:53.710Z</updated>
     
     <summary type="html">
     
@@ -133,7 +181,7 @@
     <link href="http://blog.vioao.site/posts/%E5%9C%A8%20Maven%20%E4%B8%AD%E5%A4%AE%E4%BB%93%E5%BA%93%E5%8F%91%E5%B8%83%E8%87%AA%E5%B7%B1%E7%9A%84%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/"/>
     <id>http://blog.vioao.site/posts/%E5%9C%A8%20Maven%20%E4%B8%AD%E5%A4%AE%E4%BB%93%E5%BA%93%E5%8F%91%E5%B8%83%E8%87%AA%E5%B7%B1%E7%9A%84%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/</id>
     <published>2020-07-23T09:01:41.000Z</published>
-    <updated>2020-09-18T05:25:46.813Z</updated>
+    <updated>2021-06-04T05:04:53.723Z</updated>
     
     <summary type="html">
     
@@ -156,7 +204,7 @@
     <link href="http://blog.vioao.site/posts/[%E8%AF%91]%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%20Node.js%20Worker%20Threads/"/>
     <id>http://blog.vioao.site/posts/[%E8%AF%91]%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%20Node.js%20Worker%20Threads/</id>
     <published>2020-07-22T05:51:51.000Z</published>
-    <updated>2020-09-18T05:25:46.820Z</updated>
+    <updated>2021-06-04T05:04:53.730Z</updated>
     
     <summary type="html">
     
@@ -198,7 +246,7 @@
     <link href="http://blog.vioao.site/posts/%E5%8E%8B%E6%B5%8B%E5%AF%B9%E6%AF%94:%20Spring%20WebFlux%20VS.%20Spring%20MVC/"/>
     <id>http://blog.vioao.site/posts/%E5%8E%8B%E6%B5%8B%E5%AF%B9%E6%AF%94:%20Spring%20WebFlux%20VS.%20Spring%20MVC/</id>
     <published>2020-07-10T10:05:20.000Z</published>
-    <updated>2020-09-18T05:25:46.810Z</updated>
+    <updated>2021-06-04T05:04:53.720Z</updated>
     
     <summary type="html">
     
@@ -233,7 +281,7 @@ Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运
     <link href="http://blog.vioao.site/posts/Kafka%20%E6%A6%82%E8%A7%88/"/>
     <id>http://blog.vioao.site/posts/Kafka%20%E6%A6%82%E8%A7%88/</id>
     <published>2019-12-19T02:27:39.000Z</published>
-    <updated>2020-09-18T05:25:46.802Z</updated>
+    <updated>2021-06-04T05:04:53.711Z</updated>
     
     <summary type="html">
     
@@ -269,7 +317,7 @@ Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运
     <link href="http://blog.vioao.site/posts/RocketMQ%20%E6%A6%82%E8%A7%88/"/>
     <id>http://blog.vioao.site/posts/RocketMQ%20%E6%A6%82%E8%A7%88/</id>
     <published>2019-11-18T03:38:51.000Z</published>
-    <updated>2020-09-18T05:25:46.804Z</updated>
+    <updated>2021-06-04T05:04:53.713Z</updated>
     
     <summary type="html">
     
@@ -336,7 +384,7 @@ Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运
     <link href="http://blog.vioao.site/posts/%E4%BB%8E%20VPS%20%E5%88%B0%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91%E4%B8%80%E6%B0%94%E5%91%B5%E6%88%90/"/>
     <id>http://blog.vioao.site/posts/%E4%BB%8E%20VPS%20%E5%88%B0%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91%E4%B8%80%E6%B0%94%E5%91%B5%E6%88%90/</id>
     <published>2019-08-27T02:47:13.000Z</published>
-    <updated>2020-09-18T05:25:46.805Z</updated>
+    <updated>2021-06-04T05:04:53.715Z</updated>
     
     <summary type="html">
     
@@ -381,7 +429,7 @@ Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运
     <link href="http://blog.vioao.site/posts/%E8%AE%B0%E4%B8%80%E6%AC%A1%20Gradle%20Build%20%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/"/>
     <id>http://blog.vioao.site/posts/%E8%AE%B0%E4%B8%80%E6%AC%A1%20Gradle%20Build%20%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/</id>
     <published>2019-08-24T02:48:26.000Z</published>
-    <updated>2020-09-18T05:25:46.820Z</updated>
+    <updated>2021-06-04T05:04:53.730Z</updated>
     
     <summary type="html">
     
@@ -411,7 +459,7 @@ Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运
     <link href="http://blog.vioao.site/posts/OTA%20%E9%A1%B9%E7%9B%AE%E7%9F%A5%E8%AF%86/"/>
     <id>http://blog.vioao.site/posts/OTA%20%E9%A1%B9%E7%9B%AE%E7%9F%A5%E8%AF%86/</id>
     <published>2019-07-10T01:54:30.000Z</published>
-    <updated>2020-09-18T05:25:46.802Z</updated>
+    <updated>2021-06-04T05:04:53.711Z</updated>
     
     <summary type="html">
     
@@ -442,7 +490,7 @@ Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运
     <link href="http://blog.vioao.site/posts/Drone%20%E5%88%9D%E6%8E%A2/"/>
     <id>http://blog.vioao.site/posts/Drone%20%E5%88%9D%E6%8E%A2/</id>
     <published>2019-06-21T03:14:55.000Z</published>
-    <updated>2020-09-18T05:25:46.788Z</updated>
+    <updated>2021-06-04T05:04:53.696Z</updated>
     
     <summary type="html">
     
@@ -480,7 +528,7 @@ Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运
     <link href="http://blog.vioao.site/posts/Flink%20%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/"/>
     <id>http://blog.vioao.site/posts/Flink%20%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/</id>
     <published>2019-06-08T02:18:40.000Z</published>
-    <updated>2020-09-18T05:25:46.789Z</updated>
+    <updated>2021-06-04T05:04:53.698Z</updated>
     
     <summary type="html">
     
@@ -513,7 +561,7 @@ Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运
     <link href="http://blog.vioao.site/posts/%E9%A1%B9%E7%9B%AE%E5%A4%8D%E7%9B%98%E6%80%9D%E8%80%83/"/>
     <id>http://blog.vioao.site/posts/%E9%A1%B9%E7%9B%AE%E5%A4%8D%E7%9B%98%E6%80%9D%E8%80%83/</id>
     <published>2019-06-06T02:47:02.000Z</published>
-    <updated>2020-09-18T05:25:46.824Z</updated>
+    <updated>2021-06-04T05:04:53.735Z</updated>
     
     <summary type="html">
     
@@ -535,7 +583,7 @@ Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运
     <link href="http://blog.vioao.site/posts/%E4%B8%AD%E5%9B%BD%E7%81%BE%E5%AE%B3%E9%A2%84%E8%AD%A6%E7%88%AC%E5%8F%96%E8%A7%A3%E6%9E%90/"/>
     <id>http://blog.vioao.site/posts/%E4%B8%AD%E5%9B%BD%E7%81%BE%E5%AE%B3%E9%A2%84%E8%AD%A6%E7%88%AC%E5%8F%96%E8%A7%A3%E6%9E%90/</id>
     <published>2019-01-28T02:21:14.000Z</published>
-    <updated>2020-09-18T05:25:46.805Z</updated>
+    <updated>2021-06-04T05:04:53.715Z</updated>
     
     <summary type="html">
     
@@ -558,7 +606,7 @@ Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运
     <link href="http://blog.vioao.site/posts/%E5%AE%9A%E4%BD%8DCPU%E5%BC%82%E5%B8%B8%E6%8A%96%E5%8A%A8---tomcat%E7%83%AD%E9%83%A8%E7%BD%B2%E7%9A%84%E5%9D%91%20/"/>
     <id>http://blog.vioao.site/posts/%E5%AE%9A%E4%BD%8DCPU%E5%BC%82%E5%B8%B8%E6%8A%96%E5%8A%A8---tomcat%E7%83%AD%E9%83%A8%E7%BD%B2%E7%9A%84%E5%9D%91%20/</id>
     <published>2018-04-29T06:34:30.000Z</published>
-    <updated>2020-09-18T05:25:46.814Z</updated>
+    <updated>2021-06-04T05:04:53.724Z</updated>
     
     <summary type="html">
     
@@ -593,7 +641,7 @@ Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运
     <link href="http://blog.vioao.site/posts/%E8%AF%B7%E6%B1%82%E5%93%8D%E5%BA%94%E6%85%A2%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/"/>
     <id>http://blog.vioao.site/posts/%E8%AF%B7%E6%B1%82%E5%93%8D%E5%BA%94%E6%85%A2%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/</id>
     <published>2018-04-22T03:56:25.000Z</published>
-    <updated>2020-09-18T05:25:46.821Z</updated>
+    <updated>2021-06-04T05:04:53.731Z</updated>
     
     <summary type="html">
     
@@ -622,7 +670,7 @@ Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运
     <link href="http://blog.vioao.site/posts/%E9%A1%B9%E7%9B%AE%E9%87%8D%E6%9E%84%E6%84%9F%E6%82%9F/"/>
     <id>http://blog.vioao.site/posts/%E9%A1%B9%E7%9B%AE%E9%87%8D%E6%9E%84%E6%84%9F%E6%82%9F/</id>
     <published>2018-03-16T12:37:51.000Z</published>
-    <updated>2020-09-18T05:25:46.830Z</updated>
+    <updated>2021-06-04T05:04:53.740Z</updated>
     
     <summary type="html">
     
@@ -650,7 +698,7 @@ Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运
     <link href="http://blog.vioao.site/posts/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%B8%80%E8%87%B4%E6%80%A7%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86%E6%80%9D%E8%B7%AF/"/>
     <id>http://blog.vioao.site/posts/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%B8%80%E8%87%B4%E6%80%A7%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86%E6%80%9D%E8%B7%AF/</id>
     <published>2018-03-12T13:36:15.000Z</published>
-    <updated>2020-09-18T05:25:46.810Z</updated>
+    <updated>2021-06-04T05:04:53.719Z</updated>
     
     <summary type="html">
     
@@ -668,36 +716,6 @@ Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运
       <category term="一致性" scheme="http://blog.vioao.site/tags/%E4%B8%80%E8%87%B4%E6%80%A7/"/>
     
       <category term="读书笔记" scheme="http://blog.vioao.site/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Jasperreports OOM问题处理</title>
-    <link href="http://blog.vioao.site/posts/Jasperreports%20OOM%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86/"/>
-    <id>http://blog.vioao.site/posts/Jasperreports%20OOM%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86/</id>
-    <published>2018-02-28T14:48:10.000Z</published>
-    <updated>2020-09-18T05:25:46.800Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;问题描述&quot;&gt;&lt;a href=&quot;#问题描述&quot; class=&quot;headerlink&quot; title=&quot;问题描述&quot;&gt;&lt;/a&gt;问题描述&lt;/h1&gt;&lt;p&gt;项目使用Jasperreports来转换导出PDF，不过在转换过程中有时会出现OOM的异常。将直接导致线上系统不可使用。主要导致OOM的问题有如下两种:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;jasper模板文件设计不合理导致Jasperreports进入死循环&lt;/li&gt;
-&lt;li&gt;需要转换的文件确实很大，超过了系统所支持的内存范围&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;此前就有遇到过上述情况导致系统不可用的情况，这明显影响了程序的健壮性。是需要处理的。此前对该的处理排查描述请查看之前的博文:&lt;strong&gt;&lt;a href=&quot;http://blog.csdn.net/u010862794/article/details/78020231&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;线上java程序CPU占用过高问题排查&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="工作记录" scheme="http://blog.vioao.site/categories/%E5%B7%A5%E4%BD%9C%E8%AE%B0%E5%BD%95/"/>
-    
-    
-      <category term="Java" scheme="http://blog.vioao.site/tags/Java/"/>
-    
-      <category term="JasperReports" scheme="http://blog.vioao.site/tags/JasperReports/"/>
-    
-      <category term="OOM" scheme="http://blog.vioao.site/tags/OOM/"/>
     
   </entry>
   
