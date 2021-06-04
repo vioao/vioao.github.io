@@ -214,6 +214,89 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.vioao.site/posts/Feign%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.png">
+      <meta itemprop="name" content="Vioao">
+      <meta itemprop="description" content="记录JAVA相关工作和阅读生活点滴">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Vioao's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/posts/Feign%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B/" class="post-title-link" itemprop="url">Feign基础教程</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-06-23 22:38:43" itemprop="dateCreated datePublished" datetime="2017-06-23T22:38:43+08:00">2017-06-23</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p><a href="https://github.com/OpenFeign/feign" target="_blank" rel="noopener">Feign</a>使得 <code>Java HTTP</code> 客户端编写更方便。<code>Feign</code> 灵感来源于<a href="https://github.com/square/retrofit" target="_blank" rel="noopener">Retrofit</a>、<a href="https://jax-rs-spec.java.net/nonav/2.0/apidocs/index.html" target="_blank" rel="noopener">JAXRS-2.0</a>和<a href="http://www.oracle.com/technetwork/articles/java/jsr356-1937161.html" target="_blank" rel="noopener">WebSocket</a>。<code>Feign</code> 最初是为了降低统一绑定<a href="https://github.com/Netflix/Denominator" target="_blank" rel="noopener">Denominator</a> 到 <code>HTTP API</code> 的复杂度，不区分是否支持 <code>Restful</code>。</p>
+<p>Maven依赖:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- https://mvnrepository.com/artifact/com.netflix.feign/feign-core --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.netflix.feign<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>feign-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>8.18.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">scope</span>&gt;</span>runtime<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="为什么选择Feign而不是其他"><a href="#为什么选择Feign而不是其他" class="headerlink" title="为什么选择Feign而不是其他"></a>为什么选择Feign而不是其他</h2><p>你可以使用 <code>Jersey</code> 和 <code>CXF</code> 这些来写一个 <code>Rest</code> 或 <code>SOAP</code> 服务的java客服端。你也可以直接使用 <code>Apache HttpClient</code> 来实现。但是 <code>Feign</code> 的目的是尽量的减少资源和代码来实现和 <code>HTTP API</code> 的连接。通过自定义的编码解码器以及错误处理，你可以编写任何基于文本的 <code>HTTP API</code>。</p>
+<hr>
+<h2 id="Feign工作机制"><a href="#Feign工作机制" class="headerlink" title="Feign工作机制"></a>Feign工作机制</h2><p>Feign通过注解注入一个模板化请求进行工作。只需在发送之前关闭它，参数就可以被直接的运用到模板中。然而这也限制了Feign，只支持文本形式的API，它在响应请求等方面极大的简化了系统。同时，它也是十分容易进行单元测试的。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/Feign%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      
+
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://blog.vioao.site/posts/%E9%98%BF%E9%87%8C%E4%BA%91ECS%E6%90%AD%E5%BB%BAJAVA%20WEB%E7%8E%AF%E5%A2%83/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -546,82 +629,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://blog.vioao.site/posts/%E5%88%A9%E7%94%A8Github%20Pages%E5%92%8CHexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/avatar.png">
-      <meta itemprop="name" content="Vioao">
-      <meta itemprop="description" content="记录JAVA相关工作和阅读生活点滴">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Vioao's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/posts/%E5%88%A9%E7%94%A8Github%20Pages%E5%92%8CHexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/" class="post-title-link" itemprop="url">利用Github Pages和Hexo搭建个人博客</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2017-05-29 10:02:26" itemprop="dateCreated datePublished" datetime="2017-05-29T10:02:26+08:00">2017-05-29</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Html/" itemprop="url" rel="index"><span itemprop="name">Html</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="Github-Pages和Hexo介绍"><a href="#Github-Pages和Hexo介绍" class="headerlink" title="Github Pages和Hexo介绍"></a>Github Pages和Hexo介绍</h2><p><strong><a href="https://pages.github.com/" target="_blank" rel="noopener">Github Pages</a></strong> 是 <strong><a href="https://github.com/" target="_blank" rel="noopener">Github</a></strong> 推出的一个福利。可以在上面构建个人页面。**<a href="https://hexo.io/zh-cn/" target="_blank" rel="noopener">Hexo</a>** 就是一个快速、简洁且高效的博客框架(官网上是这么说的,hhh),并且支持一键部署到github。可以用它来构建自己的个人博客，当hexo遇到Github pages时,我们就不需要自己的一个服务器就可以搭建一个个人博客网站了。下面开始讲搭建过程。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/%E5%88%A9%E7%94%A8Github%20Pages%E5%92%8CHexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      
-
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -693,7 +700,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives">
         
-          <span class="site-state-item-count">42</span>
+          <span class="site-state-item-count">43</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -706,7 +713,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags">
           
-        <span class="site-state-item-count">76</span>
+        <span class="site-state-item-count">77</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

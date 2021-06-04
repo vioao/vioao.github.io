@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.vioao.site/"/>
-  <updated>2021-06-04T06:28:31.369Z</updated>
+  <updated>2021-06-04T06:30:29.309Z</updated>
   <id>http://blog.vioao.site/</id>
   
   <author>
@@ -17,11 +17,49 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>面试指南之消息中间件：RocketMQ</title>
+    <link href="http://blog.vioao.site/posts/%E9%9D%A2%E8%AF%95%E6%8C%87%E5%8D%97%E4%B9%8B%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6/"/>
+    <id>http://blog.vioao.site/posts/%E9%9D%A2%E8%AF%95%E6%8C%87%E5%8D%97%E4%B9%8B%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6/</id>
+    <published>2021-06-04T05:37:19.000Z</published>
+    <updated>2021-06-04T06:30:29.309Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;@[toc]&lt;/p&gt;
+&lt;h3 id=&quot;序&quot;&gt;&lt;a href=&quot;#序&quot; class=&quot;headerlink&quot; title=&quot;序&quot;&gt;&lt;/a&gt;序&lt;/h3&gt;&lt;p&gt;该篇 Chat 会通过在段落的一开始引入一个或多个面试问题，然后围绕着该问题对对应的技术做介绍说明，最后在段落的最后会提供一个回答示例来结束这以问题。回答示例是基于笔者自己的经验的，读者可以结合自己的实际情况整理个更好的回答，可以的话在评论中展示出来让更多的同学参考学习。另外，通常面试题上下之间会有关联，是一个渐进的过程。类似面试过程中的由浅入深。&lt;/p&gt;
+&lt;h3 id=&quot;消息中间件简介&quot;&gt;&lt;a href=&quot;#消息中间件简介&quot; class=&quot;headerlink&quot; title=&quot;消息中间件简介&quot;&gt;&lt;/a&gt;消息中间件简介&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;面试题：为什么你的系统中需要引入消息中间件？&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;消息中间件是指一种在需要进行网络通信的系统进行通道的建立，数据或文件发送的中间件。消息中间件的一个重要作用是可以跨平台操作，为不同操作系统上的应用软件集成提供便利。&lt;/p&gt;
+&lt;p&gt;现在越来越多的分布式应用系统采用消息中间件方式来构建，人们通过使用消息中间件把应用扩展到不同的操作系统和不同的网络环境。基于消息的机制更适用于由事件驱动的应用，当一个事件发生时，消息中间件通知服务方应该进行如何操作。&lt;/p&gt;
+&lt;p&gt;通常，它具有低耦合、可靠投递、广播、流量控制、最终一致性 等一系列功能。这也是系统引入消息中间件的一般理由。&lt;/p&gt;
+&lt;p&gt;比如说：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;两个系统需要信息交互，但是各自所在的平台不同或使用的开发语言不同；&lt;/li&gt;
+&lt;li&gt;有时系统的瞬时流量过大，系统处理不来，需要先接收请求留待后续满满处理；&lt;/li&gt;
+&lt;li&gt;系统中的部分业务可以异步交给其他的系统去处理（eg. 邮件，短信等事件通知）。&lt;/li&gt;
+&lt;/ol&gt;
+    
+    </summary>
+    
+    
+      <category term="中间件" scheme="http://blog.vioao.site/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/"/>
+    
+    
+      <category term="面试" scheme="http://blog.vioao.site/tags/%E9%9D%A2%E8%AF%95/"/>
+    
+      <category term="RocketMQ" scheme="http://blog.vioao.site/tags/RocketMQ/"/>
+    
+      <category term="消息中间件" scheme="http://blog.vioao.site/tags/%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6/"/>
+    
+  </entry>
+  
+  <entry>
     <title>程序员的副业: 微信小程序</title>
     <link href="http://blog.vioao.site/posts/%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E5%89%AF%E4%B8%9A/"/>
     <id>http://blog.vioao.site/posts/%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E5%89%AF%E4%B8%9A/</id>
     <published>2021-06-04T02:08:17.000Z</published>
-    <updated>2021-06-04T06:28:31.369Z</updated>
+    <updated>2021-06-04T06:30:29.303Z</updated>
     
     <summary type="html">
     
@@ -69,7 +107,7 @@
     <link href="http://blog.vioao.site/posts/figure-out-delay-task/"/>
     <id>http://blog.vioao.site/posts/figure-out-delay-task/</id>
     <published>2020-09-14T08:01:57.000Z</published>
-    <updated>2021-06-04T06:28:31.367Z</updated>
+    <updated>2021-06-04T06:30:29.301Z</updated>
     
     <summary type="html">
     
@@ -112,7 +150,7 @@
     <link href="http://blog.vioao.site/posts/Redis%20%E9%97%AE%E7%AD%94%20PK/"/>
     <id>http://blog.vioao.site/posts/Redis%20%E9%97%AE%E7%AD%94%20PK/</id>
     <published>2020-07-23T09:17:53.000Z</published>
-    <updated>2021-06-04T06:28:31.351Z</updated>
+    <updated>2021-06-04T06:30:29.280Z</updated>
     
     <summary type="html">
     
@@ -149,7 +187,7 @@
     <link href="http://blog.vioao.site/posts/Java%20%E5%A4%9A%E7%BA%BF%E7%A8%8B/"/>
     <id>http://blog.vioao.site/posts/Java%20%E5%A4%9A%E7%BA%BF%E7%A8%8B/</id>
     <published>2020-07-23T09:12:38.000Z</published>
-    <updated>2021-06-04T06:28:31.349Z</updated>
+    <updated>2021-06-04T06:30:29.278Z</updated>
     
     <summary type="html">
     
@@ -181,7 +219,7 @@
     <link href="http://blog.vioao.site/posts/%E5%9C%A8%20Maven%20%E4%B8%AD%E5%A4%AE%E4%BB%93%E5%BA%93%E5%8F%91%E5%B8%83%E8%87%AA%E5%B7%B1%E7%9A%84%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/"/>
     <id>http://blog.vioao.site/posts/%E5%9C%A8%20Maven%20%E4%B8%AD%E5%A4%AE%E4%BB%93%E5%BA%93%E5%8F%91%E5%B8%83%E8%87%AA%E5%B7%B1%E7%9A%84%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/</id>
     <published>2020-07-23T09:01:41.000Z</published>
-    <updated>2021-06-04T06:28:31.362Z</updated>
+    <updated>2021-06-04T06:30:29.292Z</updated>
     
     <summary type="html">
     
@@ -204,7 +242,7 @@
     <link href="http://blog.vioao.site/posts/[%E8%AF%91]%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%20Node.js%20Worker%20Threads/"/>
     <id>http://blog.vioao.site/posts/[%E8%AF%91]%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%20Node.js%20Worker%20Threads/</id>
     <published>2020-07-22T05:51:51.000Z</published>
-    <updated>2021-06-04T06:28:31.370Z</updated>
+    <updated>2021-06-04T06:30:29.304Z</updated>
     
     <summary type="html">
     
@@ -246,7 +284,7 @@
     <link href="http://blog.vioao.site/posts/%E5%8E%8B%E6%B5%8B%E5%AF%B9%E6%AF%94:%20Spring%20WebFlux%20VS.%20Spring%20MVC/"/>
     <id>http://blog.vioao.site/posts/%E5%8E%8B%E6%B5%8B%E5%AF%B9%E6%AF%94:%20Spring%20WebFlux%20VS.%20Spring%20MVC/</id>
     <published>2020-07-10T10:05:20.000Z</published>
-    <updated>2021-06-04T06:28:31.358Z</updated>
+    <updated>2021-06-04T06:30:29.288Z</updated>
     
     <summary type="html">
     
@@ -281,7 +319,7 @@ Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运
     <link href="http://blog.vioao.site/posts/Kafka%20%E6%A6%82%E8%A7%88/"/>
     <id>http://blog.vioao.site/posts/Kafka%20%E6%A6%82%E8%A7%88/</id>
     <published>2019-12-19T02:27:39.000Z</published>
-    <updated>2021-06-04T06:28:31.350Z</updated>
+    <updated>2021-06-04T06:30:29.279Z</updated>
     
     <summary type="html">
     
@@ -317,7 +355,7 @@ Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运
     <link href="http://blog.vioao.site/posts/RocketMQ%20%E6%A6%82%E8%A7%88/"/>
     <id>http://blog.vioao.site/posts/RocketMQ%20%E6%A6%82%E8%A7%88/</id>
     <published>2019-11-18T03:38:51.000Z</published>
-    <updated>2021-06-04T06:28:31.352Z</updated>
+    <updated>2021-06-04T06:30:29.281Z</updated>
     
     <summary type="html">
     
@@ -384,7 +422,7 @@ Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运
     <link href="http://blog.vioao.site/posts/%E4%BB%8E%20VPS%20%E5%88%B0%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91%E4%B8%80%E6%B0%94%E5%91%B5%E6%88%90/"/>
     <id>http://blog.vioao.site/posts/%E4%BB%8E%20VPS%20%E5%88%B0%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91%E4%B8%80%E6%B0%94%E5%91%B5%E6%88%90/</id>
     <published>2019-08-27T02:47:13.000Z</published>
-    <updated>2021-06-04T06:28:31.354Z</updated>
+    <updated>2021-06-04T06:30:29.284Z</updated>
     
     <summary type="html">
     
@@ -429,7 +467,7 @@ Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运
     <link href="http://blog.vioao.site/posts/%E8%AE%B0%E4%B8%80%E6%AC%A1%20Gradle%20Build%20%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/"/>
     <id>http://blog.vioao.site/posts/%E8%AE%B0%E4%B8%80%E6%AC%A1%20Gradle%20Build%20%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/</id>
     <published>2019-08-24T02:48:26.000Z</published>
-    <updated>2021-06-04T06:28:31.370Z</updated>
+    <updated>2021-06-04T06:30:29.304Z</updated>
     
     <summary type="html">
     
@@ -457,7 +495,7 @@ Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运
     <link href="http://blog.vioao.site/posts/OTA%20%E9%A1%B9%E7%9B%AE%E7%9F%A5%E8%AF%86/"/>
     <id>http://blog.vioao.site/posts/OTA%20%E9%A1%B9%E7%9B%AE%E7%9F%A5%E8%AF%86/</id>
     <published>2019-07-10T01:54:30.000Z</published>
-    <updated>2021-06-04T06:28:31.350Z</updated>
+    <updated>2021-06-04T06:30:29.279Z</updated>
     
     <summary type="html">
     
@@ -488,7 +526,7 @@ Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运
     <link href="http://blog.vioao.site/posts/Drone%20%E5%88%9D%E6%8E%A2/"/>
     <id>http://blog.vioao.site/posts/Drone%20%E5%88%9D%E6%8E%A2/</id>
     <published>2019-06-21T03:14:55.000Z</published>
-    <updated>2021-06-04T06:28:31.335Z</updated>
+    <updated>2021-06-04T06:30:29.265Z</updated>
     
     <summary type="html">
     
@@ -526,7 +564,7 @@ Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运
     <link href="http://blog.vioao.site/posts/Flink%20%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/"/>
     <id>http://blog.vioao.site/posts/Flink%20%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/</id>
     <published>2019-06-08T02:18:40.000Z</published>
-    <updated>2021-06-04T06:28:31.337Z</updated>
+    <updated>2021-06-04T06:30:29.266Z</updated>
     
     <summary type="html">
     
@@ -559,7 +597,7 @@ Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运
     <link href="http://blog.vioao.site/posts/%E9%A1%B9%E7%9B%AE%E5%A4%8D%E7%9B%98%E6%80%9D%E8%80%83/"/>
     <id>http://blog.vioao.site/posts/%E9%A1%B9%E7%9B%AE%E5%A4%8D%E7%9B%98%E6%80%9D%E8%80%83/</id>
     <published>2019-06-06T02:47:02.000Z</published>
-    <updated>2021-06-04T06:28:31.374Z</updated>
+    <updated>2021-06-04T06:30:29.309Z</updated>
     
     <summary type="html">
     
@@ -581,7 +619,7 @@ Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运
     <link href="http://blog.vioao.site/posts/%E4%B8%AD%E5%9B%BD%E7%81%BE%E5%AE%B3%E9%A2%84%E8%AD%A6%E7%88%AC%E5%8F%96%E8%A7%A3%E6%9E%90/"/>
     <id>http://blog.vioao.site/posts/%E4%B8%AD%E5%9B%BD%E7%81%BE%E5%AE%B3%E9%A2%84%E8%AD%A6%E7%88%AC%E5%8F%96%E8%A7%A3%E6%9E%90/</id>
     <published>2019-01-28T02:21:14.000Z</published>
-    <updated>2021-06-04T06:28:31.354Z</updated>
+    <updated>2021-06-04T06:30:29.284Z</updated>
     
     <summary type="html">
     
@@ -604,7 +642,7 @@ Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运
     <link href="http://blog.vioao.site/posts/%E5%AE%9A%E4%BD%8DCPU%E5%BC%82%E5%B8%B8%E6%8A%96%E5%8A%A8---tomcat%E7%83%AD%E9%83%A8%E7%BD%B2%E7%9A%84%E5%9D%91%20/"/>
     <id>http://blog.vioao.site/posts/%E5%AE%9A%E4%BD%8DCPU%E5%BC%82%E5%B8%B8%E6%8A%96%E5%8A%A8---tomcat%E7%83%AD%E9%83%A8%E7%BD%B2%E7%9A%84%E5%9D%91%20/</id>
     <published>2018-04-29T06:34:30.000Z</published>
-    <updated>2021-06-04T06:28:31.363Z</updated>
+    <updated>2021-06-04T06:30:29.297Z</updated>
     
     <summary type="html">
     
@@ -639,7 +677,7 @@ Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运
     <link href="http://blog.vioao.site/posts/%E8%AF%B7%E6%B1%82%E5%93%8D%E5%BA%94%E6%85%A2%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/"/>
     <id>http://blog.vioao.site/posts/%E8%AF%B7%E6%B1%82%E5%93%8D%E5%BA%94%E6%85%A2%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/</id>
     <published>2018-04-22T03:56:25.000Z</published>
-    <updated>2021-06-04T06:28:31.371Z</updated>
+    <updated>2021-06-04T06:30:29.305Z</updated>
     
     <summary type="html">
     
@@ -668,7 +706,7 @@ Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运
     <link href="http://blog.vioao.site/posts/%E9%A1%B9%E7%9B%AE%E9%87%8D%E6%9E%84%E6%84%9F%E6%82%9F/"/>
     <id>http://blog.vioao.site/posts/%E9%A1%B9%E7%9B%AE%E9%87%8D%E6%9E%84%E6%84%9F%E6%82%9F/</id>
     <published>2018-03-16T12:37:51.000Z</published>
-    <updated>2021-06-04T06:28:31.380Z</updated>
+    <updated>2021-06-04T06:30:29.315Z</updated>
     
     <summary type="html">
     
@@ -688,32 +726,6 @@ Spring 全家桶。这是一个完全非阻塞的，支持 Reactive Streams, 运
       <category term="重构" scheme="http://blog.vioao.site/tags/%E9%87%8D%E6%9E%84/"/>
     
       <category term="项目管理" scheme="http://blog.vioao.site/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>分布式系统一致性问题处理思路</title>
-    <link href="http://blog.vioao.site/posts/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%B8%80%E8%87%B4%E6%80%A7%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86%E6%80%9D%E8%B7%AF/"/>
-    <id>http://blog.vioao.site/posts/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%B8%80%E8%87%B4%E6%80%A7%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86%E6%80%9D%E8%B7%AF/</id>
-    <published>2018-03-12T13:36:15.000Z</published>
-    <updated>2021-06-04T06:28:31.358Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;为啥出现一致性问题&quot;&gt;&lt;a href=&quot;#为啥出现一致性问题&quot; class=&quot;headerlink&quot; title=&quot;为啥出现一致性问题&quot;&gt;&lt;/a&gt;为啥出现一致性问题&lt;/h1&gt;&lt;p&gt;在传统单体架构中，数据状态的处理都在同一个服务和数据库中，而具有**&lt;a href=&quot;https://baike.baidu.com/item/acid/10738?fr=aladdin&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;ACID特性&lt;/a&gt;&lt;strong&gt;的数据库支持强一致性，就是说数据库本身是不会出现不一致的状态的，比如我们常用的关系型数据库MySQL就是通过多版本控制协议(MVCC)的实现来保证了强一致性。
-但是随着互联网的发展，用户增多&amp;amp;服务也越来越多越来越复杂，数据量和请求的并发量都上来了。为了满足这一变化，越来越多的系统从单体架构投入到服务化或者微服务架构。然而，微服务是把双刃剑，虽然能通过对服务的有效拆分来实现敏捷开发和自动化部署，并提高系统的水兵伸缩能力；但是微服务模式下，服务之间通过网络来通信(**网络并不是可靠的&lt;/strong&gt;)，那么当网络异常时，就很容易引起各个系统之间的不一致。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="读书笔记" scheme="http://blog.vioao.site/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
-    
-    
-      <category term="分布式" scheme="http://blog.vioao.site/tags/%E5%88%86%E5%B8%83%E5%BC%8F/"/>
-    
-      <category term="一致性" scheme="http://blog.vioao.site/tags/%E4%B8%80%E8%87%B4%E6%80%A7/"/>
-    
-      <category term="读书笔记" scheme="http://blog.vioao.site/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
     
   </entry>
   
