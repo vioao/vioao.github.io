@@ -580,8 +580,8 @@ ScheduledThreadPoolExecutor 要更加效率。</p>
         <category>中间件</category>
       </categories>
       <tags>
-        <tag>缓存</tag>
         <tag>面试</tag>
+        <tag>缓存</tag>
         <tag>Redis</tag>
       </tags>
   </entry>
@@ -3821,8 +3821,8 @@ The ES_HEAP_SIZE environment variable allows to set the heap memory that will be
       </categories>
       <tags>
         <tag>Java</tag>
-        <tag>面试</tag>
         <tag>HashMap</tag>
+        <tag>面试</tag>
       </tags>
   </entry>
   <entry>
@@ -4130,8 +4130,8 @@ The ES_HEAP_SIZE environment variable allows to set the heap memory that will be
         <category>面试相关</category>
       </categories>
       <tags>
-        <tag>缓存</tag>
         <tag>面试</tag>
+        <tag>缓存</tag>
       </tags>
   </entry>
   <entry>
