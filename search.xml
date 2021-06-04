@@ -588,9 +588,9 @@ ScheduledThreadPoolExecutor 要更加效率。</p>
         <category>中间件</category>
       </categories>
       <tags>
-        <tag>缓存</tag>
         <tag>面试</tag>
         <tag>Redis</tag>
+        <tag>缓存</tag>
       </tags>
   </entry>
   <entry>
@@ -806,8 +806,8 @@ ScheduledThreadPoolExecutor 要更加效率。</p>
         <category>Java</category>
       </categories>
       <tags>
-        <tag>多线程</tag>
         <tag>面试</tag>
+        <tag>多线程</tag>
       </tags>
   </entry>
   <entry>
@@ -1165,8 +1165,8 @@ WebFlux 的优势越明显。</p>
         <category>工作记录</category>
       </categories>
       <tags>
-        <tag>Reactor</tag>
         <tag>SpringBoot</tag>
+        <tag>Reactor</tag>
         <tag>WebFlux</tag>
       </tags>
   </entry>
@@ -2037,10 +2037,10 @@ Pipelines 。上图是我已经激活并配置了 vioao.github.io 项目。   </
         <category>Docker</category>
       </categories>
       <tags>
-        <tag>Docker</tag>
         <tag>CI</tag>
         <tag>CD</tag>
         <tag>Drone</tag>
+        <tag>Docker</tag>
       </tags>
   </entry>
   <entry>
@@ -3355,8 +3355,8 @@ jstack -l 6764 &gt;&gt; jstack.out</p>
         <category>Docker</category>
       </categories>
       <tags>
-        <tag>MySQL</tag>
         <tag>Docker</tag>
+        <tag>MySQL</tag>
       </tags>
   </entry>
   <entry>
@@ -3836,9 +3836,9 @@ The ES_HEAP_SIZE environment variable allows to set the heap memory that will be
         <category>Java</category>
       </categories>
       <tags>
+        <tag>HashMap</tag>
         <tag>Java</tag>
         <tag>面试</tag>
-        <tag>HashMap</tag>
       </tags>
   </entry>
   <entry>
@@ -4146,8 +4146,8 @@ The ES_HEAP_SIZE environment variable allows to set the heap memory that will be
         <category>面试相关</category>
       </categories>
       <tags>
-        <tag>缓存</tag>
         <tag>面试</tag>
+        <tag>缓存</tag>
       </tags>
   </entry>
   <entry>
