@@ -6,4 +6,3 @@
 - `npm install`
 - `hexo new post "new post title"`
 - `hexo s`
-
