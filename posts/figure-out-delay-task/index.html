@@ -36,7 +36,7 @@
 <meta property="og:image" content="http://blog.vioao.site/posts/figure-out-delay-task/qmq_delay.png">
 <meta property="og:image" content="http://blog.vioao.site/posts/figure-out-delay-task/qmq_delay_fllow.png">
 <meta property="article:published_time" content="2020-09-14T08:01:57.000Z">
-<meta property="article:modified_time" content="2021-06-04T06:05:41.859Z">
+<meta property="article:modified_time" content="2021-06-04T06:25:41.729Z">
 <meta property="article:author" content="Vioao">
 <meta property="article:tag" content="延时任务">
 <meta property="article:tag" content="Netty">
@@ -295,31 +295,31 @@
 <li><p>调度<br>负责时间的调度，判断任务是否到达可执行</p>
 </li>
 <li><p>执行<br>负责任务的实际执行</p>
-</li>
-</ul>
 <p>在非分布式的情况下，通常这三者是出现在同一个应用内部的；但如果是在分布式系统架构中，那么存储、执行和调度通常是分开的，并且一个任务还可能分割成多个
 子任务分别在不同的服务上运行。分布式情况下，每一个模块可选的方案都不少，多样且复杂；但是最终都需要单体内实现的支持，我们这里就只讨论单体模式下的延
 时任务方案。</p>
+</li>
+</ul>
 <a id="more"></a>
 
 
 
 <h3 id="常规解决方案"><a href="#常规解决方案" class="headerlink" title="常规解决方案"></a>常规解决方案</h3><ul>
-<li>进程内的<ul>
+<li><p>进程内的</p>
+<ul>
 <li>ScheduledThreadPoolExecutor</li>
 <li>时间轮(HashedWheelTimer)</li>
 </ul>
 </li>
-</ul>
+<li><p>进程外的</p>
 <ul>
-<li>进程外的<ul>
 <li>通过定时任务框架(Quartz/Elastic-Job/Elastic-Job/QSchedule 等)</li>
 <li>通过延时消息(Kafka/RocketMQ/QMQ 等)</li>
 <li>依托于外部存储的自定义实现(Redis/MySQL 等)</li>
 </ul>
+<p>下面主要讲讲进程内的两种方案，以及基于 QMQ 延时消息实现方案中 QMQ 延时消息的实现。</p>
 </li>
 </ul>
-<p>下面主要讲讲进程内的两种方案，以及基于 QMQ 延时消息实现方案中 QMQ 延时消息的实现。</p>
 <p>ScheduledThreadPoolExecutor vs. HashedWheelTimer</p>
 <table>
 <thead>
@@ -359,13 +359,16 @@
 </ul>
 <ul>
 <li>核心实现点<ul>
-<li>继承 ThreadPoolExecutor</li>
-<li>自定义的 DelayedWorkQueue, 堆结构的无界阻塞队列</li>
-<li>Leader-follower 线程模型</li>
+<li><p>继承 ThreadPoolExecutor</p>
+</li>
+<li><p>自定义的 DelayedWorkQueue, 堆结构的无界阻塞队列</p>
+</li>
+<li><p>Leader-follower 线程模型</p>
+<h4 id="Leader-follower-线程模型"><a href="#Leader-follower-线程模型" class="headerlink" title="Leader-follower 线程模型"></a>Leader-follower 线程模型</h4></li>
 </ul>
 </li>
 </ul>
-<h4 id="Leader-follower-线程模型"><a href="#Leader-follower-线程模型" class="headerlink" title="Leader-follower 线程模型"></a>Leader-follower 线程模型</h4><blockquote>
+<blockquote>
 <p>Leader/Follower设计避免了动态线程创建和销毁的额外开销。将线程放在一个自组织的池中，而且无需交换数据，这种方式将上下文切换、同步、数据移动和
 动态内存管理的开销都降到了最低</p>
 </blockquote>

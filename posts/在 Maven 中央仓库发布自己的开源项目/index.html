@@ -33,7 +33,7 @@
 <meta property="og:image" content="http://blog.vioao.site/posts/%E5%9C%A8%20Maven%20%E4%B8%AD%E5%A4%AE%E4%BB%93%E5%BA%93%E5%8F%91%E5%B8%83%E8%87%AA%E5%B7%B1%E7%9A%84%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/create-jira-2.png">
 <meta property="og:image" content="http://blog.vioao.site/posts/%E5%9C%A8%20Maven%20%E4%B8%AD%E5%A4%AE%E4%BB%93%E5%BA%93%E5%8F%91%E5%B8%83%E8%87%AA%E5%B7%B1%E7%9A%84%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/create-secret.png">
 <meta property="article:published_time" content="2020-07-23T09:01:41.000Z">
-<meta property="article:modified_time" content="2021-06-04T06:05:41.854Z">
+<meta property="article:modified_time" content="2021-06-04T06:25:41.725Z">
 <meta property="article:author" content="Vioao">
 <meta property="article:tag" content="Maven">
 <meta name="twitter:card" content="summary">
@@ -322,7 +322,6 @@
 <p><strong>2.</strong> 创建 Jira 工单</p>
 <img data-src="/posts/%E5%9C%A8%20Maven%20%E4%B8%AD%E5%A4%AE%E4%BB%93%E5%BA%93%E5%8F%91%E5%B8%83%E8%87%AA%E5%B7%B1%E7%9A%84%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/create-jira-1.png" class="" title="创建 Jira 工单-1">
 <img data-src="/posts/%E5%9C%A8%20Maven%20%E4%B8%AD%E5%A4%AE%E4%BB%93%E5%BA%93%E5%8F%91%E5%B8%83%E8%87%AA%E5%B7%B1%E7%9A%84%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/create-jira-2.png" class="" title="创建 Jira 工单-2">
-
 <p>这里有两个注意点：</p>
 <ul>
 <li>填写 groupId 的时候，如果需要对应的域名真实且属于你，不过我们可以使用 GitHub 的 com.github.<em>username</em> 或 io.github.<em>username</em>。</li>
@@ -330,19 +329,20 @@
 <li>工单进程可以看工单的状态和对应的 comment 信息，按照他们的说明走即可，工单状态变为 <strong>RESOLVED</strong> 时可提交 Jar。</li>
 </ul>
 <h4 id="生成密钥"><a href="#生成密钥" class="headerlink" title="生成密钥"></a>生成密钥</h4><ul>
-<li>Linux：可以参考 <a href="https://central.sonatype.org/pages/working-with-pgp-signatures.html" target="_blank" rel="noopener">Working with PGP Signatures</a></li>
-<li>Windows：使用 Kleopatra，<a href="https://gpg4win.org/download.html" target="_blank" rel="noopener">下载地址</a></li>
-</ul>
+<li><p>Linux：可以参考 <a href="https://central.sonatype.org/pages/working-with-pgp-signatures.html" target="_blank" rel="noopener">Working with PGP Signatures</a></p>
+</li>
+<li><p>Windows：使用 Kleopatra，<a href="https://gpg4win.org/download.html" target="_blank" rel="noopener">下载地址</a></p>
 <p>创建流程如下：</p>
 <blockquote>
 <p>文件 -&gt; 新建密钥对 -&gt; 创建个人 OpenPGP 密钥对  -&gt; 填写个人信息 -&gt; 输入密码密码 -&gt; 上传到目录服务</p>
 </blockquote>
-  <img data-src="/posts/%E5%9C%A8%20Maven%20%E4%B8%AD%E5%A4%AE%E4%BB%93%E5%BA%93%E5%8F%91%E5%B8%83%E8%87%AA%E5%B7%B1%E7%9A%84%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/create-secret.png" class="" title="生成秘钥">
+<img data-src="/posts/%E5%9C%A8%20Maven%20%E4%B8%AD%E5%A4%AE%E4%BB%93%E5%BA%93%E5%8F%91%E5%B8%83%E8%87%AA%E5%B7%B1%E7%9A%84%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/create-secret.png" class="" title="生成秘钥">
 
+</li>
+</ul>
 <h4 id="Maven-项目调整"><a href="#Maven-项目调整" class="headerlink" title="Maven 项目调整"></a>Maven 项目调整</h4><p><strong>1.</strong> 修改 pom.xml</p>
 <p>添加项目已经开发者信息    </p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">licenses</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">license</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>The Apache Software License, Version 2.0<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://www.apache.org/licenses/LICENSE-2.0.txt<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">license</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">licenses</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">scm</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">url</span>&gt;</span>https://github.com/vioao/wechat-sdk.git<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">connection</span>&gt;</span>scm:https://github.com/vioao/wechat-sdk.git<span class="tag">&lt;/<span class="name">connection</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">scm</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">developers</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">developer</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>vioao<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">email</span>&gt;</span>vioao91@gmail.com<span class="tag">&lt;/<span class="name">email</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://blog.vioao.site<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">developer</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
 <p>添加打包构建相关信息</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"> <span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- ... 省略部分配置 --&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- ... 必须要有 source ！！！ --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-resources-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;maven-resources-plugin.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>添加发布相关配置信息</p>
@@ -358,7 +358,6 @@
 <p><strong>发布 Release 版本：</strong></p>
 <p><strong>1.</strong> 修改 pom.xml 的 version 移除 -SNAPSHOT 后缀，或手动设置版本号 <code>mvn versions:set -DnewVersion=1.2.0</code></p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">version</span>&gt;</span>1.2.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
 <p><strong>2.</strong>  <code>mvn clean deploy -P release</code></p>
 <p><strong>3.</strong> 正式版发布后就可以在<a href="https://mvnrepository.com/" target="_blank" rel="noopener">中央仓库</a>查找到了</p>
 <p>参考：</p>

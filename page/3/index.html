@@ -265,9 +265,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">error: cannot access DoNotMock</span><br><span class="line">  class file <span class="keyword">for</span> com.google.errorprone.annotations.DoNotMock not found</span><br></pre></td></tr></table></figure>
 
 <h3 id="问题定位"><a href="#问题定位" class="headerlink" title="问题定位"></a>问题定位</h3><ol>
-<li><p>Review 代码更新，寻找可疑点</p>
-<p> 这一步 review 没有发现什么特殊的改动，只是更改了几个 proto 文件的定义。但是回退代码后却又能正常 build，所以说明构建失败的确是此次更新引入的问题。</p>
-</li>
+<li>Review 代码更新，寻找可疑点 这一步 review 没有发现什么特殊的改动，只是更改了几个 proto 文件的定义。但是回退代码后却又能正常 build，所以说明构建失败的确是此次更新引入的问题。</li>
 </ol>
           <!--noindex-->
             <div class="post-button">

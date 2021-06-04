@@ -30,7 +30,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://blog.vioao.site/posts/Java%20%E5%A4%9A%E7%BA%BF%E7%A8%8B/threads.png">
 <meta property="article:published_time" content="2020-07-23T09:12:38.000Z">
-<meta property="article:modified_time" content="2021-06-04T06:05:41.839Z">
+<meta property="article:modified_time" content="2021-06-04T06:25:41.710Z">
 <meta property="article:author" content="Vioao">
 <meta property="article:tag" content="多线程">
 <meta property="article:tag" content="面试">
@@ -408,24 +408,41 @@
 <td>RejectedExecutionHandler</td>
 <td>拒绝策略</td>
 </tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>这个问题其实是有一个坑的，如果你没有去了解过这个类的实现，那么你很有可能会以为线程的创建判断条件会是 corePoolSize -&gt; maxPoolSize -&gt; workQueue 这么一个流程。</td>
+<td></td>
+<td></td>
+</tr>
 </tbody></table>
-<p>这个问题其实是有一个坑的，如果你没有去了解过这个类的实现，那么你很有可能会以为线程的创建判断条件会是 corePoolSize -&gt; maxPoolSize -&gt; workQueue 这么一个流程。</p>
 <p>但是其实不是，具体流程如下。</p>
 <p>拟定当前线程数为 n，则</p>
 <ol>
-<li>当 n &lt; corePoolSize 时，直接创建新线程执行新提交的任务（此时线程池中存在空闲线程也是一样的）。</li>
-<li>当 n &gt;= corePoolSize 时，新任务将被放入 workQueue 中。</li>
-<li>当 workQueue 已满，且 maximumPoolSize  &gt;  corePoolSize 时，创建新线程执行新提交的任务。</li>
-<li>当 workQueue 已满，n &gt; maximumPoolSize，新提交的任务交给RejectedExecutionHandler 处理。</li>
-<li>当 n &gt;  corePoolSize，且超过这部分的线程的空闲时间达到 keepAliveTime 时，会被回收。</li>
-<li>当设置 allowCoreThreadTimeOut(true) 时，线程池中 corePoolSize 范围内的线程的空闲时间达到 keepAliveTime 也将被回收。</li>
-</ol>
+<li><p>当 n &lt; corePoolSize 时，直接创建新线程执行新提交的任务（此时线程池中存在空闲线程也是一样的）。</p>
+</li>
+<li><p>当 n &gt;= corePoolSize 时，新任务将被放入 workQueue 中。</p>
+</li>
+<li><p>当 workQueue 已满，且 maximumPoolSize  &gt;  corePoolSize 时，创建新线程执行新提交的任务。</p>
+</li>
+<li><p>当 workQueue 已满，n &gt; maximumPoolSize，新提交的任务交给RejectedExecutionHandler 处理。</p>
+</li>
+<li><p>当 n &gt;  corePoolSize，且超过这部分的线程的空闲时间达到 keepAliveTime 时，会被回收。</p>
+</li>
+<li><p>当设置 allowCoreThreadTimeOut(true) 时，线程池中 corePoolSize 范围内的线程的空闲时间达到 keepAliveTime 也将被回收。</p>
 <h4 id="线程数超标了怎么办？你用了什么拒绝策略？"><a href="#线程数超标了怎么办？你用了什么拒绝策略？" class="headerlink" title="线程数超标了怎么办？你用了什么拒绝策略？"></a>线程数超标了怎么办？你用了什么拒绝策略？</h4><p>从上面可以看到，构造函数中有个类型为 RejectedExecutionHandler 的参数，该参数就是定义了线程数达到最大时的一个执行策略，默认的是 AbortPolicy，可以使用自己实现的拒绝策略，只要实现 RejectedExecutionHandler 即可，也可以使用 JDK 中默认定义的几种：</p>
-<ol>
-<li>AbortPolicy，当达到最大限制的时候继续提交线程任务的话，它会直接抛出 RejectedExecutionException 异常。</li>
-<li>DiscardPolicy，对拒绝任务直接无声抛弃，没有异常信息。</li>
-<li>DiscardOldestPolicy，抛弃队列里面等待最久的一个线程，然后把新提交的任务加到队列。</li>
-<li>CallerRunsPolicy，重试添加当前的任务，他会自动重复调用 execute() 方法，直到成功。</li>
+</li>
+<li><p>AbortPolicy，当达到最大限制的时候继续提交线程任务的话，它会直接抛出 RejectedExecutionException 异常。</p>
+</li>
+<li><p>DiscardPolicy，对拒绝任务直接无声抛弃，没有异常信息。</p>
+</li>
+<li><p>DiscardOldestPolicy，抛弃队列里面等待最久的一个线程，然后把新提交的任务加到队列。</p>
+</li>
+<li><p>CallerRunsPolicy，重试添加当前的任务，他会自动重复调用 execute() 方法，直到成功。</p>
+</li>
 </ol>
 <h4 id="有哪几种线程池？"><a href="#有哪几种线程池？" class="headerlink" title="有哪几种线程池？"></a>有哪几种线程池？</h4><p>这个其实问的就是通过 Executors 创建的几种线程池，不过其实我觉得这个问题有点不太合理哈，因为归根结底来说，这些只是对应的构造参数传递的不同罢了。总之呢，有如下几种：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1. newFixedThreadPool(int nThreads)</span><br><span class="line">2. newWorkStealingPool(int parallelism)</span><br><span class="line">3. newFixedThreadPool(int nThreads, ThreadFactory threadFactory)</span><br><span class="line">4. newSingleThreadExecutor()</span><br><span class="line">5. newCachedThreadPool()</span><br></pre></td></tr></table></figure>
