@@ -1,4 +1,5 @@
 url: https://vioao.github.io
+root: /
 
 menu:
   首页: / || fas fa-home

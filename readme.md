@@ -1,2 +1,2 @@
-- 基于 Hexo + Butterfly 个人静态页面博客。[Vioao's Blog](https://blog.vioao.site/) 
+- 基于 Hexo + Butterfly 个人静态页面博客。[Vioao's Blog](https://vioao.github.io/) 
 - 写作规范参考 [GitChat 写作规范](https://gitbook.cn/books/5c47da3ef79c0c1f90492403/index.html)
