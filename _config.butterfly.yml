@@ -7,6 +7,12 @@ menu:
   分类: /categories/ || fas fa-folder-open
   关于: /about/ || fas fa-heart
 
+# A simple 404 page
+error_404:
+  enable: true
+  subtitle: "頁面沒有找到"
+  background:
+
 highlight_copy: true
 highlight_theme: mac
 
@@ -15,7 +21,7 @@ social:
   fas fa-envelope: mailto:vioao91@gmail.com || Email || "#000000"
 
 avatar:
-  img: /img/avatar/avatar.jpeg
+  img: /static/common/avatar.jpeg
   effect: false # 頭像會一直轉圈
 
 disable_top_img: true
@@ -47,7 +53,7 @@ footer:
   owner:
     enable: true
     since: 2016
-    custom_text: <a href="icp鏈接"><img class="icp-icon" src="icp圖片"><span>備案號：xxxxxx</span></a>
+  custom_text: <div class="beian"><a href="http://beian.miit.gov.cn/" rel="noopener" target="_blank">粤ICP备2021037828号-1 </a></div>
 
 
 aside:
@@ -67,10 +73,9 @@ aside:
       enable: true
       icon: fab fa-github
       text: Follow Me
-      link: https://github.com/xxxxxx
+      link: https://github.com/vioao
   card_announcement:
-    enable: true
-    content: This is my Blog
+    enable: false
   card_recent_post:
     enable: true
     limit: 5 # if set 0 will show all
@@ -109,3 +114,22 @@ busuanzi:
   site_uv: true
   site_pv: true
   page_pv: true
+
+mathjax:
+  enable: true
+  # true 表示每一頁都加載mathjax.js
+  # false 需要時加載，須在使用的Markdown Front-matter 加上 mathjax: true
+  per_page: false
+
+kramed:
+  gfm: true
+  pedantic: false
+  sanitize: false
+  tables: true
+  breaks: true
+  smartLists: true
+  smartypants: true
+
+sharejs:
+  enable: true
+  sites: facebook,twitter,wechat,weibo,qq  #想要顯示的內容
