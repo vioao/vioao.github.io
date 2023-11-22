@@ -1,0 +1,14 @@
+nav:
+  logo:
+  display_title: true
+  fixed: false # fixed navigation bar
+
+
+Home: / || fas fa-home
+Archives: /archives/ || fas fa-archive
+Tags: /tags/ || fas fa-tags
+Categories: /categories/ || fas fa-folder-open
+Link: /link/ || fas fa-link
+About: /about/ || fas fa-heart
+
+highlight_copy: true
