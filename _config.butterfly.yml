@@ -142,3 +142,13 @@ kramed:
 sharejs:
   enable: true
   sites: facebook,twitter,wechat,weibo,qq  #想要顯示的內容
+
+# Local search
+local_search:
+  enable: true
+  # Preload the search data when the page loads.
+  preload: true
+  # Show top n results per article, show all results by setting to -1
+  top_n_per_article: 1
+  # Unescape html strings to the readable one.
+  unescape: true
