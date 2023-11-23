@@ -1,5 +1,6 @@
 ---
 title: 在 Maven 中央仓库发布自己的开源项目
+seo_title: how-to-publish-to-maven
 date: 2020-07-23 17:01:41
 tags: [Maven]
 categories: [Java]

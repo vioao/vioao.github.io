@@ -1,5 +1,6 @@
 ---
 title: Structs2 Reponse rediret 使用https
+seo_title: structs2-redirect-with-https
 date: 2016-11-20 12:47:14
 tags: [Struts]
 categories: [工作记录]

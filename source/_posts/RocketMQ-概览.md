@@ -1,6 +1,6 @@
 ---
 title: RocketMQ 概览
-
+seo_title: rockketmq-for-beginner
 date: 2019-11-18 11:38:51
 tags: [RocketMQ,JAVA,大数据]
 categories: [中间件]

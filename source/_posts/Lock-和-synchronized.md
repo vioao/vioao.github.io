@@ -1,5 +1,6 @@
 ---
 title: Lock 和 synchronized
+seo_title: java-concurrent-lock-and-synchronized
 date: 2017-05-30 22:54:22
 tags: [多线程]
 categories: [Java]

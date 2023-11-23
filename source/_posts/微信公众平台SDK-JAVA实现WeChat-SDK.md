@@ -1,5 +1,6 @@
 ---
 title: 微信公众平台SDK JAVA实现WeChat-SDK
+seo_title: java-wechat-sdk
 date: 2018-01-21 10:31:13
 tags: [Java,WeChat,公众平台,开放平台]
 categories: [Java]

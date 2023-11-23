@@ -1,7 +1,7 @@
 ---
 title: 面试指南之消息中间件：RocketMQ
 date: 2021-06-04 13:37:19
-seo_title: 面试指南之消息中间件
+seo_title: interview-questions-rocketmq
 tags: [RocketMQ,消息中间件,面试]
 categories: [中间件]
 ---

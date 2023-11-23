@@ -1,5 +1,6 @@
 ---
 title: Feign基础教程
+seo_title: feign-for-beginner
 date: 2017-06-23 22:38:43
 tags: [Feign,Http Client]
 categories: [Java]

@@ -1,5 +1,6 @@
 ---
 title: 'JAVA并发编程: CAS和AQS'
+seo_title: java-concurrent-caa-and-aqs
 date: 2017-06-06 23:35:21
 tags: [Java,并发编程,AQS,CAS]
 categories: [Java]

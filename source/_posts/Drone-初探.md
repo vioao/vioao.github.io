@@ -1,6 +1,6 @@
 ---
 title: Drone 初探
-
+seo_title: drone-for-beginner
 date: 2019-06-21 11:14:55
 tags: [CI,CD,Drone,Docker]
 categories: [Docker]

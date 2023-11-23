@@ -1,5 +1,6 @@
 ---
 title: 'JAVA开源B2C系统'
+seo_title: opensource-java-b2c-system
 date: 2017-07-03 21:09:02
 tags: [Java,Shopizer,B2C,OpenSource]
 categories: [Java]

@@ -1,5 +1,6 @@
 ---
 title: SpringBoot 整合Mybatis/Druid/Quartz
+seo_title: springboot-integrate-with-mybatis-druid-quartz
 date: 2017-11-12 11:43:24
 tags: [SpringBoot,Quartz,Druid,H2,Mybatis]
 categories: [工作记录]

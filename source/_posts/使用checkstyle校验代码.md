@@ -1,5 +1,6 @@
 ---
 title: 使用checkstyle校验代码
+seo_title: use-checkstyle
 date: 2017-12-03 13:48:38
 tags: [CheckStyle,Maven]
 categories: [工作记录]

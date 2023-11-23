@@ -1,10 +1,11 @@
 ---
 title: 记一次 Gradle Build 问题分析
-
+seo_title: solve-gradle-build-problem
 date: 2019-08-24 10:48:26
 tags: [Gradle,Java]
 categories: [工作记录]
 ---
+
 ### 问题出现
 
 一次项目更新后，发现项目无法正常 build 了，出现如下报错：

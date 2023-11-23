@@ -29,18 +29,26 @@ disable_top_img: true
 
 post_meta:
   page:
-    date_type: both # created or updated or both 主頁文章日期是創建日或者更新日或都顯示
-    date_format: relative # date/relative 顯示日期還是相對日期
+    date_type: created # created or updated or both 主頁文章日期是創建日或者更新日或都顯示
+    date_format: date # date/relative 顯示日期還是相對日期
     categories: true # true or false 主頁是否顯示分類
     tags: true # true or false 主頁是否顯示標籤
     label: true # true or false 顯示描述性文字
   post:
-    date_type: both # created or updated or both 文章頁日期是創建日或者更新日或都顯示
-    date_format: relative # date/relative 顯示日期還是相對日期
+    date_type: created # created or updated or both 文章頁日期是創建日或者更新日或都顯示
+    date_format: date # date/relative 顯示日期還是相對日期
     categories: true # true or false 文章頁是否顯示分類
     tags: true # true or false 文章頁是否顯示標籤
     label: true # true or false 顯示描述性文字
 
+index_post_content:
+  method: 3
+  length: 500 # if you set method to 2 or 3, the length need to config
+
+related_post:
+  enable: true
+  limit: 3 # 顯示推薦文章數目
+  date_type: created # or created or updated 文章日期顯示創建日或者更新日
 
 # copy settings
 # copyright: Add the copyright information after copied content (複製的內容後面加上版權信息)
