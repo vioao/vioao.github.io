@@ -2,8 +2,8 @@
 title: 在 Maven 中央仓库发布自己的开源项目
 seo_title: how-to-publish-to-maven
 date: 2020-07-23 17:01:41
-tags: [Maven]
-categories: [Java]
+tags: [Java,Maven]
+categories: [Program]
 ---
 
 写代码久了，一直在用别人提供的第三方包依赖，有时是不是也会想着有一天别人能够使用自己的开源出去的项目。让我们从最简单的开始，提取一个小项目，将其开源并发布到中央仓库让大伙可以直接通过配置 Maven 依赖来使用。

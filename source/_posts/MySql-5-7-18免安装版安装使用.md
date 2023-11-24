@@ -2,8 +2,8 @@
 title: MySql 5.7.18免安装版安装使用
 seo_title: how-to-install-mysql5.7
 date: 2017-05-26 21:32:04
-tags: MySQL
-categories: 工作记录
+tags: [MySQL]
+categories: [Program]
 ---
 
 由于公司对电脑安全做了较多的限制。自己无法使用MySql的msi文件来安装Mysql。于是下了个mysql的zip压缩包来使用。

@@ -2,8 +2,8 @@
 title: 利用Github Pages和Hexo搭建个人博客
 seo_title: how-to-build-personal-blog-with-github-pages-and-hexo
 date: 2017-05-29 10:02:26
-tags: [GitHub,Hexo,Next,博客]
-categories: [Html]
+tags: [GitHub,Hexo,Next,Blog,Html]
+categories: [Program]
 ---
 
 ## Github Pages和Hexo介绍

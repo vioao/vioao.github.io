@@ -2,8 +2,8 @@
 title: Java 多线程
 seo_title: java-threads
 date: 2020-07-23 17:12:38
-tags: [多线程,面试]
-categories: [Java]
+tags: [Threads,Interview,Java]
+categories: [Program]
 ---
 
 本次本章从线程的基础讲到线程的相关实现类，每个章节算是一小块知识点，在每个知识点中，穿插地讲对应的知识原理，以及对应的常见面试题及其解答。多数面试题是前后环环相扣的。

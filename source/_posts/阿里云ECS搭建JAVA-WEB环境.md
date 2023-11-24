@@ -2,8 +2,8 @@
 title: 阿里云ECS搭建JAVA WEB环境
 seo_title: build-java-web-env-in-aliyun-ecs
 date: 2017-06-17 09:46:02
-tags: [ECS,环境搭建]
-categories: [Java]
+tags: [ECS]
+categories: [Side Project]
 ---
 
 ## 购买配置阿里云服务器ECS

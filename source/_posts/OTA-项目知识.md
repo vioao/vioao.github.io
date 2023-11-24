@@ -3,7 +3,7 @@ title: OTA 项目知识
 seo_title: ota-knowledge
 date: 2019-07-10 09:54:30
 tags: [OTA]
-categories: [工作记录]
+categories: [Program]
 ---
 
 ### 名词解释

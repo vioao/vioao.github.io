@@ -3,7 +3,7 @@ title: Jasperreports OOM问题处理
 seo_title: jasperreports-oom
 date: 2018-02-28 22:48:10
 tags: [Java,JasperReports,OOM]
-categories: [工作记录]
+categories: [Program]
 
 ---
 

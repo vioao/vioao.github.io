@@ -2,7 +2,7 @@
 title: How to write a good unit test
 seo_title: how-to-write-a-good-unit-test
 date: 2023-11-22 21:33:29
-tags: [Python,Coding]
+tags: [Unit Test]
 categories: [Program]
 ---
 

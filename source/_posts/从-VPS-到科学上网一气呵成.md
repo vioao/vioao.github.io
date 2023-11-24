@@ -3,7 +3,7 @@ title: 从 VPS 到科学上网一气呵成
 seo_title: build-vpn-with-vps
 date: 2019-08-27 10:47:13
 tags: [VPS,SSR,V2Ray]
-categories: [VPS]
+categories: [Side Project]
 ---
 
 ### 起因

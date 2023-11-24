@@ -3,8 +3,7 @@ title: SpringBoot 整合Mybatis/Druid/Quartz
 seo_title: springboot-integrate-with-mybatis-druid-quartz
 date: 2017-11-12 11:43:24
 tags: [SpringBoot,Quartz,Druid,H2,Mybatis]
-categories: [工作记录]
-
+categories: [Program]
 ---
 
 由于项目中定时任务逐渐增多，对系统的压力也慢慢增加。故打算将系统中的定时任务抽离出来。初步决定使用SpringBoot+mybatis+quartz的整合方式进行快速开发。

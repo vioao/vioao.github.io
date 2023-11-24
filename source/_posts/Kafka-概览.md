@@ -2,8 +2,8 @@
 title: Kafka 概览
 seo_title: kafka-for-beginner
 date: 2019-12-19 10:27:39
-tags: [RocketMQ,JAVA,大数据]
-categories: [中间件]
+tags: [Kafka,Java,Big Data]
+categories: [Program]
 ---
 
 ### 简介

@@ -2,8 +2,8 @@
 title: '[译]深入理解 Node.js Worker Threads'
 seo_title: nodejs-worker-threads-deep-dive
 date: 2020-07-22 13:51:51
-tags: [Node.js, 多线程]
-categories: [Node.js]
+tags: [Node.js, Threads]
+categories: [Program]
 ---
 
 最近工作中又有可能需要写 Node.js 应用了，距离上次写 Node.js 应用也有好些年了，所以就开始

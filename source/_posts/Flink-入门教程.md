@@ -2,8 +2,8 @@
 title: Flink 入门教程
 seo_title: flink-for-beginner
 date: 2019-06-08 10:18:40
-tags: [Flink,大数据]
-categories: [中间件]
+tags: [Flink,Big Data,Middleware]
+categories: [Program]
 ---
 
 ### 大数据处理的应用场景

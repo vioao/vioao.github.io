@@ -2,8 +2,8 @@
 title: Redis 问答 PK
 seo_title: redis-interview
 date: 2020-07-23 17:17:53
-tags: [Redis,缓存,面试]
-categories: [中间件]
+tags: [Redis,Cache,Interview]
+categories: [Interview]
 ---
 
 ### 前言

@@ -3,7 +3,7 @@ title: '压测对比: Spring WebFlux VS. Spring MVC'
 seo_title: spring-mvc-vs-spring-webflux-performance
 date: 2020-07-10 18:05:20
 tags: [Reactor,SpringBoot,WebFlux]
-categories: [工作记录]
+categories: [Program]
 ---
 
 ### 前言

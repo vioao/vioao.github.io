@@ -3,7 +3,7 @@ title: 记一次 Gradle Build 问题分析
 seo_title: solve-gradle-build-problem
 date: 2019-08-24 10:48:26
 tags: [Gradle,Java]
-categories: [工作记录]
+categories: [Program]
 ---
 
 ### 问题出现

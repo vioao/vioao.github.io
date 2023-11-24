@@ -2,8 +2,8 @@
 title: CentOS 7.3 搭建OpenCart
 seo_title: install-opencart-in-centos
 date: 2017-07-19 20:24:01
-tags: [OpenCart,CentOS]
-categories: [PHP]
+tags: [OpenCart,CentOS,PHP]
+categories: [Side Project]
 ---
 
 # 环境
