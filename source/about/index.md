@@ -9,29 +9,30 @@ date: 2017-05-19 20:59:45
 
 I'm Vio. A software engineer @ShenZhen.
 
-Major program skill
+Major skill
 - Java
 - Python
-- Javascript
-- HTML
+- Typescript & HTML
+- Flutter
 
 ---
 
-下面是我利用业余时间做的一些应用
+这是我利用业余时间做的一些应用
 
-#### 智能水印工具箱
-一个图片/短视频处理的小程序
-- 图片去水印
-- 图片画质增强
-- 图片背景移除
-- 短视频去水印
-- 短视频图集一键提取
+#### 必省生活公众号&小程序
 
-微信扫码体验
+必省生活是一个集红包领取/低价购物/消费返现的生活平台。可以渗透到生活的方方面面。能够最大程度的给你生活中的消费节省费用。聚少成多。
+- 特价电影票
+- 外卖红包
+- 出行红包
+- 特价卡券
+  - 腾讯/优酷/爱奇艺等各大影音会员
+  - 美团/饿了么等各大餐饮会员
+- 特价快递
+- 特价话费充值
+- 淘宝/抖音/PDD购物返现
 
-<img style="margin-left:1px;" src='https://i.328888.xyz/img/2022/12/03/i1ACE.jpeg' width='200' />
-
-
+<img src='https://i.imgs.ovh/2023/12/01/pNAtt.jpeg' width='200'>
 
 
 
@@ -42,30 +43,26 @@ Major program skill
 - 支持附件下载
 - 邮件临时保存
 
-微信扫码体验
-
-<img style="margin-left:1px;" src='https://i.328888.xyz/img/2022/12/03/i1y1Q.jpeg' width='200' />  
+<img src='https://i.imgs.ovh/2023/12/01/pN2L0.jpeg' width='200'>
 
 
+#### 智能水印工具箱
+一个图片/短视频处理的小程序
+- 图片去水印
+- 图片画质增强
+- 图片背景移除
+- 短视频去水印
+- 短视频图集一键提取
+
+<img src='https://i.imgs.ovh/2023/12/01/pNF0C.jpeg' width='200'>
 
 
-#### 必省生活
-必省生活是一个集红包领取/低价购物/消费返现的生活平台。可以渗透到生活的方方面面。能够最大程度的给你生活中的消费节省费用。聚少成多。
-- 特价电影票
-- 外卖红包
-- 出行红包
-- 特价卡券
-    - 腾讯/优酷/爱奇艺等各大影音会员
-    - 美团/饿了么等各大餐饮会员
-- 特价快递
-- 特价话费充值
-- 淘宝/抖音/PDD购物返现
 
+#### Z-Library 镜像小程序
+Z-Library（简称Z-Lib，前身为BookFinder）是一个影子图书馆和开放获取文件分享计划，用户可在此一网站上下载期刊文章以及各种类型的书籍。
+本小程序是将其镜像并搬运到微信平台。方便大家使用。
 
-微信扫码体验
-
-<img style="margin-left:1px;" src='https://i.328888.xyz/img/2022/12/03/i1f6H.jpeg' width='200' />  
-
+<img src='https://i.imgs.ovh/2023/12/01/pNXjU.jpeg' width='200'>
 
 
 
