@@ -59,6 +59,7 @@ copy:
     limit_count: 50
 
 footer:
+  copyright: false
   owner:
     enable: true
     since: 2016
