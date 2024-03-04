@@ -62,7 +62,7 @@ footer:
   owner:
     enable: true
     since: 2016
-  custom_text: <div class="beian"><a href="http://beian.miit.gov.cn/" rel="noopener" target="_blank">粤ICP备2021037828号-1 </a></div>
+  custom_text: <div class="beian"><a href="http://beian.miit.gov.cn/" rel="noopener" target="_blank">粤ICP备2024191092号</a></div>
 
 
 aside:
